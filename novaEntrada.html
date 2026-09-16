@@ -1,0 +1,527 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <!-- Faz a página funcionar corretamente em celulares -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nova Entrada - Meu Financeiro</title>
+
+    <!-- Nosso arquivo CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MENU LATERAL
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                R$
+            </div>
+
+            <div class="logo-text">
+                <strong>Meu</strong>
+                <span>Financeiro</span>
+            </div>
+
+        </div>
+
+
+        <!-- MENU PRINCIPAL -->
+
+        <nav class="menu">
+
+
+            <a href="index.html" class="menu-item">
+
+                <span class="menu-icon">
+                    ⌂
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a href="nova-entrada.html" class="menu-item active">
+
+                <span class="menu-icon entrada">
+                    ↑
+                </span>
+
+                <span>
+                    Entradas
+                </span>
+
+            </a>
+
+
+            <a href="#" class="menu-item">
+
+                <span class="menu-icon saida">
+                    ↓
+                </span>
+
+                <span>
+                    Gastos
+                </span>
+
+            </a>
+
+
+            <a href="#" class="menu-item">
+
+                <span class="menu-icon dividendo">
+                    ◆
+                </span>
+
+                <span>
+                    Dividendos
+                </span>
+
+            </a>
+
+
+            <a href="#" class="menu-item">
+
+                <span class="menu-icon">
+                    ☷
+                </span>
+
+                <span>
+                    Categorias
+                </span>
+
+            </a>
+
+
+            <a href="#" class="menu-item">
+
+                <span class="menu-icon">
+                    ▥
+                </span>
+
+                <span>
+                    Relatórios
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- MENU INFERIOR -->
+
+        <div class="menu-bottom">
+
+            <a href="#" class="menu-item">
+
+                <span class="menu-icon">
+                    ⚙
+                </span>
+
+                <span>
+                    Configurações
+                </span>
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         ÁREA PRINCIPAL
+         ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             CABEÇALHO
+             ================================================= -->
+
+        <header class="topbar">
+
+
+            <!-- Botão que futuramente abrirá o menu no celular -->
+
+            <button class="mobile-menu-button">
+                ☰
+            </button>
+
+
+            <div class="page-title">
+
+                <h1>
+                    Nova entrada
+                </h1>
+
+                <p>
+                    Registrar dinheiro recebido
+                </p>
+
+            </div>
+
+
+            <!-- USUÁRIO -->
+
+            <div class="user-area">
+
+
+                <div class="user-info">
+
+                    <strong>
+                        Ednardo
+                    </strong>
+
+                    <span>
+                        Minha conta
+                    </span>
+
+                </div>
+
+
+                <div class="user-avatar">
+                    E
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             CONTEÚDO
+             ================================================= -->
+
+        <section class="content">
+
+
+            <!-- CABEÇALHO DA PÁGINA -->
+
+            <div class="page-heading">
+
+
+                <div>
+
+                    <a href="index.html" class="back-link">
+                        ← Voltar para o Dashboard
+                    </a>
+
+                    <h2>
+                        Registrar nova entrada
+                    </h2>
+
+                    <p>
+                        Informe os dados do dinheiro que entrou.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FORMULÁRIO
+                 ================================================= -->
+
+            <div class="form-container">
+
+
+                <form id="formulario">
+
+
+                    <!-- =========================================
+                         DESCRIÇÃO
+                         ========================================= -->
+
+                    <div class="form-group">
+
+                        <label for="descricao">
+                            Descrição
+                        </label>
+
+                        <input
+                            type="text"
+                            id="descricao"
+                            name="descricao"
+                            placeholder="Ex.: Salário, freelance, venda..."
+                        >
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         CATEGORIA
+                         ========================================= -->
+
+                    <div class="form-group">
+
+                        <label for="categoria">
+                            Categoria
+                        </label>
+
+                        <select
+                            id="categoria"
+                            name="categoria"
+                        >
+
+                            <option value="">
+                                Selecione uma categoria
+                            </option>
+
+                            <option value="salario">
+                                Salário
+                            </option>
+
+                            <option value="freelance">
+                                Freelance
+                            </option>
+
+                            <option value="venda">
+                                Venda
+                            </option>
+
+                            <option value="reembolso">
+                                Reembolso
+                            </option>
+
+                            <option value="outros">
+                                Outros
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         VALOR E DATA
+                         ========================================= -->
+
+                    <div class="form-row">
+
+
+                        <div class="form-group">
+
+                            <label for="valor">
+                                Valor
+                            </label>
+
+                            <div class="input-money">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="valor"
+                                    name="valor"
+                                    placeholder="0,00"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-group">
+
+                            <label for="data">
+                                Data
+                            </label>
+
+                            <input
+                                type="date"
+                                id="data"
+                                name="data"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         FORMA DE RECEBIMENTO
+                         ========================================= -->
+
+                    <div class="form-group">
+
+                        <label for="forma">
+                            Forma de recebimento
+                        </label>
+
+                        <select
+                            id="forma"
+                            name="forma"
+                        >
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            <option value="pix">
+                                Pix
+                            </option>
+
+                            <option value="dinheiro">
+                                Dinheiro
+                            </option>
+
+                            <option value="debito">
+                                Débito em conta
+                            </option>
+
+                            <option value="transferencia">
+                                Transferência
+                            </option>
+
+                            <option value="outro">
+                                Outro
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         CONTA
+                         ========================================= -->
+
+                    <div class="form-group">
+
+                        <label for="conta">
+                            Conta / Carteira
+                        </label>
+
+                        <select
+                            id="conta"
+                            name="conta"
+                        >
+
+                            <option value="">
+                                Selecione onde o dinheiro entrou
+                            </option>
+
+                            <option value="conta-corrente">
+                                Conta corrente
+                            </option>
+
+                            <option value="poupanca">
+                                Poupança
+                            </option>
+
+                            <option value="dinheiro">
+                                Dinheiro em espécie
+                            </option>
+
+                            <option value="outra">
+                                Outra conta
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         OBSERVAÇÃO
+                         ========================================= -->
+
+                    <div class="form-group">
+
+                        <label for="observacao">
+                            Observação
+                        </label>
+
+                        <textarea
+                            id="observacao"
+                            name="observacao"
+                            placeholder="Alguma informação adicional..."
+                            rows="4"
+                        ></textarea>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         BOTÕES
+                         ========================================= -->
+
+                    <div class="form-actions">
+
+
+                        <a
+                            href="index.html"
+                            class="cancel-button"
+                        >
+                            Cancelar
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="save-button"
+                        >
+                            ✓ Salvar entrada
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+    <script src="js/nova-entrada.js"></script>
+
+</body>
+
+</html>
+```

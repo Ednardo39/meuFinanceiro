@@ -1,0 +1,1394 @@
+```css
+/* ============================================================
+   CONFIGURAÇÕES GERAIS
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+
+    --background: #f5f7fb;
+    --white: #ffffff;
+
+    --text: #1e293b;
+    --text-light: #64748b;
+
+    --border: #e2e8f0;
+
+    --green: #16a34a;
+    --green-light: #dcfce7;
+
+    --red: #dc2626;
+    --red-light: #fee2e2;
+
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
+
+    --orange: #ea580c;
+    --orange-light: #ffedd5;
+
+    --sidebar-width: 250px;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+
+/* ============================================================
+   MENU LATERAL
+   ============================================================ */
+
+.sidebar {
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    width: var(--sidebar-width);
+    height: 100vh;
+
+    background: var(--white);
+
+    border-right: 1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 25px 15px;
+
+}
+
+
+/* Logo */
+
+.logo {
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 0 10px 30px;
+}
+
+.logo-icon {
+
+    width: 42px;
+    height: 42px;
+
+    background: var(--primary);
+
+    color: white;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+.logo-text {
+
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-text strong {
+
+    font-size: 18px;
+}
+
+.logo-text span {
+
+    color: var(--primary);
+
+    font-size: 18px;
+
+    font-weight: bold;
+}
+
+
+/* Menu */
+
+.menu {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.menu-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 12px 15px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    color: var(--text-light);
+
+    font-size: 14px;
+
+    transition: 0.2s;
+}
+
+.menu-item:hover {
+
+    background: #f1f5f9;
+
+    color: var(--text);
+}
+
+.menu-item.active {
+
+    background: #eff6ff;
+
+    color: var(--primary);
+
+    font-weight: bold;
+}
+
+.menu-icon {
+
+    width: 22px;
+
+    text-align: center;
+
+    font-size: 18px;
+}
+
+.entrada {
+
+    color: var(--green);
+}
+
+.saida {
+
+    color: var(--red);
+}
+
+.dividendo {
+
+    color: var(--purple);
+}
+
+
+/* Menu inferior */
+
+.menu-bottom {
+
+    margin-top: auto;
+}
+
+
+/* ============================================================
+   ÁREA PRINCIPAL
+   ============================================================ */
+
+.main-content {
+
+    margin-left: var(--sidebar-width);
+
+    min-height: 100vh;
+}
+
+
+/* ============================================================
+   CABEÇALHO
+   ============================================================ */
+
+.topbar {
+
+    height: 80px;
+
+    background: var(--white);
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 35px;
+}
+
+.page-title h1 {
+
+    font-size: 22px;
+
+    margin-bottom: 4px;
+}
+
+.page-title p {
+
+    color: var(--text-light);
+
+    font-size: 13px;
+}
+
+
+/* Usuário */
+
+.user-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.user-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    text-align: right;
+}
+
+.user-info strong {
+
+    font-size: 14px;
+}
+
+.user-info span {
+
+    color: var(--text-light);
+
+    font-size: 12px;
+
+    margin-top: 3px;
+}
+
+.user-avatar {
+
+    width: 42px;
+    height: 42px;
+
+    background: var(--primary);
+
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+
+/* Botão mobile */
+
+.mobile-menu-button {
+
+    display: none;
+
+    border: none;
+
+    background: none;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   CONTEÚDO
+   ============================================================ */
+
+.content {
+
+    padding: 30px 35px;
+}
+
+
+/* Saudação */
+
+.welcome {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.welcome h2 {
+
+    font-size: 21px;
+
+    margin-bottom: 5px;
+}
+
+.welcome p {
+
+    color: var(--text-light);
+
+    font-size: 14px;
+}
+
+
+/* Seletor de mês */
+
+.month-selector {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    padding: 5px;
+}
+
+.month-selector button {
+
+    width: 30px;
+    height: 30px;
+
+    border: none;
+
+    background: #f8fafc;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+.month-selector span {
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    padding: 0 8px;
+}
+
+
+/* ============================================================
+   CARDS FINANCEIROS
+   ============================================================ */
+
+.financial-cards {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.financial-card {
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+
+/* Cabeçalho do card */
+
+.card-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 18px;
+}
+
+.card-title {
+
+    color: var(--text-light);
+
+    font-size: 13px;
+}
+
+.card-icon {
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+
+    font-size: 16px;
+}
+
+
+/* Cores dos cards */
+
+.balance .card-icon {
+
+    background: #dbeafe;
+
+    color: var(--primary);
+}
+
+.income .card-icon {
+
+    background: var(--green-light);
+
+    color: var(--green);
+}
+
+.expense .card-icon {
+
+    background: var(--red-light);
+
+    color: var(--red);
+}
+
+.dividends .card-icon {
+
+    background: var(--purple-light);
+
+    color: var(--purple);
+}
+
+
+/* Valores */
+
+.card-value {
+
+    display: block;
+
+    font-size: 23px;
+
+    margin-bottom: 7px;
+}
+
+.card-description {
+
+    color: var(--text-light);
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   GRID INFERIOR
+   ============================================================ */
+
+.dashboard-grid {
+
+    display: grid;
+
+    grid-template-columns: 1.6fr 1fr;
+
+    gap: 20px;
+}
+
+
+/* Painéis */
+
+.panel {
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    padding: 22px;
+}
+
+
+/* Cabeçalho dos painéis */
+
+.panel-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.panel-header h3 {
+
+    font-size: 16px;
+
+    margin-bottom: 5px;
+}
+
+.panel-header p {
+
+    color: var(--text-light);
+
+    font-size: 12px;
+}
+
+.view-all {
+
+    border: none;
+
+    background: none;
+
+    color: var(--primary);
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   TRANSAÇÕES
+   ============================================================ */
+
+.transaction {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.transaction:last-child {
+
+    border-bottom: none;
+}
+
+.transaction-icon {
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+}
+
+.income-icon {
+
+    background: var(--green-light);
+
+    color: var(--green);
+}
+
+.dividend-icon {
+
+    background: var(--purple-light);
+
+    color: var(--purple);
+}
+
+.fuel-icon {
+
+    background: var(--orange-light);
+
+    color: var(--orange);
+}
+
+.market-icon {
+
+    background: #fef3c7;
+
+    color: #d97706;
+}
+
+.pharmacy-icon {
+
+    background: #fce7f3;
+
+    color: #db2777;
+}
+
+.transaction-info {
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.transaction-info strong {
+
+    font-size: 13px;
+}
+
+.transaction-info span {
+
+    color: var(--text-light);
+
+    font-size: 11px;
+}
+
+.transaction-value {
+
+    font-size: 13px;
+}
+
+.positive {
+
+    color: var(--green);
+}
+
+.negative {
+
+    color: var(--red);
+}
+
+
+/* ============================================================
+   RESUMO
+   ============================================================ */
+
+.summary-item {
+
+    margin-bottom: 22px;
+}
+
+.summary-label {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    font-size: 13px;
+}
+
+.summary-label span {
+
+    color: var(--text-light);
+}
+
+.progress {
+
+    width: 100%;
+
+    height: 8px;
+
+    background: #f1f5f9;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.progress-income {
+
+    width: 100%;
+
+    height: 100%;
+
+    background: var(--green);
+
+    border-radius: 10px;
+}
+
+.progress-expense {
+
+    width: 45%;
+
+    height: 100%;
+
+    background: var(--red);
+
+    border-radius: 10px;
+}
+
+
+/* Resultado */
+
+.summary-result {
+
+    border-top: 1px solid var(--border);
+
+    padding-top: 18px;
+
+    margin-top: 10px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.summary-result span {
+
+    color: var(--text-light);
+
+    font-size: 12px;
+}
+
+.summary-result strong {
+
+    font-size: 22px;
+
+    color: var(--primary);
+}
+
+
+/* ============================================================
+   BOTÕES DE AÇÃO
+   ============================================================ */
+
+.quick-actions {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 22px;
+}
+
+.action-button {
+
+    flex: 1;
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 11px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.action-button.primary {
+
+    background: var(--primary);
+
+    color: white;
+}
+
+.action-button.primary:hover {
+
+    background: var(--primary-dark);
+}
+
+.action-button.secondary {
+
+    background: var(--red-light);
+
+    color: var(--red);
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+    .financial-cards {
+
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-grid {
+
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE
+   CELULAR
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+    /* Esconde o menu lateral */
+
+    .sidebar {
+
+        display: none;
+    }
+
+
+    /* Remove espaço reservado ao menu */
+
+    .main-content {
+
+        margin-left: 0;
+    }
+
+
+    /* Cabeçalho */
+
+    .topbar {
+
+        height: 70px;
+
+        padding: 0 18px;
+    }
+
+    .mobile-menu-button {
+
+        display: block;
+    }
+
+    .page-title {
+
+        margin-right: auto;
+
+        margin-left: 15px;
+    }
+
+    .page-title h1 {
+
+        font-size: 18px;
+    }
+
+    .page-title p {
+
+        display: none;
+    }
+
+    .user-info {
+
+        display: none;
+    }
+
+
+    /* Conteúdo */
+
+    .content {
+
+        padding: 20px 15px;
+    }
+
+
+    /* Saudação */
+
+    .welcome {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .month-selector {
+
+        width: 100%;
+
+        justify-content: space-between;
+    }
+
+
+    /* Cards */
+
+    .financial-cards {
+
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+    }
+
+    .financial-card {
+
+        padding: 18px;
+    }
+
+
+    /* Painéis */
+
+    .dashboard-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .panel {
+
+        padding: 18px;
+    }
+
+
+    /* Transações */
+
+    .transaction-value {
+
+        font-size: 12px;
+    }
+
+
+    /* Botões */
+
+    .quick-actions {
+
+        flex-direction: column;
+    }
+
+}
+
+```css
+/* ============================================================
+   PÁGINA NOVA ENTRADA
+   ============================================================ */
+
+
+/* Cabeçalho interno da página */
+
+.page-heading {
+
+    margin-bottom: 25px;
+}
+
+.back-link {
+
+    display: inline-block;
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    margin-bottom: 14px;
+}
+
+.back-link:hover {
+
+    text-decoration: underline;
+}
+
+.page-heading h2 {
+
+    font-size: 21px;
+
+    margin-bottom: 6px;
+}
+
+.page-heading p {
+
+    color: var(--text-light);
+
+    font-size: 14px;
+}
+
+
+/* ============================================================
+   CONTAINER DO FORMULÁRIO
+   ============================================================ */
+
+.form-container {
+
+    width: 100%;
+
+    max-width: 850px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    padding: 30px;
+
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+
+/* ============================================================
+   GRUPOS DO FORMULÁRIO
+   ============================================================ */
+
+.form-group {
+
+    margin-bottom: 20px;
+}
+
+.form-group label {
+
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+
+    color: var(--text);
+}
+
+
+/* ============================================================
+   INPUTS E SELECTS
+   ============================================================ */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 100%;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    padding: 12px 13px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+
+/* Quando o usuário clicar no campo */
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color: var(--primary);
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+
+/* Placeholder */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+
+    color: #94a3b8;
+}
+
+
+/* Textarea */
+
+.form-group textarea {
+
+    resize: vertical;
+
+    min-height: 100px;
+}
+
+
+/* ============================================================
+   DUAS COLUNAS
+   ============================================================ */
+
+.form-row {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+
+/* ============================================================
+   CAMPO DE VALOR
+   ============================================================ */
+
+.input-money {
+
+    display: flex;
+
+    align-items: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    background: white;
+
+    transition: 0.2s;
+}
+
+.input-money:focus-within {
+
+    border-color: var(--primary);
+
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.input-money span {
+
+    padding-left: 13px;
+
+    color: var(--text-light);
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+.input-money input {
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    padding-left: 8px;
+}
+
+
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+
+.form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 12px;
+
+    border-top: 1px solid var(--border);
+
+    padding-top: 22px;
+
+    margin-top: 10px;
+}
+
+
+/* Botão cancelar */
+
+.cancel-button {
+
+    padding: 11px 20px;
+
+    border-radius: 8px;
+
+    border: 1px solid var(--border);
+
+    background: white;
+
+    color: var(--text-light);
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+.cancel-button:hover {
+
+    background: #f8fafc;
+
+    color: var(--text);
+}
+
+
+/* Botão salvar */
+
+.save-button {
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 12px 22px;
+
+    background: var(--primary);
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.save-button:hover {
+
+    background: var(--primary-dark);
+
+    transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE — CELULAR
+   ============================================================ */
+
+@media (max-width: 700px) {
+
+
+    /* Formulário */
+
+    .form-container {
+
+        padding: 20px 16px;
+
+        border-radius: 10px;
+    }
+
+
+    /* Campos que estavam lado a lado
+       passam para uma coluna */
+
+    .form-row {
+
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+
+    /* Título */
+
+    .page-heading h2 {
+
+        font-size: 19px;
+    }
+
+
+    /* Botões */
+
+    .form-actions {
+
+        flex-direction: column-reverse;
+
+        align-items: stretch;
+    }
+
+    .cancel-button,
+    .save-button {
+
+        width: 100%;
+
+        text-align: center;
+
+        padding: 13px;
+    }
+
+}
+
+```css
+/* ============================================================
+   VALIDAÇÃO DO FORMULÁRIO
+   ============================================================ */
+
+
+/* Campo com erro */
+
+.campo-erro {
+
+    border-color: var(--red) !important;
+
+    background: #fffafa !important;
+}
+
+
+/* Campo com erro quando recebe foco */
+
+.campo-erro:focus {
+
+    border-color: var(--red) !important;
+
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.10) !important;
+}
+
+
+/* Mensagem abaixo do campo */
+
+.mensagem-erro {
+
+    display: block;
+
+    color: var(--red);
+
+    font-size: 11px;
+
+    margin-top: 6px;
+}
+```

@@ -1,0 +1,516 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Permite que a aplicação se adapte corretamente ao celular -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meu Financeiro</title>
+
+    <!-- Arquivo de estilos CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         MENU LATERAL
+         ===================================================== -->
+    <aside class="sidebar">
+
+        <!-- Logo / nome da aplicação -->
+        <div class="logo">
+            <div class="logo-icon">R$</div>
+
+            <div class="logo-text">
+                <strong>Meu</strong>
+                <span>Financeiro</span>
+            </div>
+        </div>
+
+
+        <!-- Menu principal -->
+        <nav class="menu">
+
+            <a href="#" class="menu-item active">
+                <span class="menu-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="menu-icon entrada">↑</span>
+                <span>Entradas</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="menu-icon saida">↓</span>
+                <span>Gastos</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="menu-icon dividendo">◆</span>
+                <span>Dividendos</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="menu-icon">☷</span>
+                <span>Categorias</span>
+            </a>
+
+            <a href="#" class="menu-item">
+                <span class="menu-icon">▥</span>
+                <span>Relatórios</span>
+            </a>
+
+        </nav>
+
+
+        <!-- Parte inferior do menu -->
+        <div class="menu-bottom">
+
+            <a href="#" class="menu-item">
+                <span class="menu-icon">⚙</span>
+                <span>Configurações</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         ÁREA PRINCIPAL
+         ===================================================== -->
+    <main class="main-content">
+
+
+        <!-- =================================================
+             CABEÇALHO
+             ================================================= -->
+        <header class="topbar">
+
+            <button class="mobile-menu-button">
+                ☰
+            </button>
+
+            <div class="page-title">
+                <h1>Dashboard</h1>
+                <p>Visão geral das suas finanças</p>
+            </div>
+
+
+            <!-- Usuário -->
+            <div class="user-area">
+
+                <div class="user-info">
+                    <strong>Ednardo</strong>
+                    <span>Minha conta</span>
+                </div>
+
+                <div class="user-avatar">
+                    E
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             CONTEÚDO
+             ================================================= -->
+        <section class="content">
+
+
+            <!-- Saudação -->
+            <div class="welcome">
+
+                <div>
+                    <h2>Olá, Ednardo! 👋</h2>
+
+                    <p>
+                        Aqui está o resumo das suas finanças.
+                    </p>
+                </div>
+
+
+                <!-- Seletor de mês -->
+                <div class="month-selector">
+
+                    <button>‹</button>
+
+                    <span>Setembro 2026</span>
+
+                    <button>›</button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 CARDS FINANCEIROS
+                 ================================================= -->
+            <div class="financial-cards">
+
+
+                <!-- Saldo -->
+                <div class="financial-card balance">
+
+                    <div class="card-header">
+
+                        <span class="card-title">
+                            Saldo do mês
+                        </span>
+
+                        <div class="card-icon">
+                            R$
+                        </div>
+
+                    </div>
+
+                    <strong class="card-value">
+                        R$ 5.230,00
+                    </strong>
+
+                    <span class="card-description">
+                        Saldo disponível
+                    </span>
+
+                </div>
+
+
+                <!-- Entradas -->
+                <div class="financial-card income">
+
+                    <div class="card-header">
+
+                        <span class="card-title">
+                            Entradas
+                        </span>
+
+                        <div class="card-icon">
+                            ↑
+                        </div>
+
+                    </div>
+
+                    <strong class="card-value">
+                        R$ 7.500,00
+                    </strong>
+
+                    <span class="card-description">
+                        Total recebido no mês
+                    </span>
+
+                </div>
+
+
+                <!-- Gastos -->
+                <div class="financial-card expense">
+
+                    <div class="card-header">
+
+                        <span class="card-title">
+                            Gastos
+                        </span>
+
+                        <div class="card-icon">
+                            ↓
+                        </div>
+
+                    </div>
+
+                    <strong class="card-value">
+                        R$ 2.270,00
+                    </strong>
+
+                    <span class="card-description">
+                        Total gasto no mês
+                    </span>
+
+                </div>
+
+
+                <!-- Dividendos -->
+                <div class="financial-card dividends">
+
+                    <div class="card-header">
+
+                        <span class="card-title">
+                            Dividendos
+                        </span>
+
+                        <div class="card-icon">
+                            ◆
+                        </div>
+
+                    </div>
+
+                    <strong class="card-value">
+                        R$ 1.200,00
+                    </strong>
+
+                    <span class="card-description">
+                        Dividendos recebidos
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ÁREA INFERIOR
+                 ================================================= -->
+            <div class="dashboard-grid">
+
+
+                <!-- =============================================
+                     ÚLTIMAS MOVIMENTAÇÕES
+                     ============================================= -->
+                <div class="panel transactions">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>Últimas movimentações</h3>
+
+                            <p>
+                                Movimentações recentes
+                            </p>
+                        </div>
+
+                        <button class="view-all">
+                            Ver todas
+                        </button>
+
+                    </div>
+
+
+                    <!-- Salário -->
+                    <div class="transaction">
+
+                        <div class="transaction-icon income-icon">
+                            ↑
+                        </div>
+
+                        <div class="transaction-info">
+
+                            <strong>Salário</strong>
+
+                            <span>
+                                05/09/2026
+                            </span>
+
+                        </div>
+
+                        <strong class="transaction-value positive">
+                            + R$ 5.000,00
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Dividendos -->
+                    <div class="transaction">
+
+                        <div class="transaction-icon dividend-icon">
+                            ◆
+                        </div>
+
+                        <div class="transaction-info">
+
+                            <strong>Dividendos</strong>
+
+                            <span>
+                                08/09/2026
+                            </span>
+
+                        </div>
+
+                        <strong class="transaction-value positive">
+                            + R$ 1.200,00
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Combustível -->
+                    <div class="transaction">
+
+                        <div class="transaction-icon fuel-icon">
+                            ⛽
+                        </div>
+
+                        <div class="transaction-info">
+
+                            <strong>Combustível</strong>
+
+                            <span>
+                                10/09/2026
+                            </span>
+
+                        </div>
+
+                        <strong class="transaction-value negative">
+                            - R$ 350,00
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Supermercado -->
+                    <div class="transaction">
+
+                        <div class="transaction-icon market-icon">
+                            🛒
+                        </div>
+
+                        <div class="transaction-info">
+
+                            <strong>Supermercado</strong>
+
+                            <span>
+                                11/09/2026
+                            </span>
+
+                        </div>
+
+                        <strong class="transaction-value negative">
+                            - R$ 620,00
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Farmácia -->
+                    <div class="transaction">
+
+                        <div class="transaction-icon pharmacy-icon">
+                            💊
+                        </div>
+
+                        <div class="transaction-info">
+
+                            <strong>Farmácia</strong>
+
+                            <span>
+                                12/09/2026
+                            </span>
+
+                        </div>
+
+                        <strong class="transaction-value negative">
+                            - R$ 180,00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     RESUMO
+                     ============================================= -->
+                <div class="panel summary">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <h3>Resumo</h3>
+
+                            <p>
+                                Setembro 2026
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Barra de entradas -->
+                    <div class="summary-item">
+
+                        <div class="summary-label">
+
+                            <span>
+                                Entradas
+                            </span>
+
+                            <strong>
+                                R$ 7.500
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-income"></div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Barra de gastos -->
+                    <div class="summary-item">
+
+                        <div class="summary-label">
+
+                            <span>
+                                Gastos
+                            </span>
+
+                            <strong>
+                                R$ 2.270
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-expense"></div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Resultado -->
+                    <div class="summary-result">
+
+                        <span>
+                            Resultado do mês
+                        </span>
+
+                        <strong>
+                            R$ 5.230,00
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Botões -->
+                    <div class="quick-actions">
+
+                        <button class="action-button primary">
+                            + Nova entrada
+                        </button>
+
+                        <button class="action-button secondary">
+                            - Novo gasto
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
+```

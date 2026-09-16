@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contas e cartões - Meu Financeiro</title>
+
+    <link rel="stylesheet" href="css/contas-cartoes.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         MENU LATERAL
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo-area">
+
+            <div class="logo-icon">
+                MF
+            </div>
+
+            <div class="logo-text">
+                <strong>Meu</strong>
+                Financeiro
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+            <a href="index.html">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="nova-entrada.html">
+                <span>＋</span>
+                Entradas
+            </a>
+
+            <a href="#">
+                <span>−</span>
+                Gastos
+            </a>
+
+            <a href="#">
+                <span>◆</span>
+                Dividendos
+            </a>
+
+            <a href="#">
+                <span>▤</span>
+                Categorias
+            </a>
+
+            <a href="#">
+                <span>▥</span>
+                Relatórios
+            </a>
+
+            <a href="contas-cartoes.html" class="menu-ativo">
+                <span>▣</span>
+                Contas e cartões
+            </a>
+
+            <a href="#">
+                <span>⚙</span>
+                Configurações
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-rodape">
+
+            <span>Meu Financeiro</span>
+
+            <small>Controle suas finanças</small>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         ÁREA PRINCIPAL
+         ===================================================== -->
+
+    <main class="main">
+
+
+        <!-- =================================================
+             CABEÇALHO
+             ================================================= -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>Contas e cartões</h1>
+
+                <p>
+                    Gerencie suas contas e cartões de pagamento
+                </p>
+
+            </div>
+
+
+            <div class="usuario">
+
+                <div class="usuario-avatar">
+                    EB
+                </div>
+
+                <div>
+
+                    <strong>Ednardo</strong>
+
+                    <span>Usuário</span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             CONTEÚDO
+             ================================================= -->
+
+        <section class="conteudo">
+
+
+            <!-- =============================================
+                 CONTAS
+                 ============================================= -->
+
+            <div class="secao-cabecalho">
+
+                <div>
+
+                    <h2>🏦 Contas</h2>
+
+                    <p>
+                        Contas de onde o dinheiro pode sair
+                    </p>
+
+                </div>
+
+
+                <button class="btn-principal" type="button">
+
+                    + Nova conta
+
+                </button>
+
+            </div>
+
+
+            <div class="contas-grid">
+
+
+                <!-- CONTA NUBANK -->
+
+                <article class="conta-card">
+
+                    <div class="conta-topo">
+
+                        <div class="conta-icone">
+                            N
+                        </div>
+
+                        <span class="status ativo">
+                            Ativa
+                        </span>
+
+                    </div>
+
+
+                    <div class="conta-info">
+
+                        <h3>Nubank</h3>
+
+                        <p>Conta corrente</p>
+
+                    </div>
+
+
+                    <div class="conta-saldo">
+
+                        <span>Saldo disponível</span>
+
+                        <strong>R$ 2.450,00</strong>
+
+                    </div>
+
+
+                    <button class="btn-secundario" type="button">
+                        Ver conta
+                    </button>
+
+                </article>
+
+
+
+                <!-- CONTA MERCADO PAGO -->
+
+                <article class="conta-card">
+
+                    <div class="conta-topo">
+
+                        <div class="conta-icone">
+                            M
+                        </div>
+
+                        <span class="status ativo">
+                            Ativa
+                        </span>
+
+                    </div>
+
+
+                    <div class="conta-info">
+
+                        <h3>Mercado Pago</h3>
+
+                        <p>Conta de pagamento</p>
+
+                    </div>
+
+
+                    <div class="conta-saldo">
+
+                        <span>Saldo disponível</span>
+
+                        <strong>R$ 850,00</strong>
+
+                    </div>
+
+
+                    <button class="btn-secundario" type="button">
+                        Ver conta
+                    </button>
+
+                </article>
+
+
+
+                <!-- CONTA CAIXA -->
+
+                <article class="conta-card">
+
+                    <div class="conta-topo">
+
+                        <div class="conta-icone">
+                            C
+                        </div>
+
+                        <span class="status ativo">
+                            Ativa
+                        </span>
+
+                    </div>
+
+
+                    <div class="conta-info">
+
+                        <h3>Caixa</h3>
+
+                        <p>Conta corrente</p>
+
+                    </div>
+
+
+                    <div class="conta-saldo">
+
+                        <span>Saldo disponível</span>
+
+                        <strong>R$ 1.320,00</strong>
+
+                    </div>
+
+
+                    <button class="btn-secundario" type="button">
+                        Ver conta
+                    </button>
+
+                </article>
+
+
+            </div>
+
+
+
+            <!-- =============================================
+                 CARTÕES
+                 ============================================= -->
+
+            <div class="secao-cabecalho cartoes-cabecalho">
+
+                <div>
+
+                    <h2>💳 Cartões</h2>
+
+                    <p>
+                        Gerencie seus cartões de crédito
+                    </p>
+
+                </div>
+
+
+                <button class="btn-principal" type="button">
+
+                    + Novo cartão
+
+                </button>
+
+            </div>
+
+
+            <div class="cartoes-grid">
+
+
+                <!-- CARTÃO NUBANK -->
+
+                <article class="cartao-card">
+
+                    <div class="cartao-topo">
+
+                        <div>
+
+                            <span class="cartao-tipo">
+                                CRÉDITO
+                            </span>
+
+                            <h3>Nubank</h3>
+
+                        </div>
+
+                        <span class="cartao-chip">
+                            ▣
+                        </span>
+
+                    </div>
+
+
+                    <div class="cartao-numero">
+
+                        •••• •••• •••• 1234
+
+                    </div>
+
+
+                    <div class="cartao-dados">
+
+                        <div>
+
+                            <span>Limite</span>
+
+                            <strong>R$ 5.000,00</strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>Disponível</span>
+
+                            <strong>R$ 3.750,00</strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="cartao-rodape">
+
+                        <span>
+                            Fecha dia 02
+                        </span>
+
+                        <span>
+                            Vence dia 10
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARTÃO MERCADO PAGO -->
+
+                <article class="cartao-card">
+
+                    <div class="cartao-topo">
+
+                        <div>
+
+                            <span class="cartao-tipo">
+                                CRÉDITO
+                            </span>
+
+                            <h3>Mercado Pago</h3>
+
+                        </div>
+
+                        <span class="cartao-chip">
+                            ▣
+                        </span>
+
+                    </div>
+
+
+                    <div class="cartao-numero">
+
+                        •••• •••• •••• 5678
+
+                    </div>
+
+
+                    <div class="cartao-dados">
+
+                        <div>
+
+                            <span>Limite</span>
+
+                            <strong>R$ 3.000,00</strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>Disponível</span>
+
+                            <strong>R$ 2.100,00</strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="cartao-rodape">
+
+                        <span>
+                            Fecha dia 05
+                        </span>
+
+                        <span>
+                            Vence dia 12
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- CARTÃO CAIXA -->
+
+                <article class="cartao-card">
+
+                    <div class="cartao-topo">
+
+                        <div>
+
+                            <span class="cartao-tipo">
+                                CRÉDITO
+                            </span>
+
+                            <h3>Caixa</h3>
+
+                        </div>
+
+                        <span class="cartao-chip">
+                            ▣
+                        </span>
+
+                    </div>
+
+
+                    <div class="cartao-numero">
+
+                        •••• •••• •••• 9012
+
+                    </div>
+
+
+                    <div class="cartao-dados">
+
+                        <div>
+
+                            <span>Limite</span>
+
+                            <strong>R$ 2.500,00</strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>Disponível</span>
+
+                            <strong>R$ 1.850,00</strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="cartao-rodape">
+
+                        <span>
+                            Fecha dia 08
+                        </span>
+
+                        <span>
+                            Vence dia 15
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT DA TELA
+         ===================================================== -->
+
+    <script src="js/contas-cartoes.js"></script>
+
+</body>
+
+</html>
