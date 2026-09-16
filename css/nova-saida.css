@@ -1,0 +1,800 @@
+/* ============================================================
+   NOVA SAÍDA
+   CSS EXCLUSIVO DESTA TELA
+   ============================================================ */
+
+
+/* ============================================================
+   VARIÁVEIS
+   ============================================================ */
+
+:root {
+
+    --primary: #4f46e5;
+    --primary-dark: #3730a3;
+
+    --background: #f5f7fb;
+
+    --white: #ffffff;
+
+    --text: #1f2937;
+    --text-light: #6b7280;
+
+    --border: #e5e7eb;
+
+    --green: #16a34a;
+    --red: #dc2626;
+
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+
+}
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: var(--background);
+
+    color: var(--text);
+
+}
+
+
+/* ============================================================
+   MENU LATERAL
+   ============================================================ */
+
+.sidebar {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 240px;
+    height: 100vh;
+
+    background: var(--white);
+
+    border-right: 1px solid var(--border);
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 24px 16px;
+
+}
+
+
+/* ============================================================
+   LOGO
+   ============================================================ */
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 8px;
+
+    margin-bottom: 35px;
+
+}
+
+
+.logo-icon {
+
+    width: 40px;
+    height: 40px;
+
+    background: var(--primary);
+
+    color: var(--white);
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+
+    font-size: 16px;
+
+}
+
+
+.logo-text {
+
+    display: flex;
+
+    flex-direction: column;
+
+    line-height: 1.1;
+
+}
+
+
+.logo-text strong {
+
+    font-size: 16px;
+
+}
+
+
+.logo-text span {
+
+    font-size: 13px;
+
+    color: var(--text-light);
+
+}
+
+
+/* ============================================================
+   MENU
+   ============================================================ */
+
+.menu {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+}
+
+
+.menu-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    border-radius: 8px;
+
+    color: var(--text-light);
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    transition: 0.2s;
+
+}
+
+
+.menu-item:hover {
+
+    background: #f3f4f6;
+
+    color: var(--text);
+
+}
+
+
+.menu-item.active {
+
+    background: #eef2ff;
+
+    color: var(--primary);
+
+    font-weight: 600;
+
+}
+
+
+.menu-icon {
+
+    width: 20px;
+
+    text-align: center;
+
+    font-size: 18px;
+
+}
+
+
+.menu-icon.entrada {
+
+    color: var(--green);
+
+}
+
+
+.menu-icon.saida {
+
+    color: var(--red);
+
+}
+
+
+.menu-icon.dividendo {
+
+    color: var(--primary);
+
+}
+
+
+/* ============================================================
+   MENU INFERIOR
+   ============================================================ */
+
+.menu-bottom {
+
+    margin-top: auto;
+
+}
+
+
+/* ============================================================
+   ÁREA PRINCIPAL
+   ============================================================ */
+
+.main-content {
+
+    margin-left: 240px;
+
+    min-height: 100vh;
+
+}
+
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+
+.topbar {
+
+    height: 78px;
+
+    background: var(--white);
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 32px;
+
+}
+
+
+.page-title h1 {
+
+    font-size: 21px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.page-title p {
+
+    color: var(--text-light);
+
+    font-size: 13px;
+
+}
+
+
+/* ============================================================
+   USUÁRIO
+   ============================================================ */
+
+.user-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.user-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    text-align: right;
+
+}
+
+
+.user-info strong {
+
+    font-size: 14px;
+
+}
+
+
+.user-info span {
+
+    color: var(--text-light);
+
+    font-size: 12px;
+
+}
+
+
+.user-avatar {
+
+    width: 38px;
+    height: 38px;
+
+    background: var(--primary);
+
+    color: var(--white);
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+
+}
+
+
+/* ============================================================
+   BOTÃO MENU MOBILE
+   ============================================================ */
+
+.mobile-menu-button {
+
+    display: none;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+}
+
+
+/* ============================================================
+   CONTEÚDO
+   ============================================================ */
+
+.content {
+
+    padding: 32px;
+
+}
+
+
+.page-heading {
+
+    margin-bottom: 25px;
+
+}
+
+
+.back-link {
+
+    display: inline-block;
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.back-link:hover {
+
+    text-decoration: underline;
+
+}
+
+
+.page-heading h2 {
+
+    font-size: 24px;
+
+    margin-bottom: 6px;
+
+}
+
+
+.page-heading p {
+
+    color: var(--text-light);
+
+    font-size: 14px;
+
+}
+
+
+/* ============================================================
+   FORMULÁRIO
+   ============================================================ */
+
+.form-container {
+
+    max-width: 760px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    padding: 30px;
+
+    box-shadow: var(--shadow);
+
+}
+
+
+.form-group {
+
+    margin-bottom: 20px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 100%;
+
+    padding: 12px 13px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    background: var(--white);
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s;
+
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(79, 70, 229, 0.10);
+
+}
+
+
+.form-group textarea {
+
+    resize: vertical;
+
+}
+
+
+/* ============================================================
+   DUAS COLUNAS
+   ============================================================ */
+
+.form-row {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+
+}
+
+
+/* ============================================================
+   CAMPO DE DINHEIRO
+   ============================================================ */
+
+.input-money {
+
+    display: flex;
+
+    align-items: center;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+}
+
+
+.input-money span {
+
+    padding-left: 13px;
+
+    color: var(--text-light);
+
+    font-size: 14px;
+
+}
+
+
+.input-money input {
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+}
+
+
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+
+.form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 10px;
+
+}
+
+
+.cancel-button {
+
+    padding: 11px 18px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    color: var(--text-light);
+
+    border: 1px solid var(--border);
+
+    font-size: 14px;
+
+}
+
+
+.cancel-button:hover {
+
+    background: #f9fafb;
+
+}
+
+
+.save-button {
+
+    border: none;
+
+    padding: 12px 20px;
+
+    border-radius: 8px;
+
+    background: var(--primary);
+
+    color: var(--white);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+
+.save-button:hover {
+
+    background: var(--primary-dark);
+
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+    .sidebar {
+
+        width: 210px;
+
+    }
+
+
+    .main-content {
+
+        margin-left: 210px;
+
+    }
+
+
+    .topbar {
+
+        padding: 0 20px;
+
+    }
+
+
+    .content {
+
+        padding: 22px;
+
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .sidebar {
+
+        display: none;
+
+    }
+
+
+    .main-content {
+
+        margin-left: 0;
+
+    }
+
+
+    .mobile-menu-button {
+
+        display: block;
+
+    }
+
+
+    .topbar {
+
+        padding: 0 16px;
+
+        gap: 10px;
+
+    }
+
+
+    .page-title {
+
+        flex: 1;
+
+    }
+
+
+    .page-title h1 {
+
+        font-size: 18px;
+
+    }
+
+
+    .user-info {
+
+        display: none;
+
+    }
+
+
+    .content {
+
+        padding: 18px 14px;
+
+    }
+
+
+    .form-container {
+
+        padding: 20px;
+
+    }
+
+
+    .form-row {
+
+        grid-template-columns: 1fr;
+
+        gap: 0;
+
+    }
+
+
+    .page-heading h2 {
+
+        font-size: 21px;
+
+    }
+
+
+    .form-actions {
+
+        flex-direction: column-reverse;
+
+        align-items: stretch;
+
+    }
+
+
+    .cancel-button,
+    .save-button {
+
+        width: 100%;
+
+        text-align: center;
+
+    }
+
+}

@@ -1,22 +1,39 @@
-// =========================================================
-// ELEMENTOS DA TELA
-// =========================================================
-
-const botoesNovaConta = document.querySelectorAll(".btn-principal");
+// ============================================================
+// CONTAS E CARTÕES
+// ============================================================
 
 
-// =========================================================
-// ABRIR FORMULÁRIO DE NOVA CONTA
-// =========================================================
+// ============================================================
+// BOTÃO: NOVA CONTA
+// ============================================================
 
-botoesNovaConta.forEach(function (botao) {
+const botaoNovaConta = document.querySelector(".btn-principal");
 
-    if (botao.textContent.includes("Nova conta")) {
+
+// ============================================================
+// BOTÃO: NOVO CARTÃO
+// ============================================================
+
+const botoesPrincipal = document.querySelectorAll(".btn-principal");
+
+
+// Verifica qual botão foi clicado
+botoesPrincipal.forEach(function (botao) {
+
+    const texto = botao.textContent.trim();
+
+    if (texto.includes("Nova conta")) {
 
         botao.addEventListener("click", function () {
+            abrirModalConta();
+        });
 
-            abrirFormularioConta();
+    }
 
+    if (texto.includes("Novo cartão")) {
+
+        botao.addEventListener("click", function () {
+            abrirModalCartao();
         });
 
     }
@@ -24,311 +41,887 @@ botoesNovaConta.forEach(function (botao) {
 });
 
 
-// =========================================================
-// FUNÇÃO PARA CRIAR O FORMULÁRIO
-// =========================================================
+// ============================================================
+// FUNÇÃO PARA FORMATAR VALOR EM REAIS
+// ============================================================
 
-function abrirFormularioConta() {
+function formatarMoeda(valor) {
 
-    const fundo = document.createElement("div");
+    return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
 
-    fundo.className = "modal-fundo";
+}
 
+
+// ============================================================
+// MODAL - NOVA CONTA
+// ============================================================
+
+function abrirModalConta() {
 
     const modal = document.createElement("div");
 
-    modal.className = "modal";
-
+    modal.className = "modal-fundo";
 
     modal.innerHTML = `
-        <div class="modal-cabecalho">
+        <div class="modal">
 
-            <div>
+            <div class="modal-cabecalho">
                 <h2>Nova conta</h2>
-
-                <p>
-                    Cadastre uma conta de onde o dinheiro poderá sair.
-                </p>
+                <button class="modal-fechar">&times;</button>
             </div>
 
-            <button class="modal-fechar" type="button">
-                ×
-            </button>
+            <form id="formNovaConta">
 
-        </div>
+                <div class="form-group">
+                    <label>Nome da conta</label>
+                    <input
+                        type="text"
+                        id="nomeConta"
+                        placeholder="Ex.: Conta principal"
+                    >
+                </div>
 
+                <div class="form-group">
+                    <label>Instituição</label>
+                    <input
+                        type="text"
+                        id="instituicaoConta"
+                        placeholder="Ex.: Nubank"
+                    >
+                </div>
 
-        <form id="formulario-conta">
+                <div class="form-group">
+                    <label>Tipo de conta</label>
 
+                    <select id="tipoConta">
 
-            <div class="form-group">
+                        <option value="">
+                            Selecione
+                        </option>
 
-                <label for="nome-conta">
-                    Nome da conta
-                </label>
+                        <option value="Conta corrente">
+                            Conta corrente
+                        </option>
 
-                <input
-                    type="text"
-                    id="nome-conta"
-                    placeholder="Ex.: Nubank"
-                >
+                        <option value="Conta poupança">
+                            Conta poupança
+                        </option>
 
-            </div>
+                        <option value="Conta de pagamento">
+                            Conta de pagamento
+                        </option>
 
+                        <option value="Carteira">
+                            Carteira
+                        </option>
 
-            <div class="form-group">
+                    </select>
+                </div>
 
-                <label for="instituicao">
-                    Instituição
-                </label>
-
-                <input
-                    type="text"
-                    id="instituicao"
-                    placeholder="Ex.: Nubank"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="tipo-conta">
-                    Tipo de conta
-                </label>
-
-                <select id="tipo-conta">
-
-                    <option value="">
-                        Selecione
-                    </option>
-
-                    <option value="corrente">
-                        Conta corrente
-                    </option>
-
-                    <option value="poupanca">
-                        Conta poupança
-                    </option>
-
-                    <option value="pagamento">
-                        Conta de pagamento
-                    </option>
-
-                    <option value="carteira">
-                        Carteira
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="saldo-inicial">
-                    Saldo inicial
-                </label>
-
-                <div class="campo-dinheiro">
-
-                    <span>R$</span>
+                <div class="form-group">
+                    <label>Saldo inicial</label>
 
                     <input
                         type="text"
-                        id="saldo-inicial"
-                        placeholder="0,00"
+                        id="saldoInicial"
+                        class="campo-dinheiro"
+                        placeholder="R$ 0,00"
                     >
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+
+                    <select id="statusConta">
+
+                        <option value="Ativa">
+                            Ativa
+                        </option>
+
+                        <option value="Inativa">
+                            Inativa
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Observação</label>
+
+                    <textarea
+                        id="observacaoConta"
+                        rows="3"
+                        placeholder="Observação opcional"
+                    ></textarea>
+                </div>
+
+                <div class="modal-acoes">
+
+                    <button
+                        type="button"
+                        class="btn-modal-cancelar"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-modal-salvar"
+                    >
+                        Salvar conta
+                    </button>
 
                 </div>
 
-            </div>
+            </form>
 
-
-            <div class="form-group">
-
-                <label for="status-conta">
-                    Status
-                </label>
-
-                <select id="status-conta">
-
-                    <option value="ativa">
-                        Ativa
-                    </option>
-
-                    <option value="inativa">
-                        Inativa
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="observacao-conta">
-                    Observação
-                </label>
-
-                <textarea
-                    id="observacao-conta"
-                    rows="3"
-                    placeholder="Opcional"
-                ></textarea>
-
-            </div>
-
-
-            <div class="modal-acoes">
-
-                <button
-                    type="button"
-                    class="btn-modal-cancelar"
-                    id="cancelar-conta"
-                >
-                    Cancelar
-                </button>
-
-
-                <button
-                    type="submit"
-                    class="btn-modal-salvar"
-                >
-                    Salvar conta
-                </button>
-
-            </div>
-
-
-        </form>
+        </div>
     `;
 
-
-    fundo.appendChild(modal);
-
-    document.body.appendChild(fundo);
+    document.body.appendChild(modal);
 
 
-    // =====================================================
-    // ELEMENTOS DO MODAL
-    // =====================================================
-
-    const fechar = modal.querySelector(".modal-fechar");
-
-    const cancelar = modal.querySelector("#cancelar-conta");
-
-    const formulario = modal.querySelector("#formulario-conta");
-
-    const saldo = modal.querySelector("#saldo-inicial");
+    // Fechar pelo X
+    modal.querySelector(".modal-fechar").addEventListener(
+        "click",
+        function () {
+            modal.remove();
+        }
+    );
 
 
-    // =====================================================
-    // FECHAR MODAL
-    // =====================================================
-
-    fechar.addEventListener("click", function () {
-
-        fundo.remove();
-
-    });
+    // Cancelar
+    modal.querySelector(".btn-modal-cancelar").addEventListener(
+        "click",
+        function () {
+            modal.remove();
+        }
+    );
 
 
-    cancelar.addEventListener("click", function () {
+    // Campo saldo
+    const campoSaldo = modal.querySelector("#saldoInicial");
 
-        fundo.remove();
+    campoSaldo.addEventListener("blur", function () {
 
-    });
-
-
-    // =====================================================
-    // FORMATAR SALDO
-    // =====================================================
-
-    saldo.addEventListener("blur", function () {
-
-        let texto = saldo.value.trim();
+        let texto = campoSaldo.value.trim();
 
         if (texto === "") {
-            saldo.value = "";
             return;
         }
 
         texto = texto.replace("R$", "").trim();
-
         texto = texto.replace(/\./g, "");
-
         texto = texto.replace(",", ".");
 
         const numero = Number(texto);
 
-        if (isNaN(numero)) {
+        if (!isNaN(numero)) {
 
-            saldo.value = "";
+            campoSaldo.value = numero.toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
 
-            return;
         }
-
-        saldo.value = numero.toLocaleString("pt-BR", {
-
-            minimumFractionDigits: 2,
-
-            maximumFractionDigits: 2
-
-        });
 
     });
 
 
-    // =====================================================
-    // SALVAR CONTA
-    // =====================================================
+    // Salvar conta
+    modal.querySelector("#formNovaConta").addEventListener(
+        "submit",
+        function (evento) {
 
-    formulario.addEventListener("submit", function (evento) {
-
-        evento.preventDefault();
-
-
-        const nome = modal.querySelector("#nome-conta");
-
-        const instituicao = modal.querySelector("#instituicao");
-
-        const tipo = modal.querySelector("#tipo-conta");
+            evento.preventDefault();
 
 
-        if (nome.value.trim() === "") {
+            const nome = modal.querySelector("#nomeConta").value.trim();
 
-            alert("Informe o nome da conta.");
+            const instituicao =
+                modal.querySelector("#instituicaoConta").value.trim();
 
-            nome.focus();
+            const tipo =
+                modal.querySelector("#tipoConta").value;
 
-            return;
+            const saldoTexto =
+                modal.querySelector("#saldoInicial").value.trim();
+
+            const status =
+                modal.querySelector("#statusConta").value;
+
+
+            if (nome === "") {
+
+                alert("Informe o nome da conta.");
+                return;
+
+            }
+
+
+            if (instituicao === "") {
+
+                alert("Informe a instituição.");
+                return;
+
+            }
+
+
+            if (tipo === "") {
+
+                alert("Selecione o tipo de conta.");
+                return;
+
+            }
+
+
+            let saldo = 0;
+
+            if (saldoTexto !== "") {
+
+                let texto = saldoTexto;
+
+                texto = texto.replace("R$", "").trim();
+                texto = texto.replace(/\./g, "");
+                texto = texto.replace(",", ".");
+
+                saldo = Number(texto);
+
+                if (isNaN(saldo)) {
+                    saldo = 0;
+                }
+
+            }
+
+
+            adicionarContaNaTela(
+                nome,
+                instituicao,
+                tipo,
+                saldo,
+                status
+            );
+
+
+            modal.remove();
+
         }
+    );
+
+}
 
 
-        if (instituicao.value.trim() === "") {
+// ============================================================
+// ADICIONAR CONTA NA TELA
+// ============================================================
 
-            alert("Informe a instituição.");
+function adicionarContaNaTela(
+    nome,
+    instituicao,
+    tipo,
+    saldo,
+    status
+) {
 
-            instituicao.focus();
+    const gradeContas =
+        document.querySelector(".contas-grid");
 
-            return;
+    if (!gradeContas) {
+        return;
+    }
+
+
+    const conta = document.createElement("div");
+
+    conta.className = "conta-card";
+
+
+    const primeiraLetra =
+        nome.charAt(0).toUpperCase();
+
+
+    conta.innerHTML = `
+
+        <div class="conta-topo">
+
+            <div class="conta-icone">
+                ${primeiraLetra}
+            </div>
+
+            <div>
+                <h3>${nome}</h3>
+                <p>${instituicao}</p>
+            </div>
+
+        </div>
+
+        <div class="conta-info">
+
+            <span>${tipo}</span>
+
+            <strong>
+                ${formatarMoeda(saldo)}
+            </strong>
+
+        </div>
+
+        <div class="conta-status">
+
+            <span class="${status === "Ativa" ? "status-ativo" : "status-inativo"}">
+                ${status}
+            </span>
+
+        </div>
+
+    `;
+
+
+    gradeContas.appendChild(conta);
+
+}
+
+
+// ============================================================
+// MODAL - NOVO CARTÃO
+// ============================================================
+
+function abrirModalCartao() {
+
+    const modal = document.createElement("div");
+
+    modal.className = "modal-fundo";
+
+    modal.innerHTML = `
+
+        <div class="modal">
+
+            <div class="modal-cabecalho">
+
+                <h2>Novo cartão</h2>
+
+                <button class="modal-fechar">
+                    &times;
+                </button>
+
+            </div>
+
+
+            <form id="formNovoCartao">
+
+
+                <div class="form-group">
+
+                    <label>Nome do cartão</label>
+
+                    <input
+                        type="text"
+                        id="nomeCartao"
+                        placeholder="Ex.: Cartão Nubank"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Instituição</label>
+
+                    <input
+                        type="text"
+                        id="instituicaoCartao"
+                        placeholder="Ex.: Nubank"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Conta vinculada</label>
+
+                    <select id="contaVinculada">
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option value="Nubank">
+                            Nubank
+                        </option>
+
+                        <option value="Mercado Pago">
+                            Mercado Pago
+                        </option>
+
+                        <option value="Caixa">
+                            Caixa
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Final do cartão</label>
+
+                    <input
+                        type="text"
+                        id="finalCartao"
+                        maxlength="4"
+                        inputmode="numeric"
+                        placeholder="Ex.: 1234"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Limite do cartão</label>
+
+                    <input
+                        type="text"
+                        id="limiteCartao"
+                        class="campo-dinheiro"
+                        placeholder="R$ 0,00"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Dia de fechamento</label>
+
+                    <input
+                        type="number"
+                        id="fechamentoCartao"
+                        min="1"
+                        max="31"
+                        placeholder="Ex.: 02"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Dia de vencimento</label>
+
+                    <input
+                        type="number"
+                        id="vencimentoCartao"
+                        min="1"
+                        max="31"
+                        placeholder="Ex.: 10"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Status</label>
+
+                    <select id="statusCartao">
+
+                        <option value="Ativo">
+                            Ativo
+                        </option>
+
+                        <option value="Inativo">
+                            Inativo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Observação</label>
+
+                    <textarea
+                        id="observacaoCartao"
+                        rows="3"
+                        placeholder="Observação opcional"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="modal-acoes">
+
+                    <button
+                        type="button"
+                        class="btn-modal-cancelar"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-modal-salvar"
+                    >
+                        Salvar cartão
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(modal);
+
+
+    // ========================================================
+    // FECHAR MODAL
+    // ========================================================
+
+    modal.querySelector(".modal-fechar").addEventListener(
+        "click",
+        function () {
+            modal.remove();
         }
+    );
 
 
-        if (tipo.value === "") {
-
-            alert("Selecione o tipo da conta.");
-
-            tipo.focus();
-
-            return;
+    modal.querySelector(".btn-modal-cancelar").addEventListener(
+        "click",
+        function () {
+            modal.remove();
         }
+    );
 
 
-        alert("Conta preenchida corretamente!");
+    // ========================================================
+    // FINAL DO CARTÃO - SOMENTE NÚMEROS
+    // ========================================================
+
+    const campoFinal =
+        modal.querySelector("#finalCartao");
+
+    campoFinal.addEventListener("input", function () {
+
+        campoFinal.value =
+            campoFinal.value.replace(/\D/g, "").slice(0, 4);
 
     });
+
+
+    // ========================================================
+    // FORMATAR LIMITE
+    // ========================================================
+
+    const campoLimite =
+        modal.querySelector("#limiteCartao");
+
+    campoLimite.addEventListener("blur", function () {
+
+        let texto = campoLimite.value.trim();
+
+        if (texto === "") {
+            return;
+        }
+
+        texto = texto.replace("R$", "").trim();
+        texto = texto.replace(/\./g, "");
+        texto = texto.replace(",", ".");
+
+        const numero = Number(texto);
+
+        if (!isNaN(numero)) {
+
+            campoLimite.value =
+                numero.toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+
+        }
+
+    });
+
+
+    // ========================================================
+    // SALVAR CARTÃO
+    // ========================================================
+
+    modal.querySelector("#formNovoCartao").addEventListener(
+        "submit",
+        function (evento) {
+
+            evento.preventDefault();
+
+
+            const nome =
+                modal.querySelector("#nomeCartao").value.trim();
+
+
+            const instituicao =
+                modal.querySelector("#instituicaoCartao").value.trim();
+
+
+            const conta =
+                modal.querySelector("#contaVinculada").value;
+
+
+            const final =
+                modal.querySelector("#finalCartao").value.trim();
+
+
+            const limiteTexto =
+                modal.querySelector("#limiteCartao").value.trim();
+
+
+            const fechamento =
+                modal.querySelector("#fechamentoCartao").value;
+
+
+            const vencimento =
+                modal.querySelector("#vencimentoCartao").value;
+
+
+            const status =
+                modal.querySelector("#statusCartao").value;
+
+
+            // ==================================================
+            // VALIDAÇÕES
+            // ==================================================
+
+            if (nome === "") {
+
+                alert("Informe o nome do cartão.");
+                return;
+
+            }
+
+
+            if (instituicao === "") {
+
+                alert("Informe a instituição.");
+                return;
+
+            }
+
+
+            if (conta === "") {
+
+                alert("Selecione a conta vinculada.");
+                return;
+
+            }
+
+
+            if (final.length !== 4) {
+
+                alert("Informe os 4 últimos dígitos do cartão.");
+                return;
+
+            }
+
+
+            if (fechamento === "") {
+
+                alert("Informe o dia de fechamento.");
+                return;
+
+            }
+
+
+            if (vencimento === "") {
+
+                alert("Informe o dia de vencimento.");
+                return;
+
+            }
+
+
+            // ==================================================
+            // CONVERTER LIMITE
+            // ==================================================
+
+            let limite = 0;
+
+            if (limiteTexto !== "") {
+
+                let texto = limiteTexto;
+
+                texto = texto.replace("R$", "").trim();
+                texto = texto.replace(/\./g, "");
+                texto = texto.replace(",", ".");
+
+                limite = Number(texto);
+
+                if (isNaN(limite)) {
+
+                    alert("Informe um limite válido.");
+                    return;
+
+                }
+
+            }
+
+
+            // ==================================================
+            // ADICIONAR CARTÃO NA TELA
+            // ==================================================
+
+            adicionarCartaoNaTela(
+                nome,
+                instituicao,
+                conta,
+                final,
+                limite,
+                fechamento,
+                vencimento,
+                status
+            );
+
+
+            modal.remove();
+
+        }
+    );
+
+}
+
+
+// ============================================================
+// ADICIONAR CARTÃO NA TELA
+// ============================================================
+
+function adicionarCartaoNaTela(
+    nome,
+    instituicao,
+    conta,
+    final,
+    limite,
+    fechamento,
+    vencimento,
+    status
+) {
+
+    const gradeCartoes =
+        document.querySelector(".cartoes-grid");
+
+    if (!gradeCartoes) {
+        return;
+    }
+
+
+    const cartao = document.createElement("div");
+
+    cartao.className = "cartao-card";
+
+
+    const primeiraLetra =
+        nome.charAt(0).toUpperCase();
+
+
+    cartao.innerHTML = `
+
+        <div class="cartao-topo">
+
+            <div class="cartao-icone">
+                ${primeiraLetra}
+            </div>
+
+            <div>
+
+                <h3>${nome}</h3>
+
+                <p>
+                    ${instituicao}
+                    • final ${final}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="cartao-info">
+
+            <div class="cartao-info">
+
+        <div>
+
+            <span>Limite</span>
+
+                <strong>
+                    ${formatarMoeda(limite)}
+                </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>Utilizado</span>
+
+                <strong>
+                    ${formatarMoeda(0)}
+                </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>Disponível</span>
+
+            <strong>
+                ${formatarMoeda(limite)}
+            </strong>
+
+         </div>
+
+        </div>
+
+        </div>
+
+
+        <div class="cartao-detalhes">
+
+            <span>
+                Fechamento: dia ${fechamento}
+            </span>
+
+            <span>
+                Vencimento: dia ${vencimento}
+            </span>
+
+        </div>
+
+
+        <div class="cartao-status">
+
+            <span class="${status === "Ativo" ? "status-ativo" : "status-inativo"}">
+                ${status}
+            </span>
+
+            <span>
+                ${conta}
+            </span>
+
+        </div>
+
+    `;
+
+
+    gradeCartoes.appendChild(cartao);
 
 }

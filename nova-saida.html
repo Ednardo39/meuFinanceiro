@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -6,13 +5,11 @@
 
     <meta charset="UTF-8">
 
-    <!-- Faz a página funcionar corretamente em celulares -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Nova Entrada - Meu Financeiro</title>
+    <title>Nova saída - Meu Financeiro</title>
 
-    <!-- Nosso arquivo CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/nova-saida.css">
 
 </head>
 
@@ -61,7 +58,7 @@
             </a>
 
 
-            <a href="nova-entrada.html" class="menu-item active">
+            <a href="nova-entrada.html" class="menu-item">
 
                 <span class="menu-icon entrada">
                     ↑
@@ -74,7 +71,7 @@
             </a>
 
 
-            <a href="#" class="menu-item">
+            <a href="nova-saida.html" class="menu-item active">
 
                 <span class="menu-icon saida">
                     ↓
@@ -125,6 +122,19 @@
 
             </a>
 
+
+            <a href="contas-cartoes.html" class="menu-item">
+
+                <span class="menu-icon">
+                    💳
+                </span>
+
+                <span>
+                    Contas e cartões
+                </span>
+
+            </a>
+
         </nav>
 
 
@@ -165,8 +175,6 @@
         <header class="topbar">
 
 
-            <!-- Botão que futuramente abrirá o menu no celular -->
-
             <button class="mobile-menu-button">
                 ☰
             </button>
@@ -175,11 +183,11 @@
             <div class="page-title">
 
                 <h1>
-                    Nova entrada
+                    Nova saída
                 </h1>
 
                 <p>
-                    Registrar dinheiro recebido
+                    Registrar um novo gasto
                 </p>
 
             </div>
@@ -188,7 +196,6 @@
             <!-- USUÁRIO -->
 
             <div class="user-area">
-
 
                 <div class="user-info">
 
@@ -206,7 +213,6 @@
                 <div class="user-avatar">
                     E
                 </div>
-
 
             </div>
 
@@ -226,23 +232,24 @@
 
             <div class="page-heading">
 
-
                 <div>
 
-                    <a href="index.html" class="back-link">
+                    <a
+                        href="index.html"
+                        class="back-link"
+                    >
                         ← Voltar para o Dashboard
                     </a>
 
                     <h2>
-                        Registrar nova entrada
+                        Registrar novo gasto
                     </h2>
 
                     <p>
-                        Informe os dados do dinheiro que entrou.
+                        Informe os dados da despesa.
                     </p>
 
                 </div>
-
 
             </div>
 
@@ -272,7 +279,7 @@
                             type="text"
                             id="descricao"
                             name="descricao"
-                            placeholder="Ex.: Salário, freelance, venda..."
+                            placeholder="Ex.: Supermercado, combustível..."
                         >
 
                     </div>
@@ -298,20 +305,36 @@
                                 Selecione uma categoria
                             </option>
 
-                            <option value="salario">
-                                Salário
+                            <option value="alimentacao">
+                                Alimentação
                             </option>
 
-                            <option value="freelance">
-                                Freelance
+                            <option value="mercado">
+                                Mercado
                             </option>
 
-                            <option value="venda">
-                                Venda
+                            <option value="transporte">
+                                Transporte
                             </option>
 
-                            <option value="reembolso">
-                                Reembolso
+                            <option value="casa">
+                                Casa
+                            </option>
+
+                            <option value="saude">
+                                Saúde
+                            </option>
+
+                            <option value="educacao">
+                                Educação
+                            </option>
+
+                            <option value="lazer">
+                                Lazer
+                            </option>
+
+                            <option value="contas">
+                                Contas
                             </option>
 
                             <option value="outros">
@@ -376,18 +399,18 @@
 
 
                     <!-- =========================================
-                         FORMA DE RECEBIMENTO
+                         MODO DA OPERAÇÃO
                          ========================================= -->
 
                     <div class="form-group">
 
-                        <label for="forma">
-                            Forma de recebimento
+                        <label for="modo">
+                            Modo da operação
                         </label>
 
                         <select
-                            id="forma"
-                            name="forma"
+                            id="modo"
+                            name="modo"
                         >
 
                             <option value="">
@@ -395,23 +418,19 @@
                             </option>
 
                             <option value="pix">
-                                Pix
+                                PIX
+                            </option>
+
+                            <option value="debito">
+                                Débito
+                            </option>
+
+                            <option value="credito">
+                                Crédito
                             </option>
 
                             <option value="dinheiro">
                                 Dinheiro
-                            </option>
-
-                            <option value="debito">
-                                Débito em conta
-                            </option>
-
-                            <option value="transferencia">
-                                Transferência
-                            </option>
-
-                            <option value="outro">
-                                Outro
                             </option>
 
                         </select>
@@ -421,43 +440,85 @@
 
 
                     <!-- =========================================
-                         CONTA
+                         ORIGEM DO DINHEIRO
                          ========================================= -->
 
                     <div class="form-group">
 
-                    <label for="conta">
-                        Conta / Carteira
-                    </label>
+                        <label for="origem">
+                            Origem do dinheiro
+                        </label>
 
-                    <select
-                        id="conta"
-                        name="conta"
+                        <select
+                            id="origem"
+                            name="origem"
+                        >
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            <option value="nubank">
+                                Nubank
+                            </option>
+
+                            <option value="mercado-pago">
+                                Mercado Pago
+                            </option>
+
+                            <option value="caixa">
+                                Caixa
+                            </option>
+
+                            <option value="dinheiro">
+                                Dinheiro em espécie
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         CARTÃO
+                         FICARÁ OCULTO INICIALMENTE
+                         ========================================= -->
+
+                    <div
+                        class="form-group"
+                        id="grupoCartao"
+                        style="display: none;"
                     >
 
-                        <option value="">
-                            Selecione onde o dinheiro entrou
-                        </option>
+                        <label for="cartao">
+                            Cartão
+                        </label>
 
-                        <option value="nubank">
-                            Nubank
-                        </option>
+                        <select
+                            id="cartao"
+                            name="cartao"
+                        >
 
-                        <option value="mercado-pago">
-                            Mercado Pago
-                        </option>
+                            <option value="">
+                                Selecione o cartão
+                            </option>
 
-                        <option value="caixa">
-                            Caixa
-                        </option>
+                            <option value="nubank-1234">
+                                Nubank • final 1234
+                            </option>
 
-                        <option value="dinheiro">
-                            Dinheiro em espécie
-                        </option>
+                            <option value="mercado-pago-5678">
+                                Mercado Pago • final 5678
+                            </option>
 
-                    </select>
+                            <option value="caixa-9012">
+                                Caixa • final 9012
+                            </option>
 
-                </div>
+                        </select>
+
+                    </div>
 
 
 
@@ -501,7 +562,7 @@
                             type="submit"
                             class="save-button"
                         >
-                            ✓ Salvar entrada
+                            ✓ Salvar gasto
                         </button>
 
 
@@ -519,9 +580,11 @@
 
     </main>
 
-    <script src="js/nova-entrada.js"></script>
+
+    <!-- JavaScript específico desta tela -->
+
+    <script src="js/nova-saida.js"></script>
 
 </body>
 
 </html>
-```

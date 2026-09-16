@@ -183,6 +183,28 @@ formulario.addEventListener("submit", function (evento) {
 
     data.classList.remove("campo-erro");
 
+    if (forma.value === "") {
+
+    alert("Selecione a forma de recebimento.");
+
+    forma.classList.add("campo-erro");
+
+    return;
+}
+
+    forma.classList.remove("campo-erro");
+
+
+    if (conta.value === "") {
+
+        alert("Selecione onde o dinheiro entrou.");
+
+        conta.classList.add("campo-erro");
+
+        return;
+    }
+
+    conta.classList.remove("campo-erro");
 
     // -----------------------------------------------------
     // TUDO CORRETO
