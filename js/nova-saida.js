@@ -1,28 +1,23 @@
-// ============================================================
-// NOVA SAÍDA
-// JavaScript exclusivo desta tela
-// ============================================================
-
-
-// ============================================================
-// 1. ELEMENTOS DA TELA
-// ============================================================
-
 const modo = document.querySelector("#modo");
+
 const grupoCartao = document.querySelector("#grupoCartao");
 const cartao = document.querySelector("#cartao");
+
+const grupoParcelas = document.querySelector("#grupoParcelas");
+const parcelas = document.querySelector("#parcelas");
+const valorParcela = document.querySelector("#valorParcela");
 
 const data = document.querySelector("#data");
 const valor = document.querySelector("#valor");
 
 const formulario = document.querySelector("#formulario");
+
 const descricao = document.querySelector("#descricao");
 const categoria = document.querySelector("#categoria");
 const origem = document.querySelector("#origem");
 
-
 // ============================================================
-// 2. PREENCHER A DATA ATUAL
+// DATA ATUAL
 // ============================================================
 
 const hoje = new Date();
@@ -31,254 +26,405 @@ const ano = hoje.getFullYear();
 const mes = String(hoje.getMonth() + 1).padStart(2, "0");
 const dia = String(hoje.getDate()).padStart(2, "0");
 
-const dataAtual = ano + "-" + mes + "-" + dia;
-
-data.value = dataAtual;
-
+data.value = ano + "-" + mes + "-" + dia;
 
 // ============================================================
-// 3. MOSTRAR / ESCONDER CARTÃO
+// MODO DA OPERAÇÃO
 // ============================================================
 
 modo.addEventListener("change", function () {
 
-    if (modo.value === "credito") {
 
-        grupoCartao.style.display = "block";
+if (modo.value === "credito") {
 
-    } else {
+    grupoCartao.style.display = "block";
+    grupoParcelas.style.display = "block";
 
-        grupoCartao.style.display = "none";
-        cartao.value = "";
+} else {
 
-    }
+    grupoCartao.style.display = "none";
+    grupoParcelas.style.display = "none";
+
+    cartao.value = "";
+    parcelas.value = "";
+
+    valorParcela.style.display = "none";
+    valorParcela.textContent = "";
+
+}
+
+
+});
+
+// ============================================================
+// CALCULAR PARCELA
+// ============================================================
+
+function calcularParcela() {
+
+
+if (modo.value !== "credito") {
+
+    valorParcela.style.display = "none";
+    return;
+
+}
+
+
+if (parcelas.value === "") {
+
+    valorParcela.style.display = "none";
+    valorParcela.textContent = "";
+
+    return;
+
+}
+
+
+let textoValor = valor.value.trim();
+
+
+if (textoValor === "") {
+
+    valorParcela.style.display = "none";
+    valorParcela.textContent = "";
+
+    return;
+
+}
+
+
+textoValor = textoValor.replace("R$", "").trim();
+
+textoValor = textoValor.replace(/\./g, "");
+
+textoValor = textoValor.replace(",", ".");
+
+
+const numeroValor = Number(textoValor);
+
+const quantidadeParcelas = Number(parcelas.value);
+
+
+if (
+    isNaN(numeroValor) ||
+    numeroValor <= 0 ||
+    isNaN(quantidadeParcelas) ||
+    quantidadeParcelas <= 0
+) {
+
+    valorParcela.style.display = "none";
+    valorParcela.textContent = "";
+
+    return;
+
+}
+
+
+const valorCalculado = numeroValor / quantidadeParcelas;
+
+
+const valorFormatado = valorCalculado.toLocaleString("pt-BR", {
+
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
 
 });
 
 
+valorParcela.textContent =
+    "Valor aproximado de cada parcela: R$ " + valorFormatado;
+
+valorParcela.style.display = "block";
+
+
+}
+
 // ============================================================
-// 4. FORMATAR VALOR EM REAIS
+// ALTERAÇÃO DA QUANTIDADE DE PARCELAS
 // ============================================================
 
-// Quando clicar no campo, retiramos o "R$"
+parcelas.addEventListener("change", function () {
+
+
+calcularParcela();
+
+
+});
+
+// ============================================================
+// ALTERAÇÃO DO VALOR
+// ============================================================
+
+valor.addEventListener("input", function () {
+
+
+calcularParcela();
+
+
+});
+
+// ============================================================
+// FORMATAÇÃO DO VALOR
+// ============================================================
+
 valor.addEventListener("focus", function () {
 
-    valor.value = valor.value
-        .replace("R$", "")
-        .trim();
+
+valor.value = valor.value
+    .replace("R$", "")
+    .trim();
+
 
 });
 
-
-// Quando sair do campo, formatamos novamente
 valor.addEventListener("blur", function () {
 
-    let texto = valor.value.trim();
 
-    // Se estiver vazio, não fazemos nada
-    if (texto === "") {
-        valor.value = "";
-        return;
-    }
+let texto = valor.value.trim();
 
-    // Remove R$
-    texto = texto.replace("R$", "").trim();
 
-    // Remove pontos de milhar
-    texto = texto.replace(/\./g, "");
+if (texto === "") {
 
-    // Troca vírgula decimal por ponto
-    texto = texto.replace(",", ".");
+    valor.value = "";
 
-    const numero = Number(texto);
+    calcularParcela();
 
-    // Se não for número válido
-    if (isNaN(numero)) {
-        valor.value = "";
-        return;
-    }
+    return;
 
-    // Formata para o padrão brasileiro
-    const numeroFormatado = numero.toLocaleString("pt-BR", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+}
 
-    valor.value = "R$ " + numeroFormatado;
+
+texto = texto.replace("R$", "").trim();
+
+texto = texto.replace(/\./g, "");
+
+texto = texto.replace(",", ".");
+
+
+const numero = Number(texto);
+
+
+if (isNaN(numero)) {
+
+    valor.value = "";
+
+    calcularParcela();
+
+    return;
+
+}
+
+
+const numeroFormatado = numero.toLocaleString("pt-BR", {
+
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
 
 });
 
 
+valor.value = "R$ " + numeroFormatado;
+
+
+calcularParcela();
+
+
+});
+
 // ============================================================
-// 5. VALIDAÇÃO DO FORMULÁRIO
+// VALIDAÇÃO DO FORMULÁRIO
 // ============================================================
 
 formulario.addEventListener("submit", function (event) {
 
-    // Impede o formulário de recarregar a página
-    event.preventDefault();
 
+event.preventDefault();
 
-    // --------------------------------------------------------
-    // DESCRIÇÃO
-    // --------------------------------------------------------
 
-    if (descricao.value.trim() === "") {
+// --------------------------------------------------------
+// DESCRIÇÃO
+// --------------------------------------------------------
 
-        alert("Informe a descrição do gasto.");
+if (descricao.value.trim() === "") {
 
-        descricao.classList.add("campo-erro");
+    alert("Informe a descrição do gasto.");
 
-        descricao.focus();
+    descricao.classList.add("campo-erro");
 
-        return;
+    descricao.focus();
 
-    }
+    return;
 
-    descricao.classList.remove("campo-erro");
+}
 
+descricao.classList.remove("campo-erro");
 
-    // --------------------------------------------------------
-    // CATEGORIA
-    // --------------------------------------------------------
 
-    if (categoria.value === "") {
+// --------------------------------------------------------
+// CATEGORIA
+// --------------------------------------------------------
 
-        alert("Selecione uma categoria.");
+if (categoria.value === "") {
 
-        categoria.classList.add("campo-erro");
+    alert("Selecione uma categoria.");
 
-        categoria.focus();
+    categoria.classList.add("campo-erro");
 
-        return;
+    categoria.focus();
 
-    }
+    return;
 
-    categoria.classList.remove("campo-erro");
+}
 
+categoria.classList.remove("campo-erro");
 
-    // --------------------------------------------------------
-    // VALOR
-    // --------------------------------------------------------
 
-    let textoValor = valor.value.trim();
+// --------------------------------------------------------
+// VALOR
+// --------------------------------------------------------
 
-    if (textoValor === "") {
+let textoValor = valor.value.trim();
 
-        alert("Informe o valor do gasto.");
 
-        valor.classList.add("campo-erro");
+if (textoValor === "") {
 
-        valor.focus();
+    alert("Informe o valor do gasto.");
 
-        return;
+    valor.classList.add("campo-erro");
 
-    }
+    valor.focus();
 
-    textoValor = textoValor.replace("R$", "").trim();
+    return;
 
-    textoValor = textoValor.replace(/\./g, "");
+}
 
-    textoValor = textoValor.replace(",", ".");
 
-    const numeroValor = Number(textoValor);
+textoValor = textoValor.replace("R$", "").trim();
 
+textoValor = textoValor.replace(/\./g, "");
 
-    if (isNaN(numeroValor) || numeroValor <= 0) {
+textoValor = textoValor.replace(",", ".");
 
-        alert("Informe um valor válido maior que zero.");
 
-        valor.classList.add("campo-erro");
+const numeroValor = Number(textoValor);
 
-        valor.focus();
 
-        return;
+if (isNaN(numeroValor) || numeroValor <= 0) {
 
-    }
+    alert("Informe um valor válido maior que zero.");
 
-    valor.classList.remove("campo-erro");
+    valor.classList.add("campo-erro");
 
+    valor.focus();
 
-    // --------------------------------------------------------
-    // DATA
-    // --------------------------------------------------------
+    return;
 
-    if (data.value === "") {
+}
 
-        alert("Informe a data do gasto.");
+valor.classList.remove("campo-erro");
 
-        data.classList.add("campo-erro");
 
-        data.focus();
+// --------------------------------------------------------
+// DATA
+// --------------------------------------------------------
 
-        return;
+if (data.value === "") {
 
-    }
+    alert("Informe a data do gasto.");
 
-    data.classList.remove("campo-erro");
+    data.classList.add("campo-erro");
 
+    data.focus();
 
-    // --------------------------------------------------------
-    // MODO DE PAGAMENTO
-    // --------------------------------------------------------
+    return;
 
-    if (modo.value === "") {
+}
 
-        alert("Selecione o modo de pagamento.");
+data.classList.remove("campo-erro");
 
-        modo.classList.add("campo-erro");
 
-        modo.focus();
+// --------------------------------------------------------
+// MODO
+// --------------------------------------------------------
 
-        return;
+if (modo.value === "") {
 
-    }
+    alert("Selecione o modo da operação.");
 
-    modo.classList.remove("campo-erro");
+    modo.classList.add("campo-erro");
 
+    modo.focus();
 
-    // --------------------------------------------------------
-    // ORIGEM DO DINHEIRO
-    // --------------------------------------------------------
+    return;
 
-    if (origem.value === "") {
+}
 
-        alert("Selecione a origem do dinheiro.");
+modo.classList.remove("campo-erro");
 
-        origem.classList.add("campo-erro");
 
-        origem.focus();
+// --------------------------------------------------------
+// ORIGEM
+// --------------------------------------------------------
 
-        return;
+if (origem.value === "") {
 
-    }
+    alert("Selecione a origem do dinheiro.");
 
-    origem.classList.remove("campo-erro");
+    origem.classList.add("campo-erro");
 
+    origem.focus();
 
-    // --------------------------------------------------------
-    // CARTÃO
-    // --------------------------------------------------------
+    return;
 
-    if (modo.value === "credito" && cartao.value === "") {
+}
 
-        alert("Selecione o cartão utilizado.");
+origem.classList.remove("campo-erro");
 
-        cartao.classList.add("campo-erro");
 
-        cartao.focus();
+// --------------------------------------------------------
+// CARTÃO
+// --------------------------------------------------------
 
-        return;
+if (modo.value === "credito" && cartao.value === "") {
 
-    }
+    alert("Selecione o cartão utilizado.");
 
-    cartao.classList.remove("campo-erro");
+    cartao.classList.add("campo-erro");
 
+    cartao.focus();
 
-    // --------------------------------------------------------
-    // TUDO CERTO
-    // --------------------------------------------------------
+    return;
 
-    alert("Todos os campos obrigatórios foram preenchidos corretamente!");
+}
+
+cartao.classList.remove("campo-erro");
+
+
+// --------------------------------------------------------
+// PARCELAS
+// --------------------------------------------------------
+
+if (modo.value === "credito" && parcelas.value === "") {
+
+    alert("Selecione a quantidade de parcelas.");
+
+    parcelas.classList.add("campo-erro");
+
+    parcelas.focus();
+
+    return;
+
+}
+
+parcelas.classList.remove("campo-erro");
+
+
+// --------------------------------------------------------
+// SUCESSO
+// --------------------------------------------------------
+
+alert("Todos os campos obrigatórios foram preenchidos corretamente!");
+
 
 });
