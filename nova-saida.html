@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-
-<html lang="pt-BR">
-
-<head>
-
-```
+<!DOCTYPE html> <html lang="pt-BR"> <head>
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,13 +6,7 @@
 <title>Nova saída - Meu Financeiro</title>
 
 <link rel="stylesheet" href="css/nova-saida.css">
-```
-
-</head>
-
-<body>
-
-```
+</head> <body>
 <!-- =====================================================
      MENU LATERAL
      ===================================================== -->
@@ -506,15 +494,27 @@
                             Selecione o cartão
                         </option>
 
-                        <option value="nubank-1234">
+                        <option
+                            value="nubank-1234"
+                            data-fechamento="2"
+                            data-vencimento="10"
+                        >
                             Nubank • final 1234
                         </option>
 
-                        <option value="mercado-pago-5678">
+                        <option
+                            value="mercado-pago-5678"
+                            data-fechamento="5"
+                            data-vencimento="12"
+                        >
                             Mercado Pago • final 5678
                         </option>
 
-                        <option value="caixa-9012">
+                        <option
+                            value="caixa-9012"
+                            data-fechamento="8"
+                            data-vencimento="15"
+                        >
                             Caixa • final 9012
                         </option>
 
@@ -598,13 +598,33 @@
 
                     </select>
 
-
-                    <!-- VALOR CALCULADO DA PARCELA -->
-
                     <small
                         id="valorParcela"
                         style="display: none;"
                     ></small>
+
+                </div>
+
+
+
+                <!-- =========================================
+                     RESUMO DA FATURA
+                     APARECE SOMENTE NO CRÉDITO
+                     ========================================= -->
+
+                <div
+                    class="form-group"
+                    id="grupoFatura"
+                    style="display: none;"
+                >
+
+                    <label>
+                        Resumo da fatura
+                    </label>
+
+                    <div id="resumoFatura">
+
+                    </div>
 
                 </div>
 
@@ -672,8 +692,4 @@
 <!-- JavaScript específico desta tela -->
 
 <script src="js/nova-saida.js"></script>
-```
-
-</body>
-
-</html>
+</body> </html>
