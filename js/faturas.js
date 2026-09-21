@@ -1,458 +1,778 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-// ==============================
-// ELEMENTOS DA TELA
-// ==============================
+    // ==============================
+    // ELEMENTOS DA TELA
+    // ==============================
 
-const cartao = document.querySelector("#cartao");
-const mes = document.querySelector("#mes");
+    const cartao = document.querySelector("#cartao");
+    const mes = document.querySelector("#mes");
 
-const tituloFatura = document.querySelector("#tituloFatura");
-const nomeCartao = document.querySelector("#nomeCartao");
+    const tituloFatura = document.querySelector("#tituloFatura");
+    const nomeCartao = document.querySelector("#nomeCartao");
+    const fechamento = document.querySelector("#fechamento");
+    const vencimento = document.querySelector("#vencimento");
+    const quantidadeCompras = document.querySelector("#quantidadeCompras");
+    const totalFatura = document.querySelector("#totalFatura");
+    const valorPagamento = document.querySelector("#valorPagamento");
+    const listaCompras = document.querySelector("#listaCompras");
+    const btnPagar = document.querySelector("#btnPagar");
+    const statusFatura = document.querySelector("#statusFatura");
 
-const fechamento = document.querySelector("#fechamento");
-const vencimento = document.querySelector("#vencimento");
 
-const quantidadeCompras =
-    document.querySelector("#quantidadeCompras");
+    // ==============================
+    // CONFIGURAÇÃO DOS CARTÕES
+    // ==============================
 
-const totalFatura =
-    document.querySelector("#totalFatura");
+    const cartoes = {
 
-const valorPagamento =
-    document.querySelector("#valorPagamento");
+        nubank: {
+            nome: "Nubank",
+            final: "1234",
+            fechamento: 2,
+            vencimento: 10
+        },
 
-const listaCompras =
-    document.querySelector("#listaCompras");
+        "mercado-pago": {
+            nome: "Mercado Pago",
+            final: "5678",
+            fechamento: 5,
+            vencimento: 12
+        },
 
-const btnPagar =
-    document.querySelector("#btnPagar");
+        caixa: {
+            nome: "Caixa",
+            final: "9012",
+            fechamento: 8,
+            vencimento: 15
+        }
 
-// ==============================
-// CONFIGURAÇÃO DOS CARTÕES
-// ==============================
+    };
 
-const cartoes = {
 
-    nubank: {
-        nome: "Nubank",
-        final: "1234",
-        fechamento: 2,
-        vencimento: 10
-    },
+    // ==============================
+    // LER COMPRAS DO LOCALSTORAGE
+    // ==============================
 
-    "mercado-pago": {
-        nome: "Mercado Pago",
-        final: "5678",
-        fechamento: 5,
-        vencimento: 12
-    },
+    function obterCompras() {
 
-    caixa: {
-        nome: "Caixa",
-        final: "9012",
-        fechamento: 8,
-        vencimento: 15
+        const comprasSalvas =
+            localStorage.getItem("compras");
+
+        if (!comprasSalvas) {
+            return [];
+        }
+
+        try {
+
+            const compras =
+                JSON.parse(comprasSalvas);
+
+            if (Array.isArray(compras)) {
+                return compras;
+            }
+
+            return [];
+
+        } catch (erro) {
+
+            console.error(
+                "Erro ao ler as compras:",
+                erro
+            );
+
+            return [];
+        }
     }
 
-};
 
-// ==============================
-// COMPRAS DE TESTE
-// ==============================
+    // ==============================
+    // LER PAGAMENTOS DAS FATURAS
+    // ==============================
 
-/*
- * Por enquanto estamos usando dados
- * simulados.
- *
- * Mais tarde essas informações virão
- * do PHP + MySQL.
- */
+    function obterPagamentosFaturas() {
 
-const compras = [
+        const pagamentosSalvos =
+            localStorage.getItem("pagamentosFaturas");
 
-    {
-        cartao: "nubank",
-        data: "2026-09-19",
-        descricao: "Compra de teste",
-        parcela: "1/6",
-        categoria: "Mercado",
-        valor: 200
-    },
+        if (!pagamentosSalvos) {
+            return [];
+        }
 
-    {
-        cartao: "nubank",
-        data: "2026-09-19",
-        descricao: "Compra de teste",
-        parcela: "2/6",
-        categoria: "Mercado",
-        valor: 200
-    },
+        try {
 
-    {
-        cartao: "nubank",
-        data: "2026-09-19",
-        descricao: "Compra de teste",
-        parcela: "3/6",
-        categoria: "Mercado",
-        valor: 200
-    },
+            const pagamentos =
+                JSON.parse(pagamentosSalvos);
 
-    {
-        cartao: "nubank",
-        data: "2026-09-19",
-        descricao: "Compra de teste",
-        parcela: "4/6",
-        categoria: "Mercado",
-        valor: 200
-    },
+            if (Array.isArray(pagamentos)) {
+                return pagamentos;
+            }
 
-    {
-        cartao: "nubank",
-        data: "2026-09-19",
-        descricao: "Compra de teste",
-        parcela: "5/6",
-        categoria: "Mercado",
-        valor: 200
-    },
+            return [];
 
-    {
-        cartao: "nubank",
-        data: "2026-09-19",
-        descricao: "Compra de teste",
-        parcela: "6/6",
-        categoria: "Mercado",
-        valor: 200
+        } catch (erro) {
+
+            console.error(
+                "Erro ao ler os pagamentos das faturas:",
+                erro
+            );
+
+            return [];
+        }
     }
 
-];
 
-// ==============================
-// FORMATAR MOEDA
-// ==============================
+    // ==============================
+    // VERIFICAR SE A FATURA FOI PAGA
+    // ==============================
 
-function formatarMoeda(valor) {
+    function faturaFoiPaga() {
 
-    return valor.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-    });
+        const pagamentos =
+            obterPagamentosFaturas();
 
-}
+        return pagamentos.some(function (pagamento) {
 
-// ==============================
-// FORMATAR DATA
-// ==============================
+            return (
+                pagamento.cartao === cartao.value &&
+                pagamento.mes === mes.value
+            );
 
-function formatarData(data) {
-
-    const partes = data.split("-");
-
-    return `${partes[2]}/${partes[1]}/${partes[0]}`;
-
-}
-
-// ==============================
-// NOME DO MÊS
-// ==============================
-
-const nomesMeses = [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro"
-];
-
-// ==============================
-// ATUALIZAR FATURA
-// ==============================
-
-function atualizarFatura() {
-
-    const dadosCartao = cartoes[cartao.value];
-
-    if (!dadosCartao || !mes.value) {
-        return;
+        });
     }
 
-    // ------------------------------
-    // MÊS DA FATURA
-    // ------------------------------
 
-    const partesMes = mes.value.split("-");
+    // ==============================
+    // ATUALIZAR STATUS DA FATURA
+    // ==============================
 
-    const ano = parseInt(partesMes[0]);
-    const numeroMes = parseInt(partesMes[1]);
+    function atualizarStatusFatura() {
 
-    const nomeMes = nomesMeses[numeroMes - 1];
+        if (faturaFoiPaga()) {
 
-    tituloFatura.textContent =
-        `${nomeMes}/${ano}`;
+            statusFatura.textContent = "Paga";
 
-    nomeCartao.textContent =
-        `${dadosCartao.nome} •••• ${dadosCartao.final}`;
+            statusFatura.classList.remove("aberta");
+            statusFatura.classList.add("paga");
 
-    // ------------------------------
-    // DATA DE FECHAMENTO
-    // ------------------------------
+            btnPagar.textContent = "Fatura paga";
+            btnPagar.disabled = true;
 
-    const dataFechamento =
-        new Date(
-            ano,
-            numeroMes - 1,
-            dadosCartao.fechamento
-        );
+        } else {
 
-    fechamento.textContent =
-        dataFechamento.toLocaleDateString("pt-BR");
+            statusFatura.textContent = "Aberta";
 
-    // ------------------------------
-    // DATA DE VENCIMENTO
-    // ------------------------------
+            statusFatura.classList.remove("paga");
+            statusFatura.classList.add("aberta");
 
-    const dataVencimento =
-        new Date(
-            ano,
-            numeroMes - 1,
-            dadosCartao.vencimento
-        );
+            btnPagar.textContent = "Pagar fatura";
+            btnPagar.disabled = false;
+        }
+    }
 
-    vencimento.textContent =
-        dataVencimento.toLocaleDateString("pt-BR");
 
-    // ------------------------------
-    // FILTRAR COMPRAS
-    // ------------------------------
+    // ==============================
+    // FORMATAR MOEDA
+    // ==============================
 
-    /*
-     * Neste primeiro momento usamos
-     * o mês da parcela como referência.
-     *
-     * A compra de 19/09/2026, com fechamento
-     * no dia 02, pertence à fatura de outubro.
-     */
+    function formatarMoeda(valor) {
 
-    let comprasDaFatura = [];
+        return valor.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+    }
 
-    compras.forEach(function (compra, indice) {
 
-        if (compra.cartao !== cartao.value) {
+    // ==============================
+    // FORMATAR DATA
+    // ==============================
+
+    function formatarData(data) {
+
+        const partes = data.split("-");
+
+        return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+
+
+    // ==============================
+    // NOMES DOS MESES
+    // ==============================
+
+    const nomesMeses = [
+
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+
+    ];
+
+
+    // ==============================
+    // CALCULAR PRIMEIRA FATURA
+    // ==============================
+
+    function calcularPrimeiraFatura(
+        dataTexto,
+        diaFechamento
+    ) {
+
+        const partes =
+            dataTexto.split("-");
+
+        let ano =
+            parseInt(partes[0]);
+
+        let mes =
+            parseInt(partes[1]) - 1;
+
+        const dia =
+            parseInt(partes[2]);
+
+
+        /*
+         * Se a compra ocorreu depois
+         * do fechamento, vai para a
+         * fatura do mês seguinte.
+         */
+
+        if (dia > diaFechamento) {
+
+            mes++;
+
+            if (mes > 11) {
+
+                mes = 0;
+                ano++;
+            }
+        }
+
+
+        return {
+            ano: ano,
+            mes: mes
+        };
+    }
+
+
+    // ==============================
+    // CALCULAR VALOR DAS PARCELAS
+    // ==============================
+
+    function calcularParcelas(
+        valorTotal,
+        quantidade
+    ) {
+
+        /*
+         * Trabalhamos em centavos para
+         * evitar problemas de arredondamento.
+         */
+
+        const valorTotalCentavos =
+            Math.round(valorTotal * 100);
+
+        const valorBaseCentavos =
+            Math.floor(
+                valorTotalCentavos / quantidade
+            );
+
+        const restoCentavos =
+            valorTotalCentavos % quantidade;
+
+        const parcelas = [];
+
+
+        for (
+            let i = 0;
+            i < quantidade;
+            i++
+        ) {
+
+            let valorParcelaCentavos =
+                valorBaseCentavos;
+
+
+            if (
+                i >= quantidade - restoCentavos
+            ) {
+
+                valorParcelaCentavos++;
+            }
+
+
+            parcelas.push(
+                valorParcelaCentavos / 100
+            );
+        }
+
+
+        return parcelas;
+    }
+
+
+    // ==============================
+    // ATUALIZAR FATURA
+    // ==============================
+
+    function atualizarFatura() {
+
+        const dadosCartao =
+            cartoes[cartao.value];
+
+
+        if (!dadosCartao || !mes.value) {
             return;
         }
 
-        /*
-         * Nossa compra de teste foi feita
-         * em setembro e possui 6 parcelas.
-         *
-         * A primeira parcela entra em outubro.
-         */
 
-        const primeiraFatura =
-            calcularPrimeiraFatura(
-                compra.data,
+        // ==============================
+        // MÊS SELECIONADO
+        // ==============================
+
+        const partesMes =
+            mes.value.split("-");
+
+        const ano =
+            parseInt(partesMes[0]);
+
+        const numeroMes =
+            parseInt(partesMes[1]);
+
+        const mesFatura =
+            numeroMes - 1;
+
+        const nomeMes =
+            nomesMeses[mesFatura];
+
+
+        // ==============================
+        // CABEÇALHO
+        // ==============================
+
+        tituloFatura.textContent =
+            `${nomeMes}/${ano}`;
+
+        nomeCartao.textContent =
+            `${dadosCartao.nome} •••• ${dadosCartao.final}`;
+
+
+        // ==============================
+        // FECHAMENTO
+        // ==============================
+
+        const dataFechamento =
+            new Date(
+                ano,
+                mesFatura,
                 dadosCartao.fechamento
             );
 
-        const parcelaAtual =
-            parseInt(compra.parcela.split("/")[0]);
+        fechamento.textContent =
+            dataFechamento.toLocaleDateString("pt-BR");
 
-        let mesParcela =
-            primeiraFatura.mes + parcelaAtual - 1;
 
-        let anoParcela =
-            primeiraFatura.ano;
+        // ==============================
+        // VENCIMENTO
+        // ==============================
 
-        while (mesParcela > 11) {
-
-            mesParcela -= 12;
-            anoParcela++;
-
-        }
-
-        if (
-            anoParcela === ano &&
-            mesParcela === numeroMes - 1
-        ) {
-
-            comprasDaFatura.push(compra);
-
-        }
-
-    });
-
-    // ------------------------------
-    // MONTAR LISTA
-    // ------------------------------
-
-    listaCompras.innerHTML = "";
-
-    let total = 0;
-
-    comprasDaFatura.forEach(function (compra) {
-
-        total += compra.valor;
-
-        const linha =
-            document.createElement("tr");
-
-        linha.innerHTML = `
-            <td>
-                ${formatarData(compra.data)}
-            </td>
-
-            <td>
-                ${compra.descricao}
-            </td>
-
-            <td>
-                ${compra.parcela}
-            </td>
-
-            <td>
-                ${compra.categoria}
-            </td>
-
-            <td class="valor">
-                ${formatarMoeda(compra.valor)}
-            </td>
-        `;
-
-        listaCompras.appendChild(linha);
-
-    });
-
-    // ------------------------------
-    // CASO NÃO TENHA COMPRAS
-    // ------------------------------
-
-    if (comprasDaFatura.length === 0) {
-
-        const linha =
-            document.createElement("tr");
-
-        linha.innerHTML = `
-            <td colspan="5" style="text-align:center;">
-                Nenhuma compra nesta fatura.
-            </td>
-        `;
-
-        listaCompras.appendChild(linha);
-
-    }
-
-    // ------------------------------
-    // TOTAL
-    // ------------------------------
-
-    totalFatura.textContent =
-        formatarMoeda(total);
-
-    valorPagamento.textContent =
-        formatarMoeda(total);
-
-    quantidadeCompras.textContent =
-        comprasDaFatura.length;
-
-}
-
-// ==============================
-// CALCULAR PRIMEIRA FATURA
-// ==============================
-
-function calcularPrimeiraFatura(
-    dataTexto,
-    diaFechamento
-) {
-
-    const partes =
-        dataTexto.split("-");
-
-    let ano =
-        parseInt(partes[0]);
-
-    let mes =
-        parseInt(partes[1]) - 1;
-
-    const dia =
-        parseInt(partes[2]);
-
-    if (dia > diaFechamento) {
-
-        mes++;
-
-        if (mes > 11) {
-
-            mes = 0;
-            ano++;
-
-        }
-
-    }
-
-    return {
-        ano: ano,
-        mes: mes
-    };
-
-}
-
-// ==============================
-// EVENTOS
-// ==============================
-
-cartao.addEventListener(
-    "change",
-    atualizarFatura
-);
-
-mes.addEventListener(
-    "change",
-    atualizarFatura
-);
-
-// ==============================
-// BOTÃO PAGAR
-// ==============================
-
-btnPagar.addEventListener(
-    "click",
-    function () {
-
-        const conta =
-            document.querySelector(
-                "#contaPagamento"
+        const dataVencimento =
+            new Date(
+                ano,
+                mesFatura,
+                dadosCartao.vencimento
             );
 
-        if (!conta.value) {
+        vencimento.textContent =
+            dataVencimento.toLocaleDateString("pt-BR");
+
+
+        // ==============================
+        // LER COMPRAS SALVAS
+        // ==============================
+
+        const compras =
+            obterCompras();
+
+
+        // ==============================
+        // ENCONTRAR COMPRAS DA FATURA
+        // ==============================
+
+        const comprasDaFatura = [];
+
+
+        compras.forEach(function (compra) {
+
+            let cartaoCompra =
+                compra.cartao;
+
+
+            // Compatibilidade com compras antigas
+
+            if (cartaoCompra === "nubank-1234") {
+                cartaoCompra = "nubank";
+            }
+
+            if (cartaoCompra === "mercado-pago-5678") {
+                cartaoCompra = "mercado-pago";
+            }
+
+            if (cartaoCompra === "caixa-9012") {
+                cartaoCompra = "caixa";
+            }
+
+
+            if (cartaoCompra !== cartao.value) {
+                return;
+            }
+
+
+            if (compra.modo !== "credito") {
+                return;
+            }
+
+
+            // Dados da compra
+
+            const valorTotal =
+                Number(compra.valor) || 0;
+
+            const quantidadeParcelas =
+                Number(compra.parcelas) || 1;
+
+
+            // Descobre a primeira fatura
+
+            const primeiraFatura =
+                calcularPrimeiraFatura(
+                    compra.data,
+                    dadosCartao.fechamento
+                );
+
+
+            // Calcula as parcelas
+
+            const valoresParcelas =
+                calcularParcelas(
+                    valorTotal,
+                    quantidadeParcelas
+                );
+
+
+            // Verifica cada parcela
+
+            for (
+                let numeroParcela = 1;
+                numeroParcela <= quantidadeParcelas;
+                numeroParcela++
+            ) {
+
+                let mesParcela =
+                    primeiraFatura.mes +
+                    numeroParcela -
+                    1;
+
+                let anoParcela =
+                    primeiraFatura.ano;
+
+
+                // Passou de dezembro?
+
+                while (mesParcela > 11) {
+
+                    mesParcela -= 12;
+                    anoParcela++;
+                }
+
+
+                // Parcela pertence à fatura?
+
+                if (
+                    anoParcela === ano &&
+                    mesParcela === mesFatura
+                ) {
+
+                    comprasDaFatura.push({
+
+                        data:
+                            compra.data,
+
+                        descricao:
+                            compra.descricao,
+
+                        categoria:
+                            compra.categoria,
+
+                        parcela:
+                            `${numeroParcela}/${quantidadeParcelas}`,
+
+                        valor:
+                            valoresParcelas[
+                                numeroParcela - 1
+                            ]
+                    });
+                }
+            }
+        });
+
+
+        // ==============================
+        // LIMPAR TABELA
+        // ==============================
+
+        listaCompras.innerHTML = "";
+
+
+        // ==============================
+        // TOTAL DA FATURA
+        // ==============================
+
+        let totalCentavos = 0;
+
+
+        // ==============================
+        // ADICIONAR COMPRAS
+        // ==============================
+
+        comprasDaFatura.forEach(function (compra) {
+
+            totalCentavos +=
+                Math.round(compra.valor * 100);
+
+
+            const linha =
+                document.createElement("tr");
+
+
+            linha.innerHTML = `
+                <td>
+                    ${formatarData(compra.data)}
+                </td>
+
+                <td>
+                    ${compra.descricao}
+                </td>
+
+                <td>
+                    ${compra.parcela}
+                </td>
+
+                <td>
+                    ${compra.categoria}
+                </td>
+
+                <td class="valor">
+                    ${formatarMoeda(compra.valor)}
+                </td>
+            `;
+
+
+            listaCompras.appendChild(linha);
+        });
+
+
+        // ==============================
+        // NENHUMA COMPRA
+        // ==============================
+
+        if (comprasDaFatura.length === 0) {
+
+            const linha =
+                document.createElement("tr");
+
+
+            linha.innerHTML = `
+                <td colspan="5" style="text-align:center;">
+                    Nenhuma compra nesta fatura.
+                </td>
+            `;
+
+
+            listaCompras.appendChild(linha);
+        }
+
+
+        // ==============================
+        // TOTAL DA FATURA
+        // ==============================
+
+        const total =
+            totalCentavos / 100;
+
+
+        totalFatura.textContent =
+            formatarMoeda(total);
+
+        valorPagamento.textContent =
+            formatarMoeda(total);
+
+        quantidadeCompras.textContent =
+            comprasDaFatura.length;
+
+
+        // ==============================
+        // ATUALIZAR STATUS
+        // ==============================
+
+        atualizarStatusFatura();
+    }
+
+
+    // ==============================
+    // EVENTO CARTÃO
+    // ==============================
+
+    cartao.addEventListener(
+        "change",
+        atualizarFatura
+    );
+
+
+    // ==============================
+    // EVENTO MÊS
+    // ==============================
+
+    mes.addEventListener(
+        "change",
+        atualizarFatura
+    );
+
+
+    // ==============================
+    // BOTÃO PAGAR
+    // ==============================
+
+    btnPagar.addEventListener(
+        "click",
+        function () {
+
+            const conta =
+                document.querySelector("#contaPagamento");
+
+
+            // Verifica se já foi paga
+
+            if (faturaFoiPaga()) {
+
+                alert(
+                    "Esta fatura já foi paga."
+                );
+
+                return;
+            }
+
+
+            // Verifica se escolheu uma conta
+
+            if (!conta.value) {
+
+                alert(
+                    "Selecione a conta que será utilizada para pagar a fatura."
+                );
+
+                conta.focus();
+
+                return;
+            }
+
+
+            // Dados do cartão
+
+            const dadosCartao =
+                cartoes[cartao.value];
+
+
+            // Valor atual da fatura
+
+            const valorTexto =
+                totalFatura.textContent;
+
+
+            const valorNumerico =
+                Number(
+                    valorTexto
+                        .replace("R$", "")
+                        .replace(/\./g, "")
+                        .replace(",", ".")
+                        .trim()
+                );
+
+
+            // Cria o registro do pagamento
+
+            const pagamento = {
+
+                id: Date.now(),
+
+                cartao:
+                    cartao.value,
+
+                nomeCartao:
+                    `${dadosCartao.nome} •••• ${dadosCartao.final}`,
+
+                mes:
+                    mes.value,
+
+                valor:
+                    valorNumerico,
+
+                contaPagamento:
+                    conta.value,
+
+                dataPagamento:
+                    new Date()
+                        .toISOString()
+                        .split("T")[0]
+            };
+
+
+            // Recupera pagamentos existentes
+
+            let pagamentos =
+                obterPagamentosFaturas();
+
+
+            // Adiciona o novo pagamento
+
+            pagamentos.push(pagamento);
+
+
+            // Salva no LocalStorage
+
+            localStorage.setItem(
+                "pagamentosFaturas",
+                JSON.stringify(pagamentos)
+            );
+
+
+            // Atualiza a tela
+
+            atualizarStatusFatura();
+
+
+            // Mensagem de sucesso
 
             alert(
-                "Selecione a conta que será utilizada para pagar a fatura."
+                "Pagamento da fatura registrado com sucesso!"
             );
-
-            conta.focus();
-
-            return;
         }
+    );
 
-        alert(
-            "O pagamento da fatura será implementado na próxima etapa."
-        );
 
-    }
-);
+    // ==============================
+    // CARREGAR FATURA INICIAL
+    // ==============================
 
-// ==============================
-// CARREGAR A FATURA INICIAL
-// ==============================
-
-atualizarFatura();
+    atualizarFatura();
 
 });
