@@ -1,165 +1,361 @@
-<!DOCTYPE html> <html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Movimentações - Meu Financeiro</title>
 
 <link rel="stylesheet" href="css/movimentacoes.css">
-</head> <body>
+
+
+</head>
+
+<body>
+
 <aside class="sidebar">
 
-    <div class="logo">
-        <div class="logo-icon">R$</div>
 
-        <div class="logo-text">
-            <strong>Meu</strong>
-            <span>Financeiro</span>
-        </div>
+<div class="logo">
+
+    <div class="logo-icon">R$</div>
+
+    <div class="logo-text">
+        <strong>Meu</strong>
+        <span>Financeiro</span>
     </div>
 
-    <nav class="menu">
+</div>
 
-        <a href="index.html" class="menu-item">
-            <span class="menu-icon">⌂</span>
-            <span>Dashboard</span>
-        </a>
 
-        <a href="contas-cartoes.html" class="menu-item">
-            <span class="menu-icon entrada">↑</span>
-            <span>Entradas</span>
-        </a>
+<nav class="menu">
 
-        <a href="nova-saida.html" class="menu-item">
-            <span class="menu-icon saida">↓</span>
-            <span>Gastos</span>
-        </a>
+    <a href="index.html" class="menu-item">
+        <span class="menu-icon">⌂</span>
+        <span>Dashboard</span>
+    </a>
 
-        <a href="movimentacoes.html" class="menu-item active">
-            <span class="menu-icon">↔</span>
-            <span>Movimentações</span>
-        </a>
 
-        <a href="#" class="menu-item">
-            <span class="menu-icon dividendo">◆</span>
-            <span>Dividendos</span>
-        </a>
+    <a href="contas-cartoes.html" class="menu-item">
+        <span class="menu-icon entrada">↑</span>
+        <span>Entradas</span>
+    </a>
 
-        <a href="#" class="menu-item">
-            <span class="menu-icon">☷</span>
-            <span>Categorias</span>
-        </a>
 
-        <a href="#" class="menu-item">
-            <span class="menu-icon">▥</span>
-            <span>Relatórios</span>
-        </a>
+    <a href="nova-saida.html" class="menu-item">
+        <span class="menu-icon saida">↓</span>
+        <span>Gastos</span>
+    </a>
 
-    </nav>
 
-    <div class="menu-bottom">
+    <a href="movimentacoes.html" class="menu-item active">
+        <span class="menu-icon">↔</span>
+        <span>Movimentações</span>
+    </a>
 
-        <a href="#" class="menu-item">
-            <span class="menu-icon">⚙</span>
-            <span>Configurações</span>
-        </a>
 
-    </div>
+    <a href="#" class="menu-item">
+        <span class="menu-icon dividendo">◆</span>
+        <span>Dividendos</span>
+    </a>
+
+
+    <a href="#" class="menu-item">
+        <span class="menu-icon">☷</span>
+        <span>Categorias</span>
+    </a>
+
+
+    <a href="#" class="menu-item">
+        <span class="menu-icon">▥</span>
+        <span>Relatórios</span>
+    </a>
+
+</nav>
+
+
+<div class="menu-bottom">
+
+    <a href="#" class="menu-item">
+        <span class="menu-icon">⚙</span>
+        <span>Configurações</span>
+    </a>
+
+</div>
+
 
 </aside>
 
-
 <main class="main-content">
 
-    <header class="topbar">
 
-        <button class="mobile-menu-button">
-            ☰
-        </button>
+<header class="topbar">
 
-        <div class="page-title">
-            <h1>Movimentações</h1>
-            <p>Visualize suas entradas e saídas financeiras</p>
+    <button class="mobile-menu-button">
+        ☰
+    </button>
+
+
+    <div class="page-title">
+
+        <h1>Movimentações</h1>
+
+        <p>
+            Visualize suas entradas e saídas financeiras
+        </p>
+
+    </div>
+
+
+    <div class="user-area">
+
+        <div class="user-info">
+
+            <strong>Ednardo</strong>
+
+            <span>Minha conta</span>
+
         </div>
 
-        <div class="user-area">
 
-            <div class="user-info">
-                <strong>Ednardo</strong>
-                <span>Minha conta</span>
-            </div>
+        <div class="user-avatar">
+            E
+        </div>
 
-            <div class="user-avatar">
-                E
-            </div>
+    </div>
+
+</header>
+
+
+
+<section class="content">
+
+
+    <div class="welcome">
+
+        <div>
+
+            <h2>Movimentações</h2>
+
+            <p>
+                Confira todas as movimentações financeiras registradas.
+            </p>
 
         </div>
 
-    </header>
+    </div>
 
 
-    <section class="content">
 
-        <div class="welcome">
+    <!-- =====================================================
+    RESUMO FINANCEIRO
+    ===================================================== -->
+
+    <div class="resumo-movimentacoes">
+
+
+        <div class="card-resumo entrada">
+
+            <span class="titulo-resumo">
+                Entradas
+            </span>
+
+            <strong id="totalEntradas">
+                R$ 0,00
+            </strong>
+
+        </div>
+
+
+        <div class="card-resumo saida">
+
+            <span class="titulo-resumo">
+                Saídas
+            </span>
+
+            <strong id="totalSaidas">
+                R$ 0,00
+            </strong>
+
+        </div>
+
+
+        <div class="card-resumo saldo">
+
+            <span class="titulo-resumo">
+                Saldo
+            </span>
+
+            <strong id="saldoMovimentacoes">
+                R$ 0,00
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="panel">
+
+
+        <div class="panel-header">
+
 
             <div>
-                <h2>Movimentações</h2>
+
+                <h3>
+                    Últimas movimentações
+                </h3>
 
                 <p>
-                    Confira todas as movimentações financeiras registradas.
+                    Entradas e saídas das suas contas
                 </p>
+
             </div>
+
 
         </div>
 
 
-        <div class="panel">
 
-            <div class="panel-header">
+        <!-- =====================================================
+        FILTROS
+        ===================================================== -->
 
-                <div>
-                    <h3>Últimas movimentações</h3>
+        <div class="filtros-movimentacoes">
 
-                    <p>
-                        Entradas e saídas das suas contas
-                    </p>
-                </div>
+
+            <div class="filtro">
+
+                <label for="filtroMes">
+                    Período
+                </label>
+
+
+                <select id="filtroMes">
+
+                    <option value="todos">
+                        Todos os períodos
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="filtro">
+
+                <label for="filtroConta">
+                    Conta
+                </label>
+
+
+                <select id="filtroConta">
+
+                    <option value="todas">
+                        Todas as contas
+                    </option>
+
+                    <option value="nubank">
+                        Nubank
+                    </option>
+
+                    <option value="mercado-pago">
+                        Mercado Pago
+                    </option>
+
+                    <option value="caixa">
+                        Caixa
+                    </option>
+
+                    <option value="dinheiro">
+                        Dinheiro em espécie
+                    </option>
+
+                </select>
 
             </div>
 
-
-            <div class="table-container">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-                            <th>Data</th>
-                            <th>Descrição</th>
-                            <th>Conta</th>
-                            <th>Tipo</th>
-                            <th>Valor</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="listaMovimentacoes">
-
-                        <tr>
-                            <td colspan="5">
-                                Nenhuma movimentação encontrada.
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
 
         </div>
 
-    </section>
+
+
+        <div class="table-container">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Data
+                        </th>
+
+                        <th>
+                            Descrição
+                        </th>
+
+                        <th>
+                            Conta
+                        </th>
+
+                        <th>
+                            Tipo
+                        </th>
+
+                        <th>
+                            Valor
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody id="listaMovimentacoes">
+
+
+                    <tr>
+
+                        <td colspan="5">
+                            Nenhuma movimentação encontrada.
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
 
 </main>
 
-
 <script src="js/movimentacoes.js"></script>
-</body> </html>
+
+</body>
+
+</html>
