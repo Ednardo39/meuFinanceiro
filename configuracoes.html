@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Configurações - Meu Financeiro</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/configuracoes.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         MENU LATERAL
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <span class="logo-icon">R$</span>
+            <span class="logo-text">Meu Financeiro</span>
+        </div>
+
+        <nav class="menu">
+
+            <a href="index.html" class="menu-item">
+                <span>🏠</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="nova-entrada.html" class="menu-item">
+                <span>💰</span>
+                <span>Entradas</span>
+            </a>
+
+            <a href="nova-saida.html" class="menu-item">
+                <span>💸</span>
+                <span>Gastos</span>
+            </a>
+
+            <a href="movimentacoes.html" class="menu-item">
+                <span>📋</span>
+                <span>Movimentações</span>
+            </a>
+
+            <a href="dividendos.html" class="menu-item">
+                <span>💵</span>
+                <span>Dividendos</span>
+            </a>
+
+            <a href="categorias.html" class="menu-item">
+                <span>🏷️</span>
+                <span>Categorias</span>
+            </a>
+
+            <a href="relatorios.html" class="menu-item">
+                <span>📊</span>
+                <span>Relatórios</span>
+            </a>
+
+            <a href="contas-cartoes.html" class="menu-item">
+                <span>💳</span>
+                <span>Contas e cartões</span>
+            </a>
+
+            <a href="configuracoes.html" class="menu-item ativo">
+                <span>⚙️</span>
+                <span>Configurações</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+         ===================================================== -->
+
+    <main class="main-content">
+
+        <!-- TOPO -->
+
+        <header class="topbar">
+
+            <div>
+                <h1>Configurações</h1>
+                <p>Configure as preferências do Meu Financeiro</p>
+            </div>
+
+            <div class="usuario">
+                <span class="usuario-icon">👤</span>
+                <span>Usuário</span>
+            </div>
+
+        </header>
+
+
+        <!-- CONTEÚDO -->
+
+        <section class="conteudo-configuracoes">
+
+            <div class="titulo-secao">
+                <h2>Configurações gerais</h2>
+                <p>Personalize o funcionamento do sistema.</p>
+            </div>
+
+
+            <div class="configuracoes-grid">
+
+                <!-- MOEDA -->
+
+                <div class="configuracao-card">
+
+                    <div class="configuracao-icon">
+                        💰
+                    </div>
+
+                    <div class="configuracao-info">
+
+                        <h3>Moeda</h3>
+
+                        <p>
+                            Defina a moeda utilizada nos valores
+                            financeiros do sistema.
+                        </p>
+
+                        <select id="moeda">
+                            <option value="BRL">Real brasileiro (R$)</option>
+                            <option value="USD">Dólar americano (US$)</option>
+                            <option value="EUR">Euro (€)</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TEMA -->
+
+                <div class="configuracao-card">
+
+                    <div class="configuracao-icon">
+                        🎨
+                    </div>
+
+                    <div class="configuracao-info">
+
+                        <h3>Tema</h3>
+
+                        <p>
+                            Escolha como o Meu Financeiro
+                            será exibido.
+                        </p>
+
+                        <select id="tema">
+                            <option value="claro">Tema claro</option>
+                            <option value="escuro">Tema escuro</option>
+                            <option value="sistema">Seguir sistema</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FORMATO DE DATA -->
+
+                <div class="configuracao-card">
+
+                    <div class="configuracao-icon">
+                        📅
+                    </div>
+
+                    <div class="configuracao-info">
+
+                        <h3>Formato de data</h3>
+
+                        <p>
+                            Defina como as datas serão apresentadas
+                            no sistema.
+                        </p>
+
+                        <select id="formatoData">
+                            <option value="dd/mm/yyyy">DD/MM/AAAA</option>
+                            <option value="mm/dd/yyyy">MM/DD/AAAA</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONFIRMAÇÕES -->
+
+                <div class="configuracao-card">
+
+                    <div class="configuracao-icon">
+                        🔔
+                    </div>
+
+                    <div class="configuracao-info">
+
+                        <h3>Confirmações</h3>
+
+                        <p>
+                            Solicitar confirmação antes de excluir
+                            informações importantes.
+                        </p>
+
+                        <label class="configuracao-checkbox">
+
+                            <input
+                                type="checkbox"
+                                id="confirmarExclusao"
+                                checked
+                            >
+
+                            <span>
+                                Confirmar exclusões
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÃO SALVAR -->
+
+            <div class="acoes-configuracoes">
+
+                <button
+                    type="button"
+                    id="btnSalvar"
+                    class="btn-salvar"
+                >
+                    Salvar configurações
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="js/configuracoes.js"></script>
+
+</body>
+
+</html>

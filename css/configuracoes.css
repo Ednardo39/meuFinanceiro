@@ -1,0 +1,219 @@
+/* ============================================================
+MEU FINANCEIRO
+CONFIGURAÇÕES
+============================================================ */
+
+/* ============================================================
+CONTEÚDO
+============================================================ */
+
+.conteudo-configuracoes {
+padding: 25px;
+}
+
+/* ============================================================
+TÍTULO DA SEÇÃO
+============================================================ */
+
+.titulo-secao {
+margin-bottom: 25px;
+}
+
+.titulo-secao h2 {
+margin: 0 0 6px;
+font-size: 24px;
+}
+
+.titulo-secao p {
+margin: 0;
+color: #777;
+}
+
+/* ============================================================
+GRID DE CONFIGURAÇÕES
+============================================================ */
+
+.configuracoes-grid {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 20px;
+}
+
+/* ============================================================
+CARD DE CONFIGURAÇÃO
+============================================================ */
+
+.configuracao-card {
+display: flex;
+align-items: flex-start;
+gap: 18px;
+
+background: #ffffff;
+border-radius: 12px;
+padding: 22px;
+
+box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+
+}
+
+/* ============================================================
+ÍCONE
+============================================================ */
+
+.configuracao-icon {
+width: 48px;
+height: 48px;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+border-radius: 10px;
+
+background: #f1f3f5;
+
+font-size: 22px;
+
+flex-shrink: 0;
+
+}
+
+/* ============================================================
+INFORMAÇÕES
+============================================================ */
+
+.configuracao-info {
+flex: 1;
+}
+
+.configuracao-info h3 {
+margin: 0 0 8px;
+font-size: 18px;
+}
+
+.configuracao-info p {
+margin: 0 0 15px;
+
+color: #777;
+
+font-size: 14px;
+line-height: 1.5;
+
+}
+
+/* ============================================================
+SELECT
+============================================================ */
+
+.configuracao-info select {
+width: 100%;
+
+padding: 10px 12px;
+
+border: 1px solid #dcdcdc;
+border-radius: 8px;
+
+background: #ffffff;
+
+font-size: 14px;
+
+outline: none;
+
+}
+
+.configuracao-info select {
+border-color: #777;
+}
+
+/* ============================================================
+CHECKBOX
+============================================================ */
+
+.configuracao-checkbox {
+display: flex;
+align-items: center;
+gap: 8px;
+
+cursor: pointer;
+
+font-size: 14px;
+
+}
+
+.configuracao-checkbox input {
+width: 17px;
+height: 17px;
+
+cursor: pointer;
+
+}
+
+/* ============================================================
+AÇÕES
+============================================================ */
+
+.acoes-configuracoes {
+display: flex;
+justify-content: flex-end;
+
+margin-top: 25px;
+
+}
+
+/* ============================================================
+BOTÃO SALVAR
+============================================================ */
+
+.btn-salvar {
+border: none;
+border-radius: 8px;
+
+padding: 12px 22px;
+
+background: #222;
+color: #ffffff;
+
+font-size: 14px;
+font-weight: 600;
+
+cursor: pointer;
+
+transition: 0.2s;
+
+}
+
+.btn-salvar {
+opacity: 0.85;
+}
+
+/* ============================================================
+RESPONSIVO
+============================================================ */
+
+@media (max-width: 900px) {
+
+.configuracoes-grid {
+    grid-template-columns: 1fr;
+}
+
+}
+
+@media (max-width: 700px) {
+
+.conteudo-configuracoes {
+    padding: 18px;
+}
+
+.configuracao-card {
+    padding: 18px;
+}
+
+.acoes-configuracoes {
+    justify-content: stretch;
+}
+
+.btn-salvar {
+    width: 100%;
+}
+
+}
