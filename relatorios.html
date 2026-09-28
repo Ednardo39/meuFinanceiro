@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Relatórios - Meu Financeiro</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="css/relatorios.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+
+    <!-- =====================================================
+         MENU LATERAL
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <div class="logo-icon">
+                R$
+            </div>
+
+            <div class="logo-text">
+
+                <strong>Meu Financeiro</strong>
+
+                <span>
+                    Controle suas finanças
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+            <a href="index.html" class="menu-item">
+
+                <span>🏠</span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a href="nova-entrada.html" class="menu-item">
+
+                <span>💰</span>
+
+                <span>
+                    Entradas
+                </span>
+
+            </a>
+
+
+            <a href="nova-saida.html" class="menu-item">
+
+                <span>💸</span>
+
+                <span>
+                    Gastos
+                </span>
+
+            </a>
+
+
+            <a href="movimentacoes.html" class="menu-item">
+
+                <span>📋</span>
+
+                <span>
+                    Movimentações
+                </span>
+
+            </a>
+
+
+            <a href="dividendos.html" class="menu-item">
+
+                <span>📈</span>
+
+                <span>
+                    Dividendos
+                </span>
+
+            </a>
+
+
+            <a href="categorias.html" class="menu-item">
+
+                <span>🏷️</span>
+
+                <span>
+                    Categorias
+                </span>
+
+            </a>
+
+
+            <a href="relatorios.html" class="menu-item ativo">
+
+                <span>📊</span>
+
+                <span>
+                    Relatórios
+                </span>
+
+            </a>
+
+
+            <a href="contas-cartoes.html" class="menu-item">
+
+                <span>💳</span>
+
+                <span>
+                    Contas e cartões
+                </span>
+
+            </a>
+
+
+            <a href="#" class="menu-item">
+
+                <span>⚙️</span>
+
+                <span>
+                    Configurações
+                </span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+         ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             CABEÇALHO
+             ================================================= -->
+
+        <header class="topbar">
+
+            <div class="topbar-title">
+
+                <h1>
+                    Relatórios
+                </h1>
+
+                <p>
+                    Analise suas movimentações financeiras
+                </p>
+
+            </div>
+
+
+            <div class="user-area">
+
+                <span>
+                    👤
+                </span>
+
+                <span>
+                    Usuário
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             SELEÇÃO DO MÊS
+             ================================================= -->
+
+        <section class="relatorio-filtro">
+
+            <button
+                id="mesAnterior"
+                class="btn-mes"
+                type="button">
+
+                ‹
+
+            </button>
+
+
+            <div class="mes-selecionado">
+
+                <span>
+                    Período
+                </span>
+
+                <h2 id="nomeMes">
+                    Setembro 2026
+                </h2>
+
+            </div>
+
+
+            <button
+                id="mesProximo"
+                class="btn-mes"
+                type="button">
+
+                ›
+
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             RESUMO FINANCEIRO
+             ================================================= -->
+
+        <section class="relatorio-resumo">
+
+
+            <!-- ENTRADAS -->
+
+            <div class="relatorio-card">
+
+                <div class="relatorio-card-icon">
+                    💰
+                </div>
+
+                <div>
+
+                    <span>
+                        Entradas
+                    </span>
+
+                    <strong id="totalEntradas">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- GASTOS -->
+
+            <div class="relatorio-card">
+
+                <div class="relatorio-card-icon">
+                    💸
+                </div>
+
+                <div>
+
+                    <span>
+                        Gastos
+                    </span>
+
+                    <strong id="totalGastos">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- SALDO -->
+
+            <div class="relatorio-card">
+
+                <div class="relatorio-card-icon">
+                    💵
+                </div>
+
+                <div>
+
+                    <span>
+                        Saldo
+                    </span>
+
+                    <strong id="saldoMes">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- DIVIDENDOS -->
+
+            <div class="relatorio-card">
+
+                <div class="relatorio-card-icon">
+                    📈
+                </div>
+
+                <div>
+
+                    <span>
+                        Dividendos
+                    </span>
+
+                    <strong id="totalDividendos">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GASTOS POR CATEGORIA
+             ================================================= -->
+
+        <section class="relatorio-painel">
+
+            <div class="painel-titulo">
+
+                <div>
+
+                    <h2>
+                        Gastos por categoria
+                    </h2>
+
+                    <p>
+                        Distribuição dos gastos no mês selecionado
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- GRÁFICO -->
+
+            <div class="grafico-relatorio">
+
+                <canvas id="graficoGastosCategoria"></canvas>
+
+            </div>
+
+
+            <!-- LISTA -->
+
+            <div
+                id="listaGastosCategoria"
+                class="lista-relatorio">
+
+                <div class="relatorio-vazio">
+
+                    Nenhum gasto registrado neste mês.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPRAS NO CARTÃO
+             ================================================= -->
+
+        <section class="relatorio-painel">
+
+            <div class="painel-titulo">
+
+                <div>
+
+                    <h2>
+                        Compras no cartão
+                    </h2>
+
+                    <p>
+                        Compras lançadas nas faturas do mês
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="listaComprasCartao"
+                class="lista-relatorio">
+
+                <div class="relatorio-vazio">
+
+                    Nenhuma compra no cartão neste mês.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     CHART.JS
+     ========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<!-- =========================================================
+     JAVASCRIPT DO RELATÓRIO
+     ========================================================= -->
+
+<script src="js/relatorios.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,280 @@
+/* ============================================================
+MEU FINANCEIRO
+RELATÓRIOS
+============================================================ */
+
+/* ============================================================
+FILTRO DE MÊS
+============================================================ */
+
+.relatorio-filtro {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 25px;
+margin-bottom: 25px;
+padding: 20px;
+background: #ffffff;
+border-radius: 12px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.mes-selecionado {
+text-align: center;
+min-width: 180px;
+}
+
+.mes-selecionado span {
+display: block;
+font-size: 13px;
+color: #777;
+margin-bottom: 4px;
+}
+
+.mes-selecionado h2 {
+margin: 0;
+font-size: 22px;
+color: #222;
+}
+
+/* ============================================================
+BOTÕES DE MÊS
+============================================================ */
+
+.relatorio-filtro .btn-mes {
+width: 42px;
+height: 42px;
+border: none;
+border-radius: 50%;
+background: #f0f2f5;
+color: #333;
+font-size: 26px;
+line-height: 1;
+cursor: pointer;
+transition: 0.2s;
+}
+
+.relatorio-filtro .btn-mes {
+background: #e1e4e8;
+}
+
+/* ============================================================
+CARDS DO RESUMO
+============================================================ */
+
+.relatorio-resumo {
+display: grid;
+grid-template-columns: repeat(4, minmax(0, 1fr));
+gap: 20px;
+margin-bottom: 25px;
+}
+
+.relatorio-card {
+display: flex;
+align-items: center;
+gap: 15px;
+min-height: 100px;
+padding: 20px;
+background: #ffffff;
+border-radius: 12px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.relatorio-card-icon {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 48px;
+height: 48px;
+flex-shrink: 0;
+border-radius: 10px;
+background: #f0f2f5;
+font-size: 23px;
+}
+
+.relatorio-card span {
+display: block;
+margin-bottom: 5px;
+color: #777;
+font-size: 13px;
+}
+
+.relatorio-card strong {
+display: block;
+color: #222;
+font-size: 21px;
+}
+
+/* ============================================================
+PAINÉIS
+============================================================ */
+
+.relatorio-painel {
+margin-bottom: 25px;
+padding: 25px;
+background: #ffffff;
+border-radius: 12px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.painel-titulo {
+margin-bottom: 20px;
+}
+
+.painel-titulo h2 {
+margin: 0 0 5px 0;
+color: #222;
+font-size: 20px;
+}
+
+.painel-titulo p {
+margin: 0;
+color: #777;
+font-size: 13px;
+}
+
+/* ============================================================
+LISTAS
+============================================================ */
+
+.lista-relatorio {
+display: flex;
+flex-direction: column;
+gap: 12px;
+}
+
+.relatorio-vazio {
+padding: 25px;
+text-align: center;
+color: #777;
+background: #f8f9fa;
+border-radius: 8px;
+}
+
+/* ============================================================
+GASTOS POR CATEGORIA
+============================================================ */
+
+.categoria-gasto {
+padding: 12px 0;
+border-bottom: 1px solid #eeeeee;
+}
+
+.categoria-gasto {
+border-bottom: none;
+}
+
+.categoria-gasto-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 15px;
+margin-bottom: 8px;
+}
+
+.categoria-gasto-nome {
+font-weight: 600;
+color: #333;
+}
+
+.categoria-gasto-valor {
+font-weight: 600;
+color: #333;
+}
+
+.categoria-gasto-barra {
+width: 100%;
+height: 8px;
+overflow: hidden;
+background: #eeeeee;
+border-radius: 10px;
+}
+
+.categoria-gasto-progresso {
+height: 100%;
+border-radius: 10px;
+}
+
+/* ============================================================
+COMPRAS NO CARTÃO
+============================================================ */
+
+.cartao-dashboard {
+padding: 15px 0;
+border-bottom: 1px solid #eeeeee;
+}
+
+.cartao-dashboard {
+border-bottom: none;
+}
+
+.cartao-dashboard-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 15px;
+margin-bottom: 12px;
+}
+
+.cartao-dashboard-nome {
+font-weight: 600;
+color: #333;
+}
+
+.cartao-dashboard-total {
+font-weight: 700;
+color: #333;
+}
+
+.categorias-cartao {
+display: flex;
+flex-direction: column;
+gap: 8px;
+padding-left: 15px;
+}
+
+.categoria-cartao-item {
+display: flex;
+justify-content: space-between;
+gap: 15px;
+padding: 7px 0;
+color: #555;
+font-size: 14px;
+}
+
+.categoria-cartao-item span {
+font-weight: 600;
+}
+
+/* ============================================================
+RESPONSIVIDADE
+============================================================ */
+
+@media (max-width: 1100px) {
+
+.relatorio-resumo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+}
+
+@media (max-width: 700px) {
+
+.relatorio-filtro {
+    gap: 10px;
+}
+
+.relatorio-resumo {
+    grid-template-columns: 1fr;
+}
+
+.relatorio-painel {
+    padding: 18px;
+}
+
+.cartao-dashboard-header,
+.categoria-gasto-header {
+    align-items: flex-start;
+}
+
+}
