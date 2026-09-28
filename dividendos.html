@@ -1,0 +1,207 @@
+<!DOCTYPE html> <html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Dividendos - Meu Financeiro</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/dividendos.css">
+</head> <body>
+<div class="app">
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <span class="logo-icon">R$</span>
+            <span>Meu Financeiro</span>
+        </div>
+
+        <nav class="menu">
+
+            <a href="index.html">🏠 Dashboard</a>
+
+            <a href="contas-cartoes.html">💳 Entradas</a>
+
+            <a href="nova-saida.html">💸 Gastos</a>
+
+            <a href="movimentacoes.html">📊 Movimentações</a>
+
+            <a href="dividendos.html" class="active">📈 Dividendos</a>
+
+            <a href="#">📁 Categorias</a>
+
+            <a href="#">📑 Relatórios</a>
+
+            <a href="#">⚙️ Configurações</a>
+
+        </nav>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Dividendos</h1>
+                <p>Registre e acompanhe seus recebimentos.</p>
+            </div>
+
+            <div class="usuario">
+                Ednardo
+            </div>
+
+        </header>
+
+
+        <section class="conteudo-dividendos">
+
+            <div class="card-formulario">
+
+                <h2>Novo dividendo</h2>
+
+                <form id="formulario">
+
+                    <div class="campo">
+
+                        <label for="descricao">
+                            Descrição
+                        </label>
+
+                        <input
+                            type="text"
+                            id="descricao"
+                            placeholder="Ex.: Dividendos ITSA4"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="valor">
+                            Valor
+                        </label>
+
+                        <input
+                            type="text"
+                            id="valor"
+                            placeholder="R$ 0,00"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="data">
+                            Data
+                        </label>
+
+                        <input
+                            type="date"
+                            id="data"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="conta">
+                            Conta de destino
+                        </label>
+
+                        <select id="conta" required>
+
+                            <option value="">
+                                Selecione a conta
+                            </option>
+
+                            <option value="nubank">
+                                Nubank
+                            </option>
+
+                            <option value="mercado-pago">
+                                Mercado Pago
+                            </option>
+
+                            <option value="caixa">
+                                Caixa
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="observacao">
+                            Observação
+                        </label>
+
+                        <textarea
+                            id="observacao"
+                            rows="3"
+                            placeholder="Observação opcional"
+                        ></textarea>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn-salvar"
+                    >
+                        + Registrar dividendo
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="card-resumo">
+
+                <h2>Resumo dos dividendos</h2>
+
+                <div class="resumo-valor">
+
+                    <span>Total recebido</span>
+
+                    <strong id="totalDividendos">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="card-lista">
+
+                <div class="titulo-lista">
+
+                    <h2>Dividendos registrados</h2>
+
+                </div>
+
+                <div id="listaDividendos">
+
+                    <p class="sem-registros">
+                        Nenhum dividendo registrado.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="js/dividendos.js"></script>
+</body> </html>

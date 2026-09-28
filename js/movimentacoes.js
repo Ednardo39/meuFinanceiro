@@ -1,12 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
 
 const listaMovimentacoes = document.getElementById("listaMovimentacoes");
+
 const filtroMes = document.getElementById("filtroMes");
+
 const filtroConta = document.getElementById("filtroConta");
+
+const totalEntradas = document.getElementById("totalEntradas");
+
+const totalSaidas = document.getElementById("totalSaidas");
+
+const saldoMovimentacoes = document.getElementById("saldoMovimentacoes");
 
 
 // ============================================================
-// LER MOVIMENTAÇÕES SALVAS
+// CARREGAR MOVIMENTAÇÕES
 // ============================================================
 
 let movimentacoes = [];
@@ -19,14 +27,15 @@ try {
 
 } catch (erro) {
 
-    console.error("Erro ao ler movimentações:", erro);
+    console.error("Erro ao carregar movimentações:", erro);
 
     movimentacoes = [];
+
 }
 
 
 // ============================================================
-// FORMATAR VALOR
+// FORMATAR MOEDA
 // ============================================================
 
 function formatarMoeda(valor) {
@@ -45,23 +54,25 @@ function formatarMoeda(valor) {
 
 function formatarData(data) {
 
-    if (!data || !data.includes("-")) {
-        return data || "-";
+    if (!data) {
+        return "-";
     }
 
     const partes = data.split("-");
 
-    return (
-        partes[2] + "/" +
-        partes[1] + "/" +
-        partes[0]
-    );
+    if (partes.length === 3) {
+
+        return partes[2] + "/" + partes[1] + "/" + partes[0];
+
+    }
+
+    return data;
 
 }
 
 
 // ============================================================
-// NOME DO MÊS
+// NOMES DOS MESES
 // ============================================================
 
 const nomesMeses = [
@@ -81,7 +92,30 @@ const nomesMeses = [
 
 
 // ============================================================
-// CRIAR LISTA DE MESES EXISTENTES
+// NOME DA CONTA
+// ============================================================
+
+function nomeDaConta(conta) {
+
+    const nomes = {
+
+        "nubank": "Nubank",
+
+        "mercado-pago": "Mercado Pago",
+
+        "caixa": "Caixa",
+
+        "dinheiro": "Dinheiro em espécie"
+
+    };
+
+    return nomes[conta] || conta || "-";
+
+}
+
+
+// ============================================================
+// CARREGAR PERÍODOS
 // ============================================================
 
 function carregarMeses() {
@@ -94,27 +128,16 @@ function carregarMeses() {
             return;
         }
 
-        const partes = movimentacao.data.split("-");
+        const mes = movimentacao.data.substring(0, 7);
 
-        if (partes.length !== 3) {
-            return;
-        }
+        if (!meses.includes(mes)) {
 
-        const ano = partes[0];
-        const mes = partes[1];
-
-        const valorMes = ano + "-" + mes;
-
-        if (!meses.includes(valorMes)) {
-
-            meses.push(valorMes);
+            meses.push(mes);
 
         }
 
     });
 
-
-    // Ordenar do mais recente para o mais antigo
 
     meses.sort(function (a, b) {
 
@@ -123,30 +146,33 @@ function carregarMeses() {
     });
 
 
-    // Limpar opções atuais
-
-    filtroMes.innerHTML = `
-        <option value="todos">Todos os períodos</option>
-    `;
+    filtroMes.innerHTML = "";
 
 
-    // Criar opções
+    const opcaoTodos = document.createElement("option");
+
+    opcaoTodos.value = "todos";
+
+    opcaoTodos.textContent = "Todos os períodos";
+
+    filtroMes.appendChild(opcaoTodos);
+
 
     meses.forEach(function (mes) {
 
         const partes = mes.split("-");
 
-        const ano = Number(partes[0]);
-        const numeroMes = Number(partes[1]) - 1;
+        const ano = partes[0];
 
-        const option = document.createElement("option");
+        const numeroMes = Number(partes[1]);
 
-        option.value = mes;
+        const opcao = document.createElement("option");
 
-        option.textContent =
-            nomesMeses[numeroMes] + " " + ano;
+        opcao.value = mes;
 
-        filtroMes.appendChild(option);
+        opcao.textContent = nomesMeses[numeroMes - 1] + " de " + ano;
+
+        filtroMes.appendChild(opcao);
 
     });
 
@@ -154,28 +180,47 @@ function carregarMeses() {
 
 
 // ============================================================
-// CONVERTER NOME DA CONTA
+// ATUALIZAR RESUMO
 // ============================================================
 
-function nomeDaConta(conta) {
+function atualizarResumo(movimentacoesFiltradas) {
 
-    if (conta === "nubank") {
-        return "Nubank";
-    }
+    let entradas = 0;
 
-    if (conta === "mercado-pago") {
-        return "Mercado Pago";
-    }
+    let saidas = 0;
 
-    if (conta === "caixa") {
-        return "Caixa";
-    }
 
-    if (conta === "dinheiro") {
-        return "Dinheiro em espécie";
-    }
+    movimentacoesFiltradas.forEach(function (movimentacao) {
 
-    return conta || "-";
+        const valor = Number(movimentacao.valor) || 0;
+
+        const tipo = String(movimentacao.tipo || "").toLowerCase();
+
+
+        if (tipo === "entrada") {
+
+            entradas += valor;
+
+        }
+
+
+        if (tipo === "saida" || tipo === "saída") {
+
+            saidas += valor;
+
+        }
+
+    });
+
+
+    const saldo = entradas - saidas;
+
+
+    totalEntradas.textContent = formatarMoeda(entradas);
+
+    totalSaidas.textContent = formatarMoeda(saidas);
+
+    saldoMovimentacoes.textContent = formatarMoeda(saldo);
 
 }
 
@@ -186,152 +231,135 @@ function nomeDaConta(conta) {
 
 function mostrarMovimentacoes() {
 
-    const mesSelecionado = filtroMes.value;
+    const periodoSelecionado = filtroMes.value;
+
     const contaSelecionada = filtroConta.value;
 
 
-    // --------------------------------------------------------
-    // FILTRAR
-    // --------------------------------------------------------
-
-    const movimentacoesFiltradas = movimentacoes.filter(
-        function (movimentacao) {
-
-            // Filtro de mês
-
-            let passouMes = true;
-
-            if (mesSelecionado !== "todos") {
-
-                passouMes =
-                    movimentacao.data &&
-                    movimentacao.data.startsWith(mesSelecionado);
-
-            }
+    let movimentacoesFiltradas = movimentacoes.filter(function (movimentacao) {
 
 
-            // Filtro de conta
+        // FILTRO DE PERÍODO
 
-            let passouConta = true;
+        if (
+            periodoSelecionado !== "todos" &&
+            !movimentacao.data.startsWith(periodoSelecionado)
+        ) {
 
-            if (contaSelecionada !== "todas") {
-
-                passouConta =
-                    movimentacao.conta === contaSelecionada;
-
-            }
-
-
-            return passouMes && passouConta;
+            return false;
 
         }
-    );
 
 
-    // --------------------------------------------------------
-    // ORDENAR
-    // --------------------------------------------------------
+        // FILTRO DE CONTA
 
-    movimentacoesFiltradas.sort(function (a, b) {
+        if (
+            contaSelecionada !== "todas" &&
+            movimentacao.conta !== contaSelecionada
+        ) {
 
-        return new Date(b.data) - new Date(a.data);
+            return false;
+
+        }
+
+
+        return true;
 
     });
 
 
-    // --------------------------------------------------------
-    // NENHUM RESULTADO
-    // --------------------------------------------------------
+    // ========================================================
+    // ORDENAR DA MAIS RECENTE PARA A MAIS ANTIGA
+    // ========================================================
+
+    movimentacoesFiltradas.sort(function (a, b) {
+
+        return String(b.data).localeCompare(String(a.data));
+
+    });
+
+
+    // ========================================================
+    // ATUALIZAR RESUMO
+    // ========================================================
+
+    atualizarResumo(movimentacoesFiltradas);
+
+
+    // ========================================================
+    // LIMPAR TABELA
+    // ========================================================
+
+    listaMovimentacoes.innerHTML = "";
+
+
+    // ========================================================
+    // NENHUMA MOVIMENTAÇÃO
+    // ========================================================
 
     if (movimentacoesFiltradas.length === 0) {
 
-        listaMovimentacoes.innerHTML = `
-            <tr>
-                <td colspan="5">
-                    Nenhuma movimentação encontrada.
-                </td>
-            </tr>
+        const linha = document.createElement("tr");
+
+        linha.innerHTML = `
+            <td colspan="5">
+                Nenhuma movimentação encontrada.
+            </td>
         `;
+
+        listaMovimentacoes.appendChild(linha);
 
         return;
 
     }
 
 
-    // --------------------------------------------------------
-    // LIMPAR TABELA
-    // --------------------------------------------------------
-
-    listaMovimentacoes.innerHTML = "";
-
-
-    // --------------------------------------------------------
-    // MOSTRAR RESULTADOS
-    // --------------------------------------------------------
+    // ========================================================
+    // MOSTRAR MOVIMENTAÇÕES
+    // ========================================================
 
     movimentacoesFiltradas.forEach(function (movimentacao) {
 
         const linha = document.createElement("tr");
 
 
-        // ----------------------------------------------------
-        // DATA
-        // ----------------------------------------------------
-
-        const dataFormatada =
-            formatarData(movimentacao.data);
+        const tipo = String(
+            movimentacao.tipo || ""
+        ).toLowerCase();
 
 
-        // ----------------------------------------------------
-        // TIPO
-        // ----------------------------------------------------
+        let textoTipo = "Saída";
 
-        const tipo =
-            movimentacao.tipo === "entrada"
-                ? "Entrada"
-                : "Saída";
+
+        if (tipo === "entrada") {
+
+            textoTipo = "Entrada";
+
+        }
 
 
         const classeTipo =
-            movimentacao.tipo === "entrada"
+            tipo === "entrada"
                 ? "tipo-entrada"
                 : "tipo-saida";
 
 
-        // ----------------------------------------------------
-        // VALOR
-        // ----------------------------------------------------
-
-        const valor =
-            Number(movimentacao.valor) || 0;
-
-
-        const valorFormatado =
-            formatarMoeda(valor);
-
-
         const classeValor =
-            movimentacao.tipo === "entrada"
+            tipo === "entrada"
                 ? "valor-entrada"
                 : "valor-saida";
 
 
-        // ----------------------------------------------------
-        // CONTA
-        // ----------------------------------------------------
+        const sinal =
+            tipo === "entrada"
+                ? "+"
+                : "-";
 
-        const conta =
-            nomeDaConta(movimentacao.conta);
-
-
-        // ----------------------------------------------------
-        // MONTAR LINHA
-        // ----------------------------------------------------
 
         linha.innerHTML = `
 
             <td>
-                ${dataFormatada}
+                ${formatarData(movimentacao.data)}
             </td>
 
             <td>
@@ -339,15 +367,15 @@ function mostrarMovimentacoes() {
             </td>
 
             <td>
-                ${conta}
+                ${nomeDaConta(movimentacao.conta)}
             </td>
 
             <td class="${classeTipo}">
-                ${tipo}
+                ${textoTipo}
             </td>
 
             <td class="${classeValor}">
-                ${valorFormatado}
+                ${sinal} ${formatarMoeda(movimentacao.valor)}
             </td>
 
         `;

@@ -1,1394 +1,1445 @@
-```css
 /* ============================================================
-   CONFIGURAÇÕES GERAIS
-   ============================================================ */
+CONFIGURAÇÕES GERAIS
+============================================================ */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
 }
 
-:root {
+*{
 
-    --primary: #2563eb;
-    --primary-dark: #1d4ed8;
+--primary: #2563eb;
+--primary-dark: #1d4ed8;
 
-    --background: #f5f7fb;
-    --white: #ffffff;
+--background: #f5f7fb;
+--white: #ffffff;
 
-    --text: #1e293b;
-    --text-light: #64748b;
+--text: #1e293b;
+--text-light: #64748b;
 
-    --border: #e2e8f0;
+--border: #e2e8f0;
 
-    --green: #16a34a;
-    --green-light: #dcfce7;
+--green: #16a34a;
+--green-light: #dcfce7;
 
-    --red: #dc2626;
-    --red-light: #fee2e2;
+--red: #dc2626;
+--red-light: #fee2e2;
 
-    --purple: #7c3aed;
-    --purple-light: #ede9fe;
+--purple: #7c3aed;
+--purple-light: #ede9fe;
 
-    --orange: #ea580c;
-    --orange-light: #ffedd5;
+--orange: #ea580c;
+--orange-light: #ffedd5;
 
-    --sidebar-width: 250px;
+--sidebar-width: 250px;
+
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: var(--background);
-    color: var(--text);
+
+font-family: Arial, Helvetica, sans-serif;
+
+background: var(--background);
+
+color: var(--text);
+
+min-height: 100vh;
+
 }
 
+/* ============================================================
+APLICAÇÃO
+============================================================ */
+
+.app {
+
+min-height: 100vh;
+
+width: 100%;
+
+}
 
 /* ============================================================
-   MENU LATERAL
-   ============================================================ */
+MENU LATERAL
+============================================================ */
 
 .sidebar {
 
-    position: fixed;
+position: fixed;
 
-    left: 0;
-    top: 0;
+left: 0;
+top: 0;
 
-    width: var(--sidebar-width);
-    height: 100vh;
+width: var(--sidebar-width);
 
-    background: var(--white);
+height: 100vh;
 
-    border-right: 1px solid var(--border);
+background: var(--white);
 
-    display: flex;
-    flex-direction: column;
+border-right: 1px solid var(--border);
 
-    padding: 25px 15px;
+display: flex;
+
+flex-direction: column;
+
+padding: 25px 15px;
+
+overflow-y: auto;
+
+z-index: 1000;
 
 }
 
-
-/* Logo */
+/* ============================================================
+LOGO
+============================================================ */
 
 .logo {
 
-    display: flex;
-    align-items: center;
+display: flex;
 
-    gap: 12px;
+align-items: center;
 
-    padding: 0 10px 30px;
+gap: 12px;
+
+padding: 0 10px 30px;
+
 }
 
 .logo-icon {
 
-    width: 42px;
-    height: 42px;
+width: 42px;
 
-    background: var(--primary);
+height: 42px;
 
-    color: white;
+background: var(--primary);
 
-    border-radius: 10px;
+color: white;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+border-radius: 10px;
 
-    font-weight: bold;
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+font-weight: bold;
+
 }
 
 .logo-text {
 
-    display: flex;
-    flex-direction: column;
+color: var(--text);
+
+font-size: 18px;
+
+font-weight: bold;
+
 }
 
-.logo-text strong {
-
-    font-size: 18px;
-}
-
-.logo-text span {
-
-    color: var(--primary);
-
-    font-size: 18px;
-
-    font-weight: bold;
-}
-
-
-/* Menu */
+/* ============================================================
+MENU
+============================================================ */
 
 .menu {
 
-    display: flex;
-    flex-direction: column;
+display: flex;
 
-    gap: 5px;
+flex-direction: column;
+
+gap: 5px;
+
 }
 
 .menu-item {
 
-    display: flex;
+display: flex;
 
-    align-items: center;
+align-items: center;
 
-    gap: 14px;
+gap: 14px;
 
-    padding: 12px 15px;
+padding: 12px 15px;
 
-    border-radius: 8px;
+border-radius: 8px;
 
-    text-decoration: none;
+text-decoration: none;
 
-    color: var(--text-light);
+color: var(--text-light);
 
-    font-size: 14px;
+font-size: 14px;
 
-    transition: 0.2s;
+transition: 0.2s;
+
 }
 
-.menu-item:hover {
+.menu-item {
 
-    background: #f1f5f9;
+background: #f1f5f9;
 
-    color: var(--text);
+color: var(--text);
+
 }
 
 .menu-item.active {
 
-    background: #eff6ff;
+background: #eff6ff;
 
-    color: var(--primary);
+color: var(--primary);
 
-    font-weight: bold;
+font-weight: bold;
+
 }
 
 .menu-icon {
 
-    width: 22px;
+width: 22px;
 
-    text-align: center;
+text-align: center;
 
-    font-size: 18px;
+font-size: 18px;
+
 }
+
+/* ============================================================
+CORES
+============================================================ */
 
 .entrada {
 
-    color: var(--green);
+color: var(--green);
+
 }
 
 .saida {
 
-    color: var(--red);
+color: var(--red);
+
 }
 
 .dividendo {
 
-    color: var(--purple);
+color: var(--purple);
+
 }
-
-
-/* Menu inferior */
-
-.menu-bottom {
-
-    margin-top: auto;
-}
-
 
 /* ============================================================
-   ÁREA PRINCIPAL
-   ============================================================ */
+ÁREA PRINCIPAL
+============================================================ */
 
 .main-content {
 
-    margin-left: var(--sidebar-width);
+margin-left: var(--sidebar-width);
 
-    min-height: 100vh;
+min-height: 100vh;
+
+width: calc(100% - var(--sidebar-width));
+
 }
 
-
 /* ============================================================
-   CABEÇALHO
-   ============================================================ */
+CABEÇALHO
+============================================================ */
 
 .topbar {
 
-    height: 80px;
+height: 80px;
 
-    background: var(--white);
+background: var(--white);
 
-    border-bottom: 1px solid var(--border);
+border-bottom: 1px solid var(--border);
 
-    display: flex;
+display: flex;
 
-    align-items: center;
+align-items: center;
 
-    justify-content: space-between;
+justify-content: space-between;
 
-    padding: 0 35px;
+padding: 0 35px;
+
 }
 
 .page-title h1 {
 
-    font-size: 22px;
+font-size: 22px;
 
-    margin-bottom: 4px;
+margin-bottom: 4px;
+
 }
 
 .page-title p {
 
-    color: var(--text-light);
+color: var(--text-light);
 
-    font-size: 13px;
+font-size: 13px;
+
 }
-
-
-/* Usuário */
 
 .user-area {
 
-    display: flex;
+display: flex;
 
-    align-items: center;
+align-items: center;
 
-    gap: 12px;
+gap: 12px;
+
+color: var(--text-light);
+
+font-size: 14px;
+
 }
 
 .user-info {
 
-    display: flex;
+display: flex;
 
-    flex-direction: column;
+flex-direction: column;
 
-    text-align: right;
+text-align: right;
+
 }
 
 .user-info strong {
 
-    font-size: 14px;
+font-size: 14px;
+
 }
 
 .user-info span {
 
-    color: var(--text-light);
+color: var(--text-light);
 
-    font-size: 12px;
+font-size: 12px;
 
-    margin-top: 3px;
+margin-top: 3px;
+
 }
 
 .user-avatar {
 
-    width: 42px;
-    height: 42px;
+width: 42px;
 
-    background: var(--primary);
+height: 42px;
 
-    color: white;
+background: var(--primary);
 
-    border-radius: 50%;
+color: white;
 
-    display: flex;
+border-radius: 50%;
 
-    align-items: center;
-    justify-content: center;
+display: flex;
 
-    font-weight: bold;
+align-items: center;
+
+justify-content: center;
+
+font-weight: bold;
+
 }
-
-
-/* Botão mobile */
 
 .mobile-menu-button {
 
-    display: none;
+display: none;
 
-    border: none;
+border: none;
 
-    background: none;
+background: none;
 
-    font-size: 25px;
+font-size: 25px;
 
-    cursor: pointer;
+cursor: pointer;
+
 }
 
-
 /* ============================================================
-   CONTEÚDO
-   ============================================================ */
+CONTEÚDO
+============================================================ */
 
 .content {
 
-    padding: 30px 35px;
+padding: 30px 35px;
+
+width: 100%;
+
 }
-
-
-/* Saudação */
-
-.welcome {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 25px;
-}
-
-.welcome h2 {
-
-    font-size: 21px;
-
-    margin-bottom: 5px;
-}
-
-.welcome p {
-
-    color: var(--text-light);
-
-    font-size: 14px;
-}
-
-
-/* Seletor de mês */
-
-.month-selector {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    background: white;
-
-    border: 1px solid var(--border);
-
-    border-radius: 8px;
-
-    padding: 5px;
-}
-
-.month-selector button {
-
-    width: 30px;
-    height: 30px;
-
-    border: none;
-
-    background: #f8fafc;
-
-    border-radius: 6px;
-
-    cursor: pointer;
-
-    font-size: 18px;
-}
-
-.month-selector span {
-
-    font-size: 13px;
-
-    font-weight: bold;
-
-    padding: 0 8px;
-}
-
 
 /* ============================================================
-   CARDS FINANCEIROS
-   ============================================================ */
+NAVEGAÇÃO DO MÊS
+============================================================ */
 
-.financial-cards {
+.month-navigation {
 
-    display: grid;
+display: flex;
 
-    grid-template-columns: repeat(4, 1fr);
+align-items: center;
 
-    gap: 18px;
+justify-content: center;
 
-    margin-bottom: 25px;
+gap: 18px;
+
+margin-bottom: 25px;
+
 }
 
-.financial-card {
+.month-navigation h2 {
 
-    background: white;
+min-width: 180px;
 
-    border: 1px solid var(--border);
+text-align: center;
 
-    border-radius: 12px;
+font-size: 20px;
 
-    padding: 20px;
-
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
 }
 
+.btn-mes {
 
-/* Cabeçalho do card */
+width: 36px;
 
-.card-header {
+height: 36px;
 
-    display: flex;
+border: 1px solid var(--border);
 
-    justify-content: space-between;
+background: var(--white);
 
-    align-items: center;
+color: var(--text);
 
-    margin-bottom: 18px;
+border-radius: 8px;
+
+font-size: 22px;
+
+cursor: pointer;
+
+transition: 0.2s;
+
 }
 
-.card-title {
+.btn-mes {
 
-    color: var(--text-light);
+background: #f1f5f9;
 
-    font-size: 13px;
+color: var(--primary);
+
 }
-
-.card-icon {
-
-    width: 38px;
-    height: 38px;
-
-    border-radius: 9px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-weight: bold;
-
-    font-size: 16px;
-}
-
-
-/* Cores dos cards */
-
-.balance .card-icon {
-
-    background: #dbeafe;
-
-    color: var(--primary);
-}
-
-.income .card-icon {
-
-    background: var(--green-light);
-
-    color: var(--green);
-}
-
-.expense .card-icon {
-
-    background: var(--red-light);
-
-    color: var(--red);
-}
-
-.dividends .card-icon {
-
-    background: var(--purple-light);
-
-    color: var(--purple);
-}
-
-
-/* Valores */
-
-.card-value {
-
-    display: block;
-
-    font-size: 23px;
-
-    margin-bottom: 7px;
-}
-
-.card-description {
-
-    color: var(--text-light);
-
-    font-size: 12px;
-}
-
 
 /* ============================================================
-   GRID INFERIOR
-   ============================================================ */
+CARDS PRINCIPAIS
+============================================================ */
+
+.cards-resumo {
+
+display: grid;
+
+grid-template-columns: repeat(4, minmax(0, 1fr));
+
+gap: 18px;
+
+margin-bottom: 25px;
+
+width: 100%;
+
+}
+
+.card.resumo {
+
+background: var(--white);
+
+border: 1px solid var(--border);
+
+border-radius: 12px;
+
+padding: 20px;
+
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+
+display: flex;
+
+align-items: center;
+
+gap: 15px;
+
+min-height: 110px;
+
+min-width: 0;
+
+}
+
+/* ============================================================
+ÍCONES DOS CARDS
+============================================================ */
+
+.card.resumo .card-icon {
+
+width: 42px;
+
+height: 42px;
+
+min-width: 42px;
+
+border-radius: 10px;
+
+display: flex;
+
+align-items: center;
+
+justify-content: center;
+
+font-size: 18px;
+
+}
+
+/* ============================================================
+INFORMAÇÕES DOS CARDS
+============================================================ */
+
+.card-info {
+
+display: flex;
+
+flex-direction: column;
+
+gap: 6px;
+
+min-width: 0;
+
+}
+
+.card-label {
+
+color: var(--text-light);
+
+font-size: 13px;
+
+}
+
+.card-info strong {
+
+font-size: 23px;
+
+font-weight: bold;
+
+white-space: nowrap;
+
+}
+
+/* ============================================================
+CORES DOS CARDS
+============================================================ */
+
+.card.resumo.saldo .card-icon {
+
+background: #dbeafe;
+
+color: var(--primary);
+
+}
+
+.card.resumo.entradas .card-icon {
+
+background: var(--green-light);
+
+color: var(--green);
+
+}
+
+.card.resumo.gastos .card-icon {
+
+background: var(--red-light);
+
+color: var(--red);
+
+}
+
+.card.resumo.dividendos .card-icon {
+
+background: var(--purple-light);
+
+color: var(--purple);
+
+}
+
+/* ============================================================
+GRID DO DASHBOARD
+============================================================ */
 
 .dashboard-grid {
 
-    display: grid;
+display: grid;
 
-    grid-template-columns: 1.6fr 1fr;
+grid-template-columns: 1.6fr 1fr;
 
-    gap: 20px;
+gap: 20px;
+
+width: 100%;
+
+margin-bottom: 20px;
+
 }
 
-
-/* Painéis */
+/* ============================================================
+PAINÉIS
+============================================================ */
 
 .panel {
 
-    background: white;
+background: var(--white);
 
-    border: 1px solid var(--border);
+border: 1px solid var(--border);
 
-    border-radius: 12px;
+border-radius: 12px;
 
-    padding: 22px;
+padding: 22px;
+
+margin-bottom: 20px;
+
+width: 100%;
+
 }
 
-
-/* Cabeçalho dos painéis */
+/* ============================================================
+CABEÇALHO DOS PAINÉIS
+============================================================ */
 
 .panel-header {
 
-    display: flex;
+display: flex;
 
-    justify-content: space-between;
+justify-content: space-between;
 
-    align-items: center;
+align-items: center;
 
-    margin-bottom: 20px;
+margin-bottom: 20px;
+
 }
 
 .panel-header h3 {
 
-    font-size: 16px;
+font-size: 16px;
 
-    margin-bottom: 5px;
+margin-bottom: 5px;
+
 }
 
 .panel-header p {
 
-    color: var(--text-light);
+color: var(--text-light);
 
-    font-size: 12px;
+font-size: 12px;
+
 }
-
-.view-all {
-
-    border: none;
-
-    background: none;
-
-    color: var(--primary);
-
-    font-size: 12px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-}
-
 
 /* ============================================================
-   TRANSAÇÕES
-   ============================================================ */
+GRÁFICO
+============================================================ */
+
+.grafico-barras {
+
+height: 220px;
+
+display: flex;
+
+align-items: flex-end;
+
+justify-content: center;
+
+gap: 70px;
+
+padding: 20px 20px 35px;
+
+}
+
+.barra-grupo {
+
+height: 100%;
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: flex-end;
+
+gap: 8px;
+
+}
+
+.barra {
+
+width: 55px;
+
+min-height: 3px;
+
+border-radius: 8px 8px 0 0;
+
+transition: height 0.3s ease;
+
+}
+
+.barra-entrada {
+
+background: var(--green);
+
+}
+
+.barra-gasto {
+
+background: var(--red);
+
+}
+
+.barra-grupo span {
+
+color: var(--text-light);
+
+font-size: 12px;
+
+}
+
+/* ============================================================
+TRANSAÇÕES
+============================================================ */
 
 .transaction {
 
-    display: flex;
+display: flex;
 
-    align-items: center;
+align-items: center;
 
-    gap: 12px;
+gap: 12px;
 
-    padding: 13px 0;
+padding: 13px 0;
 
-    border-bottom: 1px solid #f1f5f9;
+border-bottom: 1px solid #f1f5f9;
+
 }
 
-.transaction:last-child {
+.transaction {
 
-    border-bottom: none;
+border-bottom: none;
+
 }
 
 .transaction-icon {
 
-    width: 38px;
-    height: 38px;
+width: 38px;
 
-    border-radius: 9px;
+height: 38px;
 
-    display: flex;
+border-radius: 9px;
 
-    align-items: center;
-    justify-content: center;
+display: flex;
 
-    font-size: 17px;
+align-items: center;
+
+justify-content: center;
+
+font-size: 17px;
+
 }
 
 .income-icon {
 
-    background: var(--green-light);
+background: var(--green-light);
 
-    color: var(--green);
+color: var(--green);
+
 }
 
 .dividend-icon {
 
-    background: var(--purple-light);
+background: var(--purple-light);
 
-    color: var(--purple);
+color: var(--purple);
+
 }
 
 .fuel-icon {
 
-    background: var(--orange-light);
+background: var(--orange-light);
 
-    color: var(--orange);
+color: var(--orange);
+
 }
 
 .market-icon {
 
-    background: #fef3c7;
+background: #fef3c7;
 
-    color: #d97706;
+color: #d97706;
+
 }
 
 .pharmacy-icon {
 
-    background: #fce7f3;
+background: #fce7f3;
 
-    color: #db2777;
+color: #db2777;
+
 }
 
 .transaction-info {
 
-    flex: 1;
+flex: 1;
 
-    display: flex;
+display: flex;
 
-    flex-direction: column;
+flex-direction: column;
 
-    gap: 4px;
+gap: 4px;
+
 }
 
 .transaction-info strong {
 
-    font-size: 13px;
+font-size: 13px;
+
 }
 
 .transaction-info span {
 
-    color: var(--text-light);
+color: var(--text-light);
 
-    font-size: 11px;
+font-size: 11px;
+
 }
 
 .transaction-value {
 
-    font-size: 13px;
+font-size: 13px;
+
 }
 
 .positive {
 
-    color: var(--green);
+color: var(--green);
+
 }
 
 .negative {
 
-    color: var(--red);
-}
+color: var(--red);
 
+}
 
 /* ============================================================
-   RESUMO
-   ============================================================ */
+MENSAGENS
+============================================================ */
 
-.summary-item {
+.sem-registros,
+.categoria-vazia {
 
-    margin-bottom: 22px;
+color: var(--text-light);
+
+font-size: 13px;
+
+padding: 10px 0;
+
 }
-
-.summary-label {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    margin-bottom: 8px;
-
-    font-size: 13px;
-}
-
-.summary-label span {
-
-    color: var(--text-light);
-}
-
-.progress {
-
-    width: 100%;
-
-    height: 8px;
-
-    background: #f1f5f9;
-
-    border-radius: 10px;
-
-    overflow: hidden;
-}
-
-.progress-income {
-
-    width: 100%;
-
-    height: 100%;
-
-    background: var(--green);
-
-    border-radius: 10px;
-}
-
-.progress-expense {
-
-    width: 45%;
-
-    height: 100%;
-
-    background: var(--red);
-
-    border-radius: 10px;
-}
-
-
-/* Resultado */
-
-.summary-result {
-
-    border-top: 1px solid var(--border);
-
-    padding-top: 18px;
-
-    margin-top: 10px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 6px;
-}
-
-.summary-result span {
-
-    color: var(--text-light);
-
-    font-size: 12px;
-}
-
-.summary-result strong {
-
-    font-size: 22px;
-
-    color: var(--primary);
-}
-
 
 /* ============================================================
-   BOTÕES DE AÇÃO
-   ============================================================ */
+GASTOS POR CATEGORIA
+============================================================ */
 
-.quick-actions {
+.categoria-gasto {
 
-    display: flex;
+margin-bottom: 16px;
 
-    gap: 10px;
-
-    margin-top: 22px;
 }
 
-.action-button {
+.categoria-gasto {
 
-    flex: 1;
+margin-bottom: 0;
 
-    border: none;
-
-    border-radius: 8px;
-
-    padding: 11px;
-
-    font-size: 12px;
-
-    font-weight: bold;
-
-    cursor: pointer;
 }
 
-.action-button.primary {
+.categoria-gasto-topo {
 
-    background: var(--primary);
+display: flex;
 
-    color: white;
+justify-content: space-between;
+
+align-items: center;
+
+gap: 15px;
+
+margin-bottom: 7px;
+
+font-size: 13px;
+
 }
 
-.action-button.primary:hover {
+.categoria-gasto-topo span {
 
-    background: var(--primary-dark);
+color: var(--text-light);
+
 }
 
-.action-button.secondary {
+.categoria-gasto-topo strong {
 
-    background: var(--red-light);
+color: var(--text);
 
-    color: var(--red);
+font-size: 13px;
+
 }
 
+.barra-categoria {
+
+width: 100%;
+
+height: 7px;
+
+background: #f1f5f9;
+
+border-radius: 10px;
+
+overflow: hidden;
+
+}
+
+.barra-categoria-preenchida {
+
+height: 100%;
+
+background: var(--primary);
+
+border-radius: 10px;
+
+transition: width 0.3s ease;
+
+}
 
 /* ============================================================
-   RESPONSIVIDADE
-   TABLET
-   ============================================================ */
+COMPRAS NO CARTÃO
+============================================================ */
 
-@media (max-width: 1100px) {
+.cartao-dashboard {
 
-    .financial-cards {
+padding: 14px 0;
 
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .dashboard-grid {
-
-        grid-template-columns: 1fr;
-    }
-}
-
-
-/* ============================================================
-   RESPONSIVIDADE
-   CELULAR
-   ============================================================ */
-
-@media (max-width: 700px) {
-
-    /* Esconde o menu lateral */
-
-    .sidebar {
-
-        display: none;
-    }
-
-
-    /* Remove espaço reservado ao menu */
-
-    .main-content {
-
-        margin-left: 0;
-    }
-
-
-    /* Cabeçalho */
-
-    .topbar {
-
-        height: 70px;
-
-        padding: 0 18px;
-    }
-
-    .mobile-menu-button {
-
-        display: block;
-    }
-
-    .page-title {
-
-        margin-right: auto;
-
-        margin-left: 15px;
-    }
-
-    .page-title h1 {
-
-        font-size: 18px;
-    }
-
-    .page-title p {
-
-        display: none;
-    }
-
-    .user-info {
-
-        display: none;
-    }
-
-
-    /* Conteúdo */
-
-    .content {
-
-        padding: 20px 15px;
-    }
-
-
-    /* Saudação */
-
-    .welcome {
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-        gap: 15px;
-    }
-
-    .month-selector {
-
-        width: 100%;
-
-        justify-content: space-between;
-    }
-
-
-    /* Cards */
-
-    .financial-cards {
-
-        grid-template-columns: 1fr;
-
-        gap: 12px;
-    }
-
-    .financial-card {
-
-        padding: 18px;
-    }
-
-
-    /* Painéis */
-
-    .dashboard-grid {
-
-        grid-template-columns: 1fr;
-
-        gap: 15px;
-    }
-
-    .panel {
-
-        padding: 18px;
-    }
-
-
-    /* Transações */
-
-    .transaction-value {
-
-        font-size: 12px;
-    }
-
-
-    /* Botões */
-
-    .quick-actions {
-
-        flex-direction: column;
-    }
+border-bottom: 1px solid #f1f5f9;
 
 }
 
-```css
+.cartao-dashboard {
+
+border-bottom: none;
+
+padding-bottom: 0;
+
+}
+
+.categorias-cartao {
+
+margin-top: 10px;
+
+margin-left: 15px;
+
+border-left: 2px solid var(--border);
+
+padding-left: 12px;
+
+}
+
+.categoria-cartao-item {
+
+display: flex;
+
+align-items: center;
+
+justify-content: space-between;
+
+gap: 15px;
+
+padding: 5px 0;
+
+font-size: 12px;
+
+}
+
+.categoria-cartao-item span {
+
+color: var(--text-light);
+
+}
+
+.categoria-cartao-item strong {
+
+color: var(--text);
+
+font-size: 12px;
+
+}
+
 /* ============================================================
-   PÁGINA NOVA ENTRADA
-   ============================================================ */
-
-
-/* Cabeçalho interno da página */
+FORMULÁRIOS
+============================================================ */
 
 .page-heading {
 
-    margin-bottom: 25px;
+margin-bottom: 25px;
+
 }
 
 .back-link {
 
-    display: inline-block;
+display: inline-block;
 
-    color: var(--primary);
+color: var(--primary);
 
-    text-decoration: none;
+text-decoration: none;
 
-    font-size: 13px;
+font-size: 13px;
 
-    margin-bottom: 14px;
+margin-bottom: 14px;
+
 }
 
-.back-link:hover {
+.back-link {
 
-    text-decoration: underline;
+text-decoration: underline;
+
 }
 
 .page-heading h2 {
 
-    font-size: 21px;
+font-size: 21px;
 
-    margin-bottom: 6px;
+margin-bottom: 6px;
+
 }
 
 .page-heading p {
 
-    color: var(--text-light);
+color: var(--text-light);
 
-    font-size: 14px;
+font-size: 14px;
+
 }
-
-
-/* ============================================================
-   CONTAINER DO FORMULÁRIO
-   ============================================================ */
 
 .form-container {
 
-    width: 100%;
+width: 100%;
 
-    max-width: 850px;
+max-width: 850px;
 
-    background: var(--white);
+background: var(--white);
 
-    border: 1px solid var(--border);
+border: 1px solid var(--border);
 
-    border-radius: 12px;
+border-radius: 12px;
 
-    padding: 30px;
+padding: 30px;
 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+
 }
-
-
-/* ============================================================
-   GRUPOS DO FORMULÁRIO
-   ============================================================ */
 
 .form-group {
 
-    margin-bottom: 20px;
+margin-bottom: 20px;
+
 }
 
 .form-group label {
 
-    display: block;
+display: block;
 
-    font-size: 13px;
+font-size: 13px;
 
-    font-weight: bold;
+font-weight: bold;
 
-    margin-bottom: 8px;
+margin-bottom: 8px;
 
-    color: var(--text);
+color: var(--text);
+
 }
-
-
-/* ============================================================
-   INPUTS E SELECTS
-   ============================================================ */
 
 .form-group input,
 .form-group select,
 .form-group textarea {
 
-    width: 100%;
+width: 100%;
 
-    border: 1px solid var(--border);
+border: 1px solid var(--border);
 
-    border-radius: 8px;
+border-radius: 8px;
 
-    background: #ffffff;
+background: #ffffff;
 
-    color: var(--text);
+color: var(--text);
 
-    font-family: inherit;
+font-family: inherit;
 
-    font-size: 14px;
+font-size: 14px;
 
-    padding: 12px 13px;
+padding: 12px 13px;
 
-    outline: none;
+outline: none;
 
-    transition: 0.2s;
+transition: 0.2s;
+
 }
 
+.form-group input,
+.form-group select,
+.form-group textarea {
 
-/* Quando o usuário clicar no campo */
+border-color: var(--primary);
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
+box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
 
-    border-color: var(--primary);
-
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
 }
-
-
-/* Placeholder */
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
 
-    color: #94a3b8;
+color: #94a3b8;
+
 }
-
-
-/* Textarea */
 
 .form-group textarea {
 
-    resize: vertical;
+resize: vertical;
 
-    min-height: 100px;
+min-height: 100px;
+
 }
-
-
-/* ============================================================
-   DUAS COLUNAS
-   ============================================================ */
 
 .form-row {
 
-    display: grid;
+display: grid;
 
-    grid-template-columns: 1fr 1fr;
+grid-template-columns: 1fr 1fr;
 
-    gap: 20px;
+gap: 20px;
+
 }
-
-
-/* ============================================================
-   CAMPO DE VALOR
-   ============================================================ */
 
 .input-money {
 
-    display: flex;
+display: flex;
 
-    align-items: center;
+align-items: center;
 
-    border: 1px solid var(--border);
+border: 1px solid var(--border);
 
-    border-radius: 8px;
+border-radius: 8px;
 
-    overflow: hidden;
+overflow: hidden;
 
-    background: white;
+background: white;
 
-    transition: 0.2s;
+transition: 0.2s;
+
 }
 
-.input-money:focus-within {
+.input-money {
 
-    border-color: var(--primary);
+border-color: var(--primary);
 
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+
 }
 
 .input-money span {
 
-    padding-left: 13px;
+padding-left: 13px;
 
-    color: var(--text-light);
+color: var(--text-light);
 
-    font-size: 14px;
+font-size: 14px;
 
-    font-weight: bold;
+font-weight: bold;
+
 }
 
 .input-money input {
 
-    border: none !important;
+border: none !important;
 
-    box-shadow: none !important;
+box-shadow: none !important;
 
-    padding-left: 8px;
+padding-left: 8px;
+
 }
-
-
-/* ============================================================
-   BOTÕES
-   ============================================================ */
 
 .form-actions {
 
-    display: flex;
+display: flex;
 
-    justify-content: flex-end;
+justify-content: flex-end;
 
-    align-items: center;
+align-items: center;
 
-    gap: 12px;
+gap: 12px;
 
-    border-top: 1px solid var(--border);
+border-top: 1px solid var(--border);
 
-    padding-top: 22px;
+padding-top: 22px;
 
-    margin-top: 10px;
+margin-top: 10px;
+
 }
-
-
-/* Botão cancelar */
 
 .cancel-button {
 
-    padding: 11px 20px;
+padding: 11px 20px;
 
-    border-radius: 8px;
+border-radius: 8px;
 
-    border: 1px solid var(--border);
+border: 1px solid var(--border);
 
-    background: white;
+background: white;
 
-    color: var(--text-light);
+color: var(--text-light);
 
-    text-decoration: none;
+text-decoration: none;
 
-    font-size: 13px;
+font-size: 13px;
 
-    font-weight: bold;
+font-weight: bold;
 
-    transition: 0.2s;
+transition: 0.2s;
+
 }
 
-.cancel-button:hover {
+.cancel-button {
 
-    background: #f8fafc;
+background: #f8fafc;
 
-    color: var(--text);
+color: var(--text);
+
 }
-
-
-/* Botão salvar */
 
 .save-button {
 
-    border: none;
+border: none;
 
-    border-radius: 8px;
+border-radius: 8px;
 
-    padding: 12px 22px;
+padding: 12px 22px;
 
-    background: var(--primary);
+background: var(--primary);
 
-    color: white;
+color: white;
 
-    font-size: 13px;
+font-size: 13px;
 
-    font-weight: bold;
+font-weight: bold;
 
-    cursor: pointer;
+cursor: pointer;
 
-    transition: 0.2s;
+transition: 0.2s;
+
 }
 
-.save-button:hover {
+.save-button {
 
-    background: var(--primary-dark);
+background: var(--primary-dark);
 
-    transform: translateY(-1px);
+transform: translateY(-1px);
+
 }
-
 
 /* ============================================================
-   RESPONSIVIDADE — CELULAR
-   ============================================================ */
-
-@media (max-width: 700px) {
-
-
-    /* Formulário */
-
-    .form-container {
-
-        padding: 20px 16px;
-
-        border-radius: 10px;
-    }
-
-
-    /* Campos que estavam lado a lado
-       passam para uma coluna */
-
-    .form-row {
-
-        grid-template-columns: 1fr;
-
-        gap: 0;
-    }
-
-
-    /* Título */
-
-    .page-heading h2 {
-
-        font-size: 19px;
-    }
-
-
-    /* Botões */
-
-    .form-actions {
-
-        flex-direction: column-reverse;
-
-        align-items: stretch;
-    }
-
-    .cancel-button,
-    .save-button {
-
-        width: 100%;
-
-        text-align: center;
-
-        padding: 13px;
-    }
-
-}
-
-```css
-/* ============================================================
-   VALIDAÇÃO DO FORMULÁRIO
-   ============================================================ */
-
-
-/* Campo com erro */
+VALIDAÇÃO
+============================================================ */
 
 .campo-erro {
 
-    border-color: var(--red) !important;
+border-color: var(--red) !important;
 
-    background: #fffafa !important;
+background: #fffafa !important;
+
 }
 
+.campo-erro {
 
-/* Campo com erro quando recebe foco */
+border-color: var(--red) !important;
 
-.campo-erro:focus {
+box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.10) !important;
 
-    border-color: var(--red) !important;
-
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.10) !important;
 }
-
-
-/* Mensagem abaixo do campo */
 
 .mensagem-erro {
 
-    display: block;
+display: block;
 
-    color: var(--red);
+color: var(--red);
+
+font-size: 11px;
+
+margin-top: 6px;
+
+}
+
+/* ============================================================
+RESPONSIVIDADE — TABLET
+============================================================ */
+
+@media (max-width: 1100px) {
+
+.cards-resumo {
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboard-grid {
+
+    grid-template-columns: 1fr;
+}
+
+}
+
+/* ============================================================
+RESPONSIVIDADE — CELULAR
+============================================================ */
+
+@media (max-width: 700px) {
+
+.sidebar {
+
+    display: none;
+}
+
+.main-content {
+
+    margin-left: 0;
+
+    width: 100%;
+}
+
+.topbar {
+
+    height: 70px;
+
+    padding: 0 18px;
+}
+
+.mobile-menu-button {
+
+    display: block;
+}
+
+.page-title {
+
+    margin-right: auto;
+
+    margin-left: 15px;
+}
+
+.page-title h1 {
+
+    font-size: 18px;
+}
+
+.page-title p {
+
+    display: none;
+}
+
+.user-info {
+
+    display: none;
+}
+
+.content {
+
+    padding: 20px 15px;
+}
+
+.month-navigation {
+
+    gap: 10px;
+}
+
+.month-navigation h2 {
+
+    min-width: 150px;
+
+    font-size: 18px;
+}
+
+.cards-resumo {
+
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+}
+
+.card.resumo {
+
+    padding: 18px;
+}
+
+.dashboard-grid {
+
+    grid-template-columns: 1fr;
+
+    gap: 15px;
+}
+
+.panel {
+
+    padding: 18px;
+}
+
+.grafico-barras {
+
+    gap: 40px;
+}
+
+.barra {
+
+    width: 45px;
+}
+
+.form-container {
+
+    padding: 20px 16px;
+
+    border-radius: 10px;
+}
+
+.form-row {
+
+    grid-template-columns: 1fr;
+
+    gap: 0;
+}
+
+.page-heading h2 {
+
+    font-size: 19px;
+}
+
+.form-actions {
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+}
+
+.cancel-button,
+.save-button {
+
+    width: 100%;
+
+    text-align: center;
+
+    padding: 13px;
+}
+
+.categoria-gasto-topo {
+
+    font-size: 12px;
+}
+
+.categoria-cartao-item {
 
     font-size: 11px;
-
-    margin-top: 6px;
 }
-```
+

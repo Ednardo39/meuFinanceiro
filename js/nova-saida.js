@@ -1,454 +1,822 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ==============================
-    // ELEMENTOS DO FORMULÁRIO
-    // ==============================
+// =========================================================
+// ELEMENTOS DO FORMULÁRIO
+// =========================================================
 
-    const formulario = document.querySelector("#formulario");
+const formulario = document.querySelector("#formulario");
 
-    const descricao = document.querySelector("#descricao");
-    const categoria = document.querySelector("#categoria");
-    const valor = document.querySelector("#valor");
-    const data = document.querySelector("#data");
-    const modo = document.querySelector("#modo");
-    const origem = document.querySelector("#origem");
+const descricao = document.querySelector("#descricao");
+const categoria = document.querySelector("#categoria");
+const valor = document.querySelector("#valor");
+const data = document.querySelector("#data");
+const modo = document.querySelector("#modo");
+const origem = document.querySelector("#origem");
 
-    const grupoCartao = document.querySelector("#grupoCartao");
-    const cartao = document.querySelector("#cartao");
+const grupoCartao = document.querySelector("#grupoCartao");
+const cartao = document.querySelector("#cartao");
 
-    const grupoParcelas = document.querySelector("#grupoParcelas");
-    const parcelas = document.querySelector("#parcelas");
-    const valorParcela = document.querySelector("#valorParcela");
+const grupoParcelas = document.querySelector("#grupoParcelas");
+const parcelas = document.querySelector("#parcelas");
+const valorParcela = document.querySelector("#valorParcela");
 
-    const grupoFatura = document.querySelector("#grupoFatura");
-    const resumoFatura = document.querySelector("#resumoFatura");
+const grupoFatura = document.querySelector("#grupoFatura");
+const resumoFatura = document.querySelector("#resumoFatura");
 
 
-    // ==============================
-    // DATA ATUAL
-    // ==============================
+// =========================================================
+// CARREGAR CATEGORIAS
+// =========================================================
 
-    const hoje = new Date();
+function carregarCategorias() {
 
-    const anoAtual = hoje.getFullYear();
-    const mesAtual = String(hoje.getMonth() + 1).padStart(2, "0");
-    const diaAtual = String(hoje.getDate()).padStart(2, "0");
+    if (!categoria) {
+        return;
+    }
 
-    if (data) {
-        data.value = `${anoAtual}-${mesAtual}-${diaAtual}`;
+    let categoriasSalvas = [];
+
+    try {
+        categoriasSalvas =
+            JSON.parse(
+                localStorage.getItem("categorias")
+            ) || [];
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar categorias:",
+            erro
+        );
+
+        categoriasSalvas = [];
     }
 
 
-    // ==============================
-    // MOSTRAR / ESCONDER CARTÃO
-    // ==============================
+    // Limpa as opções atuais
+    categoria.innerHTML = "";
 
-    modo.addEventListener("change", function () {
 
-        if (modo.value === "credito") {
+    // Opção inicial
+    const opcaoInicial = document.createElement("option");
 
-            grupoCartao.style.display = "block";
-            grupoParcelas.style.display = "block";
+    opcaoInicial.value = "";
+    opcaoInicial.textContent =
+        "Selecione uma categoria";
 
-        } else {
+    categoria.appendChild(opcaoInicial);
 
-            grupoCartao.style.display = "none";
-            grupoParcelas.style.display = "none";
 
-            if (grupoFatura) {
-                grupoFatura.style.display = "none";
-            }
+    // Somente categorias de SAÍDA ou AMBOS
+    const categoriasSaida =
+        categoriasSalvas.filter(function (item) {
 
-            cartao.value = "";
-            parcelas.value = "1";
-            valorParcela.value = "";
-            resumoFatura.innerHTML = "";
-        }
+            return (
+                item.tipo === "saida" ||
+                item.tipo === "ambos"
+            );
+
+        });
+
+
+    // Se não houver categorias
+    if (categoriasSaida.length === 0) {
+
+        const opcaoVazia =
+            document.createElement("option");
+
+        opcaoVazia.value = "";
+        opcaoVazia.textContent =
+            "Nenhuma categoria de saída cadastrada";
+
+        opcaoVazia.disabled = true;
+
+        categoria.appendChild(opcaoVazia);
+
+        return;
+    }
+
+
+    // Adicionar categorias ao SELECT
+    categoriasSaida.forEach(function (item) {
+
+        const opcao =
+            document.createElement("option");
+
+        opcao.value = item.nome;
+        opcao.textContent = item.nome;
+
+        categoria.appendChild(opcao);
+
     });
 
+}
 
-    // ==============================
-    // CONVERTER VALOR BRASILEIRO
-    // ==============================
 
-    function converterValor(valorTexto) {
+// Carregar categorias ao abrir a tela
+carregarCategorias();
 
-        if (!valorTexto) {
-            return 0;
+
+// =========================================================
+// DATA ATUAL
+// =========================================================
+
+const hoje = new Date();
+
+const anoAtual =
+    hoje.getFullYear();
+
+const mesAtual =
+    String(
+        hoje.getMonth() + 1
+    ).padStart(2, "0");
+
+const diaAtual =
+    String(
+        hoje.getDate()
+    ).padStart(2, "0");
+
+
+if (data) {
+
+    data.value =
+        anoAtual +
+        "-" +
+        mesAtual +
+        "-" +
+        diaAtual;
+
+}
+
+
+// =========================================================
+// MOSTRAR / ESCONDER CARTÃO
+// =========================================================
+
+modo.addEventListener("change", function () {
+
+    if (modo.value === "credito") {
+
+        grupoCartao.style.display = "block";
+        grupoParcelas.style.display = "block";
+
+    } else {
+
+        grupoCartao.style.display = "none";
+        grupoParcelas.style.display = "none";
+
+        if (grupoFatura) {
+
+            grupoFatura.style.display = "none";
+
         }
 
-        let valorLimpo = valorTexto
+        cartao.value = "";
+        parcelas.value = "1";
+        valorParcela.value = "";
+        resumoFatura.innerHTML = "";
+
+    }
+
+});
+
+
+// =========================================================
+// CONVERTER VALOR BRASILEIRO
+// =========================================================
+
+function converterValor(valorTexto) {
+
+    if (!valorTexto) {
+        return 0;
+    }
+
+    let valorLimpo =
+        valorTexto
             .replace("R$", "")
             .replace(/\s/g, "")
             .replace(/\./g, "")
             .replace(",", ".");
 
-        return parseFloat(valorLimpo) || 0;
-    }
+    return parseFloat(valorLimpo) || 0;
+
+}
 
 
-    // ==============================
-    // FORMATAR VALOR
-    // ==============================
+// =========================================================
+// FORMATAR VALOR
+// =========================================================
 
-    function formatarMoeda(valorNumerico) {
+function formatarMoeda(valorNumerico) {
 
-        return valorNumerico.toLocaleString("pt-BR", {
+    return valorNumerico.toLocaleString(
+        "pt-BR",
+        {
             style: "currency",
             currency: "BRL"
-        });
-    }
-
-
-    // ==============================
-    // FORMATAR CAMPO VALOR
-    // ==============================
-
-    valor.addEventListener("input", function () {
-
-        let numero = valor.value.replace(/\D/g, "");
-
-        if (numero === "") {
-
-            valor.value = "";
-            calcularParcela();
-            return;
         }
+    );
 
-        numero = parseInt(numero, 10) / 100;
+}
 
-        valor.value = numero.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        });
+
+// =========================================================
+// FORMATAR CAMPO VALOR
+// =========================================================
+
+valor.addEventListener("input", function () {
+
+    let numero =
+        valor.value.replace(/\D/g, "");
+
+
+    if (numero === "") {
+
+        valor.value = "";
 
         calcularParcela();
-    });
 
+        return;
 
-    valor.addEventListener("focus", function () {
-
-        if (valor.value === "R$ 0,00") {
-            valor.value = "";
-        }
-    });
-
-
-    // ==============================
-    // CALCULAR PARCELA
-    // ==============================
-
-    function calcularParcela() {
-
-        if (
-            modo.value !== "credito" ||
-            !valor.value ||
-            !parcelas.value
-        ) {
-            valorParcela.value = "";
-            return;
-        }
-
-        const valorTotal = converterValor(valor.value);
-        const quantidade = parseInt(parcelas.value);
-
-        if (valorTotal <= 0 || quantidade <= 0) {
-            valorParcela.value = "";
-            return;
-        }
-
-        const valorDaParcela = valorTotal / quantidade;
-
-        valorParcela.value =
-            "Valor aproximado de cada parcela: " +
-            formatarMoeda(valorDaParcela);
-
-        calcularFatura();
     }
 
 
-    parcelas.addEventListener("change", function () {
+    numero =
+        parseInt(numero, 10) / 100;
+
+
+    valor.value =
+        numero.toLocaleString(
+            "pt-BR",
+            {
+                style: "currency",
+                currency: "BRL"
+            }
+        );
+
+
+    calcularParcela();
+
+});
+
+
+valor.addEventListener("focus", function () {
+
+    if (valor.value === "R$ 0,00") {
+
+        valor.value = "";
+
+    }
+
+});
+
+
+// =========================================================
+// CALCULAR PARCELA
+// =========================================================
+
+function calcularParcela() {
+
+    if (
+        modo.value !== "credito" ||
+        !valor.value ||
+        !parcelas.value
+    ) {
+
+        valorParcela.value = "";
+
+        return;
+
+    }
+
+
+    const valorTotal =
+        converterValor(valor.value);
+
+    const quantidade =
+        parseInt(parcelas.value);
+
+
+    if (
+        valorTotal <= 0 ||
+        quantidade <= 0
+    ) {
+
+        valorParcela.value = "";
+
+        return;
+
+    }
+
+
+    const valorDaParcela =
+        valorTotal / quantidade;
+
+
+    valorParcela.value =
+        "Valor aproximado de cada parcela: " +
+        formatarMoeda(valorDaParcela);
+
+
+    calcularFatura();
+
+}
+
+
+parcelas.addEventListener(
+    "change",
+    function () {
+
         calcularParcela();
-    });
+
+    }
+);
 
 
-    // ==============================
-    // NOMES DOS MESES
-    // ==============================
+// =========================================================
+// NOMES DOS MESES
+// =========================================================
 
-    const nomesMeses = [
-        "Janeiro",
-        "Fevereiro",
-        "Março",
-        "Abril",
-        "Maio",
-        "Junho",
-        "Julho",
-        "Agosto",
-        "Setembro",
-        "Outubro",
-        "Novembro",
-        "Dezembro"
-    ];
+const nomesMeses = [
+
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro"
+
+];
 
 
-    // ==============================
-    // CALCULAR PRIMEIRA FATURA
-    // ==============================
+// =========================================================
+// CALCULAR PRIMEIRA FATURA
+// =========================================================
 
-    function calcularPrimeiraFatura(dataCompra, diaFechamento) {
+function calcularPrimeiraFatura(
+    dataCompra,
+    diaFechamento
+) {
 
-        let ano = dataCompra.getFullYear();
-        let mes = dataCompra.getMonth();
+    let ano =
+        dataCompra.getFullYear();
 
-        const diaCompra = dataCompra.getDate();
+    let mes =
+        dataCompra.getMonth();
 
-        /*
-         * Se a compra acontecer depois do fechamento,
-         * ela vai para a próxima fatura.
-         */
+    const diaCompra =
+        dataCompra.getDate();
 
-        if (diaCompra > diaFechamento) {
 
-            mes++;
+    /*
+     * Se a compra acontecer depois do fechamento,
+     * ela vai para a próxima fatura.
+     */
 
-            if (mes > 11) {
-                mes = 0;
-                ano++;
-            }
+    if (diaCompra > diaFechamento) {
+
+        mes++;
+
+        if (mes > 11) {
+
+            mes = 0;
+            ano++;
+
         }
 
-        return {
-            ano: ano,
-            mes: mes
-        };
     }
 
 
-    // ==============================
-    // CALCULAR FATURA
-    // ==============================
+    return {
+        ano: ano,
+        mes: mes
+    };
 
-    function calcularFatura() {
+}
 
-        if (
-            modo.value !== "credito" ||
-            !cartao.value ||
-            !data.value ||
-            !valor.value ||
-            !parcelas.value
-        ) {
 
-            if (grupoFatura) {
-                grupoFatura.style.display = "none";
-            }
+// =========================================================
+// CALCULAR FATURA
+// =========================================================
 
-            return;
+function calcularFatura() {
+
+    if (
+        modo.value !== "credito" ||
+        !cartao.value ||
+        !data.value ||
+        !valor.value ||
+        !parcelas.value
+    ) {
+
+        if (grupoFatura) {
+
+            grupoFatura.style.display = "none";
+
         }
 
-        const opcaoCartao =
-            cartao.options[cartao.selectedIndex];
+        return;
 
-        const diaFechamento =
-            parseInt(opcaoCartao.dataset.fechamento);
-
-        const diaVencimento =
-            parseInt(opcaoCartao.dataset.vencimento);
-
-        if (!diaFechamento || !diaVencimento) {
-            return;
-        }
+    }
 
 
-        // ==============================
-        // CRIAR DATA DA COMPRA
-        // ==============================
+    const opcaoCartao =
+        cartao.options[
+            cartao.selectedIndex
+        ];
 
-        const partesData = data.value.split("-");
 
-        const anoCompra = parseInt(partesData[0]);
-        const mesCompra = parseInt(partesData[1]) - 1;
-        const diaCompra = parseInt(partesData[2]);
+    const diaFechamento =
+        parseInt(
+            opcaoCartao.dataset.fechamento
+        );
 
-        const dataCompra = new Date(
+
+    const diaVencimento =
+        parseInt(
+            opcaoCartao.dataset.vencimento
+        );
+
+
+    if (
+        !diaFechamento ||
+        !diaVencimento
+    ) {
+
+        return;
+
+    }
+
+
+    // =====================================================
+    // CRIAR DATA DA COMPRA
+    // =====================================================
+
+    const partesData =
+        data.value.split("-");
+
+
+    const anoCompra =
+        parseInt(partesData[0]);
+
+
+    const mesCompra =
+        parseInt(partesData[1]) - 1;
+
+
+    const diaCompra =
+        parseInt(partesData[2]);
+
+
+    const dataCompra =
+        new Date(
             anoCompra,
             mesCompra,
             diaCompra
         );
 
 
-        const primeiraFatura =
-            calcularPrimeiraFatura(
-                dataCompra,
-                diaFechamento
-            );
+    const primeiraFatura =
+        calcularPrimeiraFatura(
+            dataCompra,
+            diaFechamento
+        );
 
 
-        const quantidadeParcelas =
-            parseInt(parcelas.value);
-
-        const valorTotal =
-            converterValor(valor.value);
-
-        const valorDaParcela =
-            valorTotal / quantidadeParcelas;
+    const quantidadeParcelas =
+        parseInt(parcelas.value);
 
 
-        // ==============================
-        // MONTAR RESUMO
-        // ==============================
+    const valorTotal =
+        converterValor(valor.value);
 
-        let html = "";
 
-        html += "<strong>Resumo da fatura</strong>";
+    const valorDaParcela =
+        valorTotal / quantidadeParcelas;
+
+
+    // =====================================================
+    // MONTAR RESUMO
+    // =====================================================
+
+    let html = "";
+
+
+    html +=
+        "<strong>Resumo da fatura</strong>";
+
+
+    html += `
+        <div class="resumo-fatura-info">
+
+            <p>
+                Fechamento:
+                <strong>dia ${diaFechamento}</strong>
+            </p>
+
+            <p>
+                Vencimento:
+                <strong>dia ${diaVencimento}</strong>
+            </p>
+
+        </div>
+    `;
+
+
+    html +=
+        "<div class='lista-parcelas'>";
+
+
+    for (
+        let i = 0;
+        i < quantidadeParcelas;
+        i++
+    ) {
+
+        let mes =
+            primeiraFatura.mes + i;
+
+
+        let ano =
+            primeiraFatura.ano;
+
+
+        while (mes > 11) {
+
+            mes -= 12;
+            ano++;
+
+        }
+
+
+        const numeroParcela =
+            i + 1;
+
 
         html += `
-            <div class="resumo-fatura-info">
+            <div class="linha-parcela">
 
-                <p>
-                    Fechamento:
-                    <strong>dia ${diaFechamento}</strong>
-                </p>
+                <span>
+                    ${numeroParcela}/${quantidadeParcelas}
+                </span>
 
-                <p>
-                    Vencimento:
-                    <strong>dia ${diaVencimento}</strong>
-                </p>
+                <span>
+                    ${nomesMeses[mes]}/${ano}
+                </span>
+
+                <strong>
+                    ${formatarMoeda(valorDaParcela)}
+                </strong>
 
             </div>
         `;
 
-
-        html += "<div class='lista-parcelas'>";
-
-
-        for (let i = 0; i < quantidadeParcelas; i++) {
-
-            let mes = primeiraFatura.mes + i;
-            let ano = primeiraFatura.ano;
-
-            while (mes > 11) {
-                mes -= 12;
-                ano++;
-            }
-
-            const numeroParcela = i + 1;
-
-
-            html += `
-                <div class="linha-parcela">
-
-                    <span>
-                        ${numeroParcela}/${quantidadeParcelas}
-                    </span>
-
-                    <span>
-                        ${nomesMeses[mes]}/${ano}
-                    </span>
-
-                    <strong>
-                        ${formatarMoeda(valorDaParcela)}
-                    </strong>
-
-                </div>
-            `;
-        }
-
-
-        html += "</div>";
-
-
-        resumoFatura.innerHTML = html;
-
-        grupoFatura.style.display = "block";
     }
 
 
-    // ==============================
-    // QUANDO TROCAR O CARTÃO
-    // ==============================
+    html += "</div>";
 
-    cartao.addEventListener("change", function () {
+
+    resumoFatura.innerHTML = html;
+
+    grupoFatura.style.display = "block";
+
+}
+
+
+// =========================================================
+// QUANDO TROCAR O CARTÃO
+// =========================================================
+
+cartao.addEventListener(
+    "change",
+    function () {
+
         calcularFatura();
-    });
+
+    }
+);
 
 
-    // ==============================
-    // QUANDO ALTERAR A DATA
-    // ==============================
+// =========================================================
+// QUANDO ALTERAR A DATA
+// =========================================================
 
-    data.addEventListener("change", function () {
+data.addEventListener(
+    "change",
+    function () {
+
         calcularFatura();
-    });
+
+    }
+);
 
 
-    // ==============================
-    // SALVAR COMPRA NO LOCALSTORAGE
-    // ==============================
+// =========================================================
+// SALVAR COMPRA
+// =========================================================
 
-    function salvarCompra() {
+function salvarCompra() {
 
-        const valorNumerico = converterValor(valor.value);
-
-        const opcaoCartao =
-            cartao.options[cartao.selectedIndex];
+    const valorNumerico =
+        converterValor(valor.value);
 
 
-        const compra = {
+    const opcaoCartao =
+        cartao.options[
+            cartao.selectedIndex
+        ];
 
-            id: Date.now(),
 
-            descricao: descricao.value.trim(),
+    const compra = {
 
-            categoria: categoria.value,
+        id: Date.now(),
 
-            valor: valorNumerico,
+        descricao:
+            descricao.value.trim(),
 
-            data: data.value,
+        categoria:
+            categoria.value,
 
-            modo: modo.value,
+        valor:
+            valorNumerico,
 
-            origem: origem.value,
+        data:
+            data.value,
 
-            cartao: modo.value === "credito"
+        modo:
+            modo.value,
+
+        origem:
+            origem.value,
+
+        cartao:
+            modo.value === "credito"
                 ? cartao.value
                 : "",
 
-            nomeCartao: modo.value === "credito"
+        nomeCartao:
+            modo.value === "credito"
                 ? opcaoCartao.textContent
                 : "",
 
-            parcelas: modo.value === "credito"
+        parcelas:
+            modo.value === "credito"
                 ? parseInt(parcelas.value)
                 : 1
-        };
+
+    };
 
 
-        // Recupera compras já existentes
+    // =====================================================
+    // RECUPERAR COMPRAS EXISTENTES
+    // =====================================================
 
-        let comprasSalvas =
-            JSON.parse(localStorage.getItem("compras")) || [];
-
-
-        // Adiciona a nova compra
-
-        comprasSalvas.push(compra);
+    let comprasSalvas = [];
 
 
-        // Salva novamente
+    try {
 
-        localStorage.setItem(
-            "compras",
-            JSON.stringify(comprasSalvas)
+        comprasSalvas =
+            JSON.parse(
+                localStorage.getItem(
+                    "compras"
+                )
+            ) || [];
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar compras:",
+            erro
         );
+
+        comprasSalvas = [];
+
     }
 
 
-    // ==============================
-    // VALIDAÇÃO DO FORMULÁRIO
-    // ==============================
+    // =====================================================
+    // ADICIONAR COMPRA
+    // =====================================================
 
-    formulario.addEventListener("submit", function (event) {
+    comprasSalvas.push(compra);
+
+
+    // =====================================================
+    // SALVAR COMPRAS
+    // =====================================================
+
+    localStorage.setItem(
+        "compras",
+        JSON.stringify(comprasSalvas)
+    );
+
+}
+
+
+// =========================================================
+// SALVAR MOVIMENTAÇÃO DA CONTA
+// =========================================================
+
+function salvarMovimentacaoConta(
+    valorNumerico
+) {
+
+    /*
+     * Crédito não sai da conta neste momento.
+     *
+     * A saída será registrada somente quando
+     * a fatura for paga.
+     */
+
+    if (modo.value === "credito") {
+
+        return;
+
+    }
+
+
+    let movimentacoes = [];
+
+
+    try {
+
+        movimentacoes =
+            JSON.parse(
+                localStorage.getItem(
+                    "movimentacoesContas"
+                )
+            ) || [];
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar movimentações:",
+            erro
+        );
+
+        movimentacoes = [];
+
+    }
+
+
+    const movimentacao = {
+
+        id: Date.now(),
+
+        tipo: "saida",
+
+        descricao:
+            descricao.value.trim(),
+
+        categoria:
+            categoria.value,
+
+        valor:
+            valorNumerico,
+
+        data:
+            data.value,
+
+        modo:
+            modo.value,
+
+        conta:
+            origem.value,
+
+        origem:
+            "saida"
+
+    };
+
+
+    movimentacoes.push(
+        movimentacao
+    );
+
+
+    localStorage.setItem(
+        "movimentacoesContas",
+        JSON.stringify(movimentacoes)
+    );
+
+}
+
+
+// =========================================================
+// VALIDAÇÃO DO FORMULÁRIO
+// =========================================================
+
+formulario.addEventListener(
+    "submit",
+    function (event) {
 
         event.preventDefault();
 
@@ -457,75 +825,124 @@ document.addEventListener("DOMContentLoaded", function () {
             converterValor(valor.value);
 
 
+        // -------------------------------------------------
+        // DESCRIÇÃO
+        // -------------------------------------------------
+
         if (!descricao.value.trim()) {
 
-            alert("Informe a descrição do gasto.");
+            alert(
+                "Informe a descrição do gasto."
+            );
 
             descricao.focus();
 
             return;
+
         }
 
 
+        // -------------------------------------------------
+        // CATEGORIA
+        // -------------------------------------------------
+
         if (!categoria.value) {
 
-            alert("Selecione uma categoria.");
+            alert(
+                "Selecione uma categoria."
+            );
 
             categoria.focus();
 
             return;
+
         }
 
 
+        // -------------------------------------------------
+        // VALOR
+        // -------------------------------------------------
+
         if (valorNumerico <= 0) {
 
-            alert("Informe um valor válido.");
+            alert(
+                "Informe um valor válido."
+            );
 
             valor.focus();
 
             return;
+
         }
 
 
+        // -------------------------------------------------
+        // DATA
+        // -------------------------------------------------
+
         if (!data.value) {
 
-            alert("Informe a data.");
+            alert(
+                "Informe a data."
+            );
 
             data.focus();
 
             return;
+
         }
 
 
+        // -------------------------------------------------
+        // MODO
+        // -------------------------------------------------
+
         if (!modo.value) {
 
-            alert("Selecione o modo da operação.");
+            alert(
+                "Selecione o modo da operação."
+            );
 
             modo.focus();
 
             return;
+
         }
 
 
+        // -------------------------------------------------
+        // ORIGEM
+        // -------------------------------------------------
+
         if (!origem.value) {
 
-            alert("Selecione a origem do dinheiro.");
+            alert(
+                "Selecione a origem do dinheiro."
+            );
 
             origem.focus();
 
             return;
+
         }
 
+
+        // -------------------------------------------------
+        // CARTÃO DE CRÉDITO
+        // -------------------------------------------------
 
         if (modo.value === "credito") {
 
             if (!cartao.value) {
 
-                alert("Selecione o cartão.");
+                alert(
+                    "Selecione o cartão."
+                );
 
                 cartao.focus();
 
                 return;
+
             }
 
 
@@ -538,43 +955,71 @@ document.addEventListener("DOMContentLoaded", function () {
                 parcelas.focus();
 
                 return;
+
             }
+
         }
 
 
-        // ==============================
+        // =================================================
         // SALVAR A COMPRA
-        // ==============================
+        // =================================================
 
         salvarCompra();
 
 
-        alert("Saída registrada com sucesso!");
+        // =================================================
+        // SALVAR MOVIMENTAÇÃO DA CONTA
+        // =================================================
+
+        salvarMovimentacaoConta(
+            valorNumerico
+        );
 
 
-        // ==============================
+        // =================================================
+        // MENSAGEM
+        // =================================================
+
+        alert(
+            "Saída registrada com sucesso!"
+        );
+
+
+        // =================================================
         // LIMPAR FORMULÁRIO
-        // ==============================
+        // =================================================
 
         formulario.reset();
 
         grupoCartao.style.display = "none";
-
         grupoParcelas.style.display = "none";
 
 
         if (grupoFatura) {
+
             grupoFatura.style.display = "none";
+
         }
 
 
         valorParcela.value = "";
-
         resumoFatura.innerHTML = "";
 
 
         data.value =
-            `${anoAtual}-${mesAtual}-${diaAtual}`;
-    });
+            anoAtual +
+            "-" +
+            mesAtual +
+            "-" +
+            diaAtual;
+
+
+        // Recarregar categorias após limpar
+        carregarCategorias();
+
+    }
+
+);
 
 });

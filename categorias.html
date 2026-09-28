@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Categorias - Meu Financeiro</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/categorias.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+    <div class="logo">
+
+        <span class="logo-icon">R$</span>
+
+        <span>Meu Financeiro</span>
+
+    </div>
+
+
+    <nav class="menu">
+
+        <a href="index.html">
+            🏠 Dashboard
+        </a>
+
+        <a href="contas-cartoes.html">
+            💳 Entradas
+        </a>
+
+        <a href="nova-saida.html">
+            💸 Gastos
+        </a>
+
+        <a href="movimentacoes.html">
+            📊 Movimentações
+        </a>
+
+        <a href="dividendos.html">
+            📈 Dividendos
+        </a>
+
+        <a href="categorias.html" class="active">
+            📁 Categorias
+        </a>
+
+        <a href="#">
+            📑 Relatórios
+        </a>
+
+        <a href="#">
+            ⚙️ Configurações
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<main class="main-content">
+
+
+    <header class="topbar">
+
+        <div>
+
+            <h1>Categorias</h1>
+
+            <p>
+                Organize suas entradas e gastos por categorias.
+            </p>
+
+        </div>
+
+
+        <div class="usuario">
+
+            Ednardo
+
+        </div>
+
+    </header>
+
+
+    <section class="conteudo-categorias">
+
+
+        <div class="card-formulario">
+
+            <h2>Nova categoria</h2>
+
+
+            <form id="formulario">
+
+
+                <div class="campo">
+
+                    <label for="nome">
+                        Nome da categoria
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        placeholder="Ex.: Alimentação"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="tipo">
+                        Tipo
+                    </label>
+
+                    <select id="tipo" required>
+
+                        <option value="">
+                            Selecione o tipo
+                        </option>
+
+                        <option value="entrada">
+                            Entrada
+                        </option>
+
+                        <option value="saida">
+                            Gasto
+                        </option>
+
+                        <option value="ambos">
+                            Entrada e Gasto
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn-salvar"
+                >
+                    + Adicionar categoria
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+        <div class="card-resumo">
+
+            <h2>Resumo</h2>
+
+
+            <div class="resumo-valor">
+
+                <span>
+                    Categorias cadastradas
+                </span>
+
+                <strong id="totalCategorias">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-lista">
+
+            <div class="titulo-lista">
+
+                <h2>
+                    Categorias cadastradas
+                </h2>
+
+            </div>
+
+
+            <div id="listaCategorias">
+
+                <p class="sem-registros">
+                    Nenhuma categoria cadastrada.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+</div>
+
+<script src="js/categorias.js"></script>
+
+</body>
+
+</html>
