@@ -11,19 +11,18 @@ const tipo = document.getElementById("tipo");
 const listaCategorias = document.getElementById("listaCategorias");
 const totalCategorias = document.getElementById("totalCategorias");
 
-
 // ========================================================
 // CARREGAR CATEGORIAS
 // ========================================================
 
 function carregarCategorias() {
 
-    const categoriasSalvas =
-        JSON.parse(localStorage.getItem("categorias")) || [];
+const categoriasSalvas =
+    JSON.parse(localStorage.getItem("categorias")) || [];
 
-    mostrarCategorias(categoriasSalvas);
+mostrarCategorias(categoriasSalvas);
+
 }
-
 
 // ========================================================
 // MOSTRAR CATEGORIAS
@@ -31,65 +30,64 @@ function carregarCategorias() {
 
 function mostrarCategorias(categorias) {
 
-    listaCategorias.innerHTML = "";
+listaCategorias.innerHTML = "";
 
-    totalCategorias.textContent = categorias.length;
-
-
-    if (categorias.length === 0) {
-
-        listaCategorias.innerHTML = `
-            <p class="sem-registros">
-                Nenhuma categoria cadastrada.
-            </p>
-        `;
-
-        return;
-    }
+totalCategorias.textContent = categorias.length;
 
 
-    categorias.forEach(function (categoria) {
+if (categorias.length === 0) {
 
-        const item = document.createElement("div");
+    listaCategorias.innerHTML = `
+        <p class="sem-registros">
+            Nenhuma categoria cadastrada.
+        </p>
+    `;
 
-        item.className = "item-categoria";
-
-
-        item.innerHTML = `
-
-            <div>
-
-                <strong>
-                    ${categoria.nome}
-                </strong>
-
-                <small>
-                    ${mostrarTipo(categoria.tipo)}
-                </small>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="btn-excluir"
-                data-id="${categoria.id}"
-            >
-                Excluir
-            </button>
-
-        `;
-
-
-        listaCategorias.appendChild(item);
-
-    });
-
-
-    adicionarEventosExcluir();
-
+    return;
 }
 
+
+categorias.forEach(function (categoria) {
+
+    const item = document.createElement("div");
+
+    item.className = "item-categoria";
+
+
+    item.innerHTML = `
+
+        <div>
+
+            <strong>
+                ${categoria.nome}
+            </strong>
+
+            <small>
+                ${mostrarTipo(categoria.tipo)}
+            </small>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="btn-excluir"
+            data-id="${categoria.id}"
+        >
+            Excluir
+        </button>
+
+    `;
+
+
+    listaCategorias.appendChild(item);
+
+});
+
+
+adicionarEventosExcluir();
+
+}
 
 // ========================================================
 // MOSTRAR TIPO
@@ -97,28 +95,27 @@ function mostrarCategorias(categorias) {
 
 function mostrarTipo(tipoCategoria) {
 
-    if (tipoCategoria === "entrada") {
+if (tipoCategoria === "entrada") {
 
-        return "Entrada";
-
-    }
-
-    if (tipoCategoria === "saida") {
-
-        return "Gasto";
-
-    }
-
-    if (tipoCategoria === "ambos") {
-
-        return "Entrada e Gasto";
-
-    }
-
-    return tipoCategoria;
+    return "Entrada";
 
 }
 
+if (tipoCategoria === "saida") {
+
+    return "Gasto";
+
+}
+
+if (tipoCategoria === "ambos") {
+
+    return "Entrada e Gasto";
+
+}
+
+return tipoCategoria;
+
+}
 
 // ========================================================
 // ADICIONAR CATEGORIA
@@ -126,89 +123,112 @@ function mostrarTipo(tipoCategoria) {
 
 formulario.addEventListener("submit", function (event) {
 
-    event.preventDefault();
+event.preventDefault();
 
 
-    const nomeCategoria = nome.value.trim();
+const nomeCategoria = nome.value.trim();
 
-    const tipoCategoria = tipo.value;
-
-
-    if (nomeCategoria === "") {
-
-        alert("Digite o nome da categoria.");
-
-        nome.focus();
-
-        return;
-
-    }
+const tipoCategoria = tipo.value;
 
 
-    if (tipoCategoria === "") {
+if (nomeCategoria === "") {
 
-        alert("Selecione o tipo da categoria.");
+    alert("Digite o nome da categoria.");
 
-        tipo.focus();
+    nome.focus();
 
-        return;
+    return;
 
-    }
-
-
-    const categoriasSalvas =
-        JSON.parse(localStorage.getItem("categorias")) || [];
+}
 
 
-    const categoriaExiste = categoriasSalvas.some(function (categoria) {
+if (tipoCategoria === "") {
 
-        return categoria.nome.toLowerCase() ===
-               nomeCategoria.toLowerCase();
+    alert("Selecione o tipo da categoria.");
 
-    });
+    tipo.focus();
 
+    return;
 
-    if (categoriaExiste) {
-
-        alert("Essa categoria já está cadastrada.");
-
-        nome.focus();
-
-        return;
-
-    }
+}
 
 
-    const novaCategoria = {
-
-        id: Date.now(),
-
-        nome: nomeCategoria,
-
-        tipo: tipoCategoria
-
-    };
+const categoriasSalvas =
+    JSON.parse(localStorage.getItem("categorias")) || [];
 
 
-    categoriasSalvas.push(novaCategoria);
+const categoriaExiste = categoriasSalvas.some(function (categoria) {
 
-
-    localStorage.setItem(
-        "categorias",
-        JSON.stringify(categoriasSalvas)
-    );
-
-
-    formulario.reset();
-
-
-    carregarCategorias();
-
-
-    alert("Categoria adicionada com sucesso.");
+    return categoria.nome.toLowerCase() ===
+           nomeCategoria.toLowerCase();
 
 });
 
+
+if (categoriaExiste) {
+
+    alert("Essa categoria já está cadastrada.");
+
+    nome.focus();
+
+    return;
+
+}
+
+
+const novaCategoria = {
+
+    id: Date.now(),
+
+    nome: nomeCategoria,
+
+    tipo: tipoCategoria
+
+};
+
+
+categoriasSalvas.push(novaCategoria);
+
+
+localStorage.setItem(
+    "categorias",
+    JSON.stringify(categoriasSalvas)
+);
+
+
+formulario.reset();
+
+
+carregarCategorias();
+
+
+alert("Categoria adicionada com sucesso.");
+
+});
+
+// ========================================================
+// VERIFICAR CONFIGURAÇÃO DE CONFIRMAÇÃO
+// ========================================================
+
+function deveConfirmarExclusao() {
+
+const configuracoes =
+    JSON.parse(localStorage.getItem("configuracoes")) || {};
+
+
+// Se a configuração ainda não existir,
+// mantém o comportamento antigo: confirmar.
+
+if (configuracoes.confirmarExclusao === undefined) {
+
+    return true;
+
+}
+
+
+return configuracoes.confirmarExclusao === true;
+
+}
 
 // ========================================================
 // EXCLUIR CATEGORIA
@@ -216,16 +236,22 @@ formulario.addEventListener("submit", function (event) {
 
 function adicionarEventosExcluir() {
 
-    const botoesExcluir =
-        document.querySelectorAll(".btn-excluir");
+const botoesExcluir =
+    document.querySelectorAll(".btn-excluir");
 
 
-    botoesExcluir.forEach(function (botao) {
+botoesExcluir.forEach(function (botao) {
 
-        botao.addEventListener("click", function () {
+    botao.addEventListener("click", function () {
 
-            const id = Number(this.dataset.id);
+        const id = Number(this.dataset.id);
 
+
+        // =================================================
+        // CONFIRMAÇÃO
+        // =================================================
+
+        if (deveConfirmarExclusao()) {
 
             const confirmar = confirm(
                 "Deseja realmente excluir esta categoria?"
@@ -238,33 +264,38 @@ function adicionarEventosExcluir() {
 
             }
 
-
-            let categoriasSalvas =
-                JSON.parse(localStorage.getItem("categorias")) || [];
+        }
 
 
-            categoriasSalvas =
-                categoriasSalvas.filter(function (categoria) {
+        // =================================================
+        // EXCLUIR
+        // =================================================
 
-                    return categoria.id !== id;
-
-                });
-
-
-            localStorage.setItem(
-                "categorias",
-                JSON.stringify(categoriasSalvas)
-            );
+        let categoriasSalvas =
+            JSON.parse(localStorage.getItem("categorias")) || [];
 
 
-            carregarCategorias();
+        categoriasSalvas =
+            categoriasSalvas.filter(function (categoria) {
 
-        });
+                return categoria.id !== id;
+
+            });
+
+
+        localStorage.setItem(
+            "categorias",
+            JSON.stringify(categoriasSalvas)
+        );
+
+
+        carregarCategorias();
 
     });
 
-}
+});
 
+}
 
 // ========================================================
 // INICIAR
