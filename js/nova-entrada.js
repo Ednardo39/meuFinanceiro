@@ -1,21 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
 
 const data = document.querySelector("#data");
-
 const valor = document.querySelector("#valor");
-
 const formulario = document.querySelector("#formulario");
-
 const descricao = document.querySelector("#descricao");
-
 const categoria = document.querySelector("#categoria");
-
 const forma = document.querySelector("#forma");
-
 const conta = document.querySelector("#conta");
-
 const observacao = document.querySelector("#observacao");
-
 
 // =========================================================
 // CARREGAR CATEGORIAS
@@ -27,9 +19,7 @@ function carregarCategorias() {
         return;
     }
 
-
     let categoriasSalvas = [];
-
 
     try {
 
@@ -49,26 +39,16 @@ function carregarCategorias() {
 
     }
 
-
-    // Limpar opções atuais
     categoria.innerHTML = "";
 
-
-    // Opção inicial
     const opcaoInicial =
         document.createElement("option");
 
     opcaoInicial.value = "";
-
     opcaoInicial.textContent =
         "Selecione uma categoria";
 
     categoria.appendChild(opcaoInicial);
-
-
-    // =====================================================
-    // FILTRAR CATEGORIAS DE ENTRADA
-    // =====================================================
 
     const categoriasEntrada =
         categoriasSalvas.filter(function (item) {
@@ -80,18 +60,12 @@ function carregarCategorias() {
 
         });
 
-
-    // =====================================================
-    // SE NÃO EXISTIR CATEGORIA
-    // =====================================================
-
     if (categoriasEntrada.length === 0) {
 
         const opcaoVazia =
             document.createElement("option");
 
         opcaoVazia.value = "";
-
         opcaoVazia.textContent =
             "Nenhuma categoria de entrada cadastrada";
 
@@ -103,18 +77,12 @@ function carregarCategorias() {
 
     }
 
-
-    // =====================================================
-    // ADICIONAR CATEGORIAS
-    // =====================================================
-
     categoriasEntrada.forEach(function (item) {
 
         const opcao =
             document.createElement("option");
 
         opcao.value = item.nome;
-
         opcao.textContent = item.nome;
 
         categoria.appendChild(opcao);
@@ -123,10 +91,96 @@ function carregarCategorias() {
 
 }
 
+// =========================================================
+// CARREGAR CONTAS
+// =========================================================
 
-// Carregar categorias ao abrir a tela
+function carregarContas() {
+
+    if (!conta) {
+        return;
+    }
+
+    let contas = [];
+
+    try {
+
+        contas =
+            JSON.parse(
+                localStorage.getItem(
+                    "contasFinanceiras"
+                )
+            ) || [];
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar contas:",
+            erro
+        );
+
+        contas = [];
+
+    }
+
+    conta.innerHTML = "";
+
+    const opcaoInicial =
+        document.createElement("option");
+
+    opcaoInicial.value = "";
+    opcaoInicial.textContent =
+        "Selecione a conta";
+
+    conta.appendChild(opcaoInicial);
+
+    const contasAtivas =
+        contas.filter(function (item) {
+
+            return (
+                !item.status ||
+                item.status === "Ativa"
+            );
+
+        });
+
+    if (contasAtivas.length === 0) {
+
+        const opcaoVazia =
+            document.createElement("option");
+
+        opcaoVazia.value = "";
+        opcaoVazia.textContent =
+            "Nenhuma conta cadastrada";
+
+        opcaoVazia.disabled = true;
+
+        conta.appendChild(opcaoVazia);
+
+        return;
+
+    }
+
+    contasAtivas.forEach(function (item) {
+
+        const opcao =
+            document.createElement("option");
+
+        opcao.value = String(item.id);
+
+        opcao.textContent =
+            item.nome +
+            " - " +
+            item.instituicao;
+
+        conta.appendChild(opcao);
+
+    });
+
+}
+
 carregarCategorias();
-
+carregarContas();
 
 // =========================================================
 // PREENCHER DATA ATUAL
@@ -154,9 +208,7 @@ const dataAtual =
     "-" +
     dia;
 
-
 data.value = dataAtual;
-
 
 // =========================================================
 // FORMATAÇÃO DO VALOR
@@ -174,14 +226,12 @@ valor.addEventListener(
     }
 );
 
-
 valor.addEventListener(
     "blur",
     function () {
 
         let texto =
             valor.value.trim();
-
 
         if (texto === "") {
 
@@ -191,24 +241,19 @@ valor.addEventListener(
 
         }
 
-
         texto =
             texto
                 .replace("R$", "")
                 .trim();
 
-
         texto =
             texto.replace(/\./g, "");
-
 
         texto =
             texto.replace(",", ".");
 
-
         const numero =
             Number(texto);
-
 
         if (isNaN(numero)) {
 
@@ -217,7 +262,6 @@ valor.addEventListener(
             return;
 
         }
-
 
         const numeroFormatado =
             numero.toLocaleString(
@@ -228,14 +272,12 @@ valor.addEventListener(
                 }
             );
 
-
         valor.value =
             "R$ " +
             numeroFormatado;
 
     }
 );
-
 
 // =========================================================
 // VALIDAÇÃO DO FORMULÁRIO
@@ -247,14 +289,8 @@ formulario.addEventListener(
 
         evento.preventDefault();
 
-
-        // -------------------------------------------------
-        // VALIDAÇÃO DA DESCRIÇÃO
-        // -------------------------------------------------
-
         const textoDescricao =
             descricao.value.trim();
-
 
         if (textoDescricao === "") {
 
@@ -272,15 +308,9 @@ formulario.addEventListener(
 
         }
 
-
         descricao.classList.remove(
             "campo-erro"
         );
-
-
-        // -------------------------------------------------
-        // VALIDAÇÃO DA CATEGORIA
-        // -------------------------------------------------
 
         if (categoria.value === "") {
 
@@ -298,19 +328,12 @@ formulario.addEventListener(
 
         }
 
-
         categoria.classList.remove(
             "campo-erro"
         );
 
-
-        // -------------------------------------------------
-        // VALIDAÇÃO DO VALOR
-        // -------------------------------------------------
-
         let valorTexto =
             valor.value.trim();
-
 
         if (valorTexto === "") {
 
@@ -328,12 +351,10 @@ formulario.addEventListener(
 
         }
 
-
         valorTexto =
             valorTexto
                 .replace("R$", "")
                 .trim();
-
 
         valorTexto =
             valorTexto.replace(
@@ -341,17 +362,14 @@ formulario.addEventListener(
                 ""
             );
 
-
         valorTexto =
             valorTexto.replace(
                 ",",
                 "."
             );
 
-
         const valorNumerico =
             Number(valorTexto);
-
 
         if (
             isNaN(valorNumerico) ||
@@ -372,15 +390,9 @@ formulario.addEventListener(
 
         }
 
-
         valor.classList.remove(
             "campo-erro"
         );
-
-
-        // -------------------------------------------------
-        // VALIDAÇÃO DA DATA
-        // -------------------------------------------------
 
         if (data.value === "") {
 
@@ -398,15 +410,9 @@ formulario.addEventListener(
 
         }
 
-
         data.classList.remove(
             "campo-erro"
         );
-
-
-        // -------------------------------------------------
-        // VALIDAÇÃO DA FORMA DE RECEBIMENTO
-        // -------------------------------------------------
 
         if (forma.value === "") {
 
@@ -424,15 +430,9 @@ formulario.addEventListener(
 
         }
 
-
         forma.classList.remove(
             "campo-erro"
         );
-
-
-        // -------------------------------------------------
-        // VALIDAÇÃO DA CONTA
-        // -------------------------------------------------
 
         if (conta.value === "") {
 
@@ -450,18 +450,15 @@ formulario.addEventListener(
 
         }
 
-
         conta.classList.remove(
             "campo-erro"
         );
 
-
         // =================================================
-        // SALVAR MOVIMENTAÇÃO
+        // CARREGAR MOVIMENTAÇÕES
         // =================================================
 
         let movimentacoes = [];
-
 
         try {
 
@@ -483,6 +480,9 @@ formulario.addEventListener(
 
         }
 
+        // =================================================
+        // SALVAR MOVIMENTAÇÃO
+        // =================================================
 
         const novaMovimentacao = {
 
@@ -506,7 +506,7 @@ formulario.addEventListener(
                 forma.value,
 
             conta:
-                conta.value,
+                String(conta.value),
 
             observacao:
                 observacao
@@ -518,11 +518,9 @@ formulario.addEventListener(
 
         };
 
-
         movimentacoes.push(
             novaMovimentacao
         );
-
 
         localStorage.setItem(
             "movimentacoesContas",
@@ -531,27 +529,17 @@ formulario.addEventListener(
             )
         );
 
-
-        // =================================================
-        // CONFIRMAÇÃO
-        // =================================================
-
         alert(
             "Entrada registrada com sucesso!"
         );
 
-
-        // =================================================
-        // LIMPAR FORMULÁRIO
-        // =================================================
-
         formulario.reset();
 
-        data.value = dataAtual;
+        data.value =
+            dataAtual;
 
-
-        // Recarregar categorias
         carregarCategorias();
+        carregarContas();
 
     }
 );

@@ -1,5 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-
 // ==============================
 // ELEMENTOS DA TELA
 // ==============================
@@ -96,6 +94,188 @@ const cartoes = {
     }
 
 };
+
+
+// ==============================
+// LER CONTAS CADASTRADAS
+// ==============================
+
+function obterContas() {
+
+    const contasSalvas =
+        localStorage.getItem(
+            "contasFinanceiras"
+        );
+
+
+    if (!contasSalvas) {
+
+        return [];
+    }
+
+
+    try {
+
+        const contas =
+            JSON.parse(
+                contasSalvas
+            );
+
+
+        if (Array.isArray(contas)) {
+
+            return contas;
+        }
+
+
+        return [];
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao ler as contas:",
+            erro
+        );
+
+        return [];
+    }
+}
+
+
+// ==============================
+// CARREGAR CONTAS NO PAGAMENTO
+// ==============================
+
+function carregarContasPagamento() {
+
+    const contaPagamento =
+        document.querySelector(
+            "#contaPagamento"
+        );
+
+
+    if (!contaPagamento) {
+
+        console.warn(
+            "Elemento #contaPagamento não encontrado."
+        );
+
+        return;
+    }
+
+
+    const contas =
+        obterContas();
+
+
+    // Limpar opções atuais
+
+    contaPagamento.innerHTML =
+        "";
+
+
+    // Opção inicial
+
+    const opcaoInicial =
+        document.createElement(
+            "option"
+        );
+
+
+    opcaoInicial.value = "";
+
+    opcaoInicial.textContent =
+        "Selecione a conta";
+
+
+    contaPagamento.appendChild(
+        opcaoInicial
+    );
+
+
+    // ==============================
+    // ADICIONAR CONTAS ATIVAS
+    // ==============================
+
+    contas.forEach(
+        function (conta) {
+
+            // Se estiver inativa, não mostrar.
+            // A comparação ignora maiúsculas e minúsculas.
+
+            if (
+                conta.status &&
+                String(conta.status).toLowerCase() !== "ativa"
+            ) {
+
+                return;
+            }
+
+
+            const opcao =
+                document.createElement(
+                    "option"
+                );
+
+
+            opcao.value =
+                String(conta.id);
+
+
+            opcao.textContent =
+                `${conta.nome} - ${conta.instituicao}`;
+
+
+            // Guardar também o nome
+
+            opcao.dataset.nome =
+                conta.nome;
+
+
+            contaPagamento.appendChild(
+                opcao
+            );
+        }
+    );
+
+
+    // ==============================
+    // VERIFICAR SE EXISTEM CONTAS
+    // ==============================
+
+    const contasAtivas =
+        contas.filter(
+            function (conta) {
+
+                return (
+                    !conta.status ||
+                    String(conta.status).toLowerCase() === "ativa"
+                );
+            }
+        );
+
+
+    if (contasAtivas.length === 0) {
+
+        const opcao =
+            document.createElement(
+                "option"
+            );
+
+
+        opcao.value = "";
+
+        opcao.textContent =
+            contas.length === 0
+                ? "Nenhuma conta cadastrada"
+                : "Nenhuma conta ativa";
+
+
+        contaPagamento.appendChild(
+            opcao
+        );
+    }
+}
 
 
 // ==============================
@@ -280,6 +460,74 @@ function movimentacaoFaturaJaExiste() {
 
 
 // ==============================
+// OBTER NOME DA CONTA
+// ==============================
+
+function obterNomeConta(
+    idConta,
+    nomeSalvo
+) {
+
+    const contas =
+        obterContas();
+
+
+    const conta =
+        contas.find(
+            function (item) {
+
+                return (
+                    String(item.id) ===
+                    String(idConta)
+                );
+            }
+        );
+
+
+    if (conta) {
+
+        return (
+            conta.nome +
+            (
+                conta.instituicao
+                    ? " - " + conta.instituicao
+                    : ""
+            )
+        );
+    }
+
+
+    // Compatibilidade com pagamentos antigos
+
+    const nomesContasAntigas = {
+
+        nubank:
+            "Nubank",
+
+        "mercado-pago":
+            "Mercado Pago",
+
+        caixa:
+            "Caixa",
+
+        dinheiro:
+            "Dinheiro em espécie"
+    };
+
+
+    return (
+        nomeSalvo
+        ||
+        nomesContasAntigas[idConta]
+        ||
+        idConta
+        ||
+        "Conta não identificada"
+    );
+}
+
+
+// ==============================
 // MOSTRAR DADOS DO PAGAMENTO
 // ==============================
 
@@ -328,31 +576,14 @@ function atualizarDadosPagamento() {
     // CONTA UTILIZADA
     // ==============================
 
-    const nomesContas = {
-
-        nubank:
-            "Nubank",
-
-        "mercado-pago":
-            "Mercado Pago",
-
-        caixa:
-            "Caixa",
-
-        dinheiro:
-            "Dinheiro em espécie"
-    };
-
-
     contaPagamentoInfo.textContent =
 
-        nomesContas[
-            pagamento.contaPagamento
-        ]
+        obterNomeConta(
 
-        ||
+            pagamento.contaPagamento,
 
-        pagamento.contaPagamento;
+            pagamento.nomeContaPagamento
+        );
 
 
     // ==============================
@@ -1156,6 +1387,38 @@ btnPagar.addEventListener(
 
 
         // ==============================
+        // VERIFICAR SE A CONTA EXISTE
+        // ==============================
+
+        const contas =
+            obterContas();
+
+
+        const contaSelecionada =
+            contas.find(
+                function (item) {
+
+                    return (
+                        String(item.id) ===
+                        String(conta.value)
+                    );
+                }
+            );
+
+
+        if (!contaSelecionada) {
+
+            alert(
+                "A conta selecionada não foi encontrada."
+            );
+
+            carregarContasPagamento();
+
+            return;
+        }
+
+
+        // ==============================
         // DADOS DO CARTÃO
         // ==============================
 
@@ -1189,6 +1452,34 @@ btnPagar.addEventListener(
 
 
         // ==============================
+        // VERIFICAR VALOR
+        // ==============================
+
+        if (
+            !valorNumerico ||
+            valorNumerico <= 0
+        ) {
+
+            alert(
+                "Esta fatura não possui valor para pagamento."
+            );
+
+            return;
+        }
+
+
+        // ==============================
+        // DATA DO PAGAMENTO
+        // ==============================
+
+        const dataPagamento =
+
+            new Date()
+                .toISOString()
+                .split("T")[0];
+
+
+        // ==============================
         // CRIAR REGISTRO DO PAGAMENTO
         // ==============================
 
@@ -1210,13 +1501,13 @@ btnPagar.addEventListener(
                 valorNumerico,
 
             contaPagamento:
-                conta.value,
+                String(contaSelecionada.id),
+
+            nomeContaPagamento:
+                contaSelecionada.nome,
 
             dataPagamento:
-
-                new Date()
-                    .toISOString()
-                    .split("T")[0]
+                dataPagamento
         };
 
 
@@ -1252,7 +1543,7 @@ btnPagar.addEventListener(
 
 
         // ==============================
-        // REGISTRAR SAÍDA DA CONTA
+        // RECUPERAR MOVIMENTAÇÕES
         // ==============================
 
         let movimentacoes =
@@ -1266,10 +1557,14 @@ btnPagar.addEventListener(
             ) || [];
 
 
+        // ==============================
+        // REGISTRAR SAÍDA DA CONTA
+        // ==============================
+
         movimentacoes.push({
 
             id:
-                Date.now(),
+                Date.now() + 1,
 
             tipo:
                 "saida",
@@ -1281,10 +1576,10 @@ btnPagar.addEventListener(
                 valorNumerico,
 
             conta:
-                conta.value,
+                String(contaSelecionada.id),
 
             data:
-                pagamento.dataPagamento,
+                dataPagamento,
 
             origem:
                 "fatura",
@@ -1331,9 +1626,14 @@ btnPagar.addEventListener(
 
 
 // ==============================
+// CARREGAR CONTAS
+// ==============================
+
+carregarContasPagamento();
+
+
+// ==============================
 // CARREGAR FATURA INICIAL
 // ==============================
 
 atualizarFatura();
-
-});

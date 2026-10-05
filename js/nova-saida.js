@@ -37,6 +37,7 @@ function carregarCategorias() {
     let categoriasSalvas = [];
 
     try {
+
         categoriasSalvas =
             JSON.parse(
                 localStorage.getItem("categorias")
@@ -53,21 +54,21 @@ function carregarCategorias() {
     }
 
 
-    // Limpa as opções atuais
     categoria.innerHTML = "";
 
 
-    // Opção inicial
-    const opcaoInicial = document.createElement("option");
+    const opcaoInicial =
+        document.createElement("option");
 
     opcaoInicial.value = "";
     opcaoInicial.textContent =
         "Selecione uma categoria";
 
-    categoria.appendChild(opcaoInicial);
+    categoria.appendChild(
+        opcaoInicial
+    );
 
 
-    // Somente categorias de SAÍDA ou AMBOS
     const categoriasSaida =
         categoriasSalvas.filter(function (item) {
 
@@ -79,7 +80,6 @@ function carregarCategorias() {
         });
 
 
-    // Se não houver categorias
     if (categoriasSaida.length === 0) {
 
         const opcaoVazia =
@@ -91,13 +91,14 @@ function carregarCategorias() {
 
         opcaoVazia.disabled = true;
 
-        categoria.appendChild(opcaoVazia);
+        categoria.appendChild(
+            opcaoVazia
+        );
 
         return;
     }
 
 
-    // Adicionar categorias ao SELECT
     categoriasSaida.forEach(function (item) {
 
         const opcao =
@@ -106,15 +107,134 @@ function carregarCategorias() {
         opcao.value = item.nome;
         opcao.textContent = item.nome;
 
-        categoria.appendChild(opcao);
+        categoria.appendChild(
+            opcao
+        );
 
     });
 
 }
 
 
-// Carregar categorias ao abrir a tela
+// =========================================================
+// CARREGAR CONTAS CADASTRADAS
+// =========================================================
+
+function carregarContas() {
+
+    if (!origem) {
+        return;
+    }
+
+    let contas = [];
+
+    try {
+
+        contas =
+            JSON.parse(
+                localStorage.getItem(
+                    "contasFinanceiras"
+                )
+            ) || [];
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar contas:",
+            erro
+        );
+
+        contas = [];
+    }
+
+
+    // Limpar opções existentes
+    origem.innerHTML = "";
+
+
+    // Opção inicial
+    const opcaoInicial =
+        document.createElement("option");
+
+    opcaoInicial.value = "";
+    opcaoInicial.textContent =
+        "Selecione a conta de origem";
+
+    origem.appendChild(
+        opcaoInicial
+    );
+
+
+    // Somente contas ativas
+    const contasAtivas =
+        contas.filter(function (item) {
+
+            return (
+                !item.status ||
+                item.status === "Ativa"
+            );
+
+        });
+
+
+    // Nenhuma conta cadastrada
+    if (contasAtivas.length === 0) {
+
+        const opcaoVazia =
+            document.createElement("option");
+
+        opcaoVazia.value = "";
+        opcaoVazia.textContent =
+            "Nenhuma conta cadastrada";
+
+        opcaoVazia.disabled = true;
+
+        origem.appendChild(
+            opcaoVazia
+        );
+
+        return;
+    }
+
+
+    // Adicionar contas ao SELECT
+    contasAtivas.forEach(function (item) {
+
+        const opcao =
+            document.createElement("option");
+
+        /*
+         * IMPORTANTE:
+         *
+         * O value será o ID da conta.
+         * Assim a movimentação fica ligada
+         * diretamente à conta cadastrada.
+         */
+
+        opcao.value =
+            String(item.id);
+
+        opcao.textContent =
+            item.nome +
+            " - " +
+            item.instituicao;
+
+        origem.appendChild(
+            opcao
+        );
+
+    });
+
+}
+
+
+// =========================================================
+// CARREGAR DADOS INICIAIS
+// =========================================================
+
 carregarCategorias();
+
+carregarContas();
 
 
 // =========================================================
@@ -153,32 +273,47 @@ if (data) {
 // MOSTRAR / ESCONDER CARTÃO
 // =========================================================
 
-modo.addEventListener("change", function () {
+modo.addEventListener(
+    "change",
+    function () {
 
-    if (modo.value === "credito") {
+        if (modo.value === "credito") {
 
-        grupoCartao.style.display = "block";
-        grupoParcelas.style.display = "block";
+            grupoCartao.style.display =
+                "block";
 
-    } else {
+            grupoParcelas.style.display =
+                "block";
 
-        grupoCartao.style.display = "none";
-        grupoParcelas.style.display = "none";
+        } else {
 
-        if (grupoFatura) {
+            grupoCartao.style.display =
+                "none";
 
-            grupoFatura.style.display = "none";
+            grupoParcelas.style.display =
+                "none";
+
+
+            if (grupoFatura) {
+
+                grupoFatura.style.display =
+                    "none";
+
+            }
+
+
+            cartao.value = "";
+
+            parcelas.value = "1";
+
+            valorParcela.value = "";
+
+            resumoFatura.innerHTML = "";
 
         }
 
-        cartao.value = "";
-        parcelas.value = "1";
-        valorParcela.value = "";
-        resumoFatura.innerHTML = "";
-
     }
-
-});
+);
 
 
 // =========================================================
@@ -224,51 +359,57 @@ function formatarMoeda(valorNumerico) {
 // FORMATAR CAMPO VALOR
 // =========================================================
 
-valor.addEventListener("input", function () {
+valor.addEventListener(
+    "input",
+    function () {
 
-    let numero =
-        valor.value.replace(/\D/g, "");
+        let numero =
+            valor.value.replace(/\D/g, "");
 
 
-    if (numero === "") {
+        if (numero === "") {
 
-        valor.value = "";
+            valor.value = "";
+
+            calcularParcela();
+
+            return;
+
+        }
+
+
+        numero =
+            parseInt(numero, 10) / 100;
+
+
+        valor.value =
+            numero.toLocaleString(
+                "pt-BR",
+                {
+                    style: "currency",
+                    currency: "BRL"
+                }
+            );
+
 
         calcularParcela();
 
-        return;
+    }
+);
+
+
+valor.addEventListener(
+    "focus",
+    function () {
+
+        if (valor.value === "R$ 0,00") {
+
+            valor.value = "";
+
+        }
 
     }
-
-
-    numero =
-        parseInt(numero, 10) / 100;
-
-
-    valor.value =
-        numero.toLocaleString(
-            "pt-BR",
-            {
-                style: "currency",
-                currency: "BRL"
-            }
-        );
-
-
-    calcularParcela();
-
-});
-
-
-valor.addEventListener("focus", function () {
-
-    if (valor.value === "R$ 0,00") {
-
-        valor.value = "";
-
-    }
-
-});
+);
 
 
 // =========================================================
@@ -315,7 +456,9 @@ function calcularParcela() {
 
     valorParcela.value =
         "Valor aproximado de cada parcela: " +
-        formatarMoeda(valorDaParcela);
+        formatarMoeda(
+            valorDaParcela
+        );
 
 
     calcularFatura();
@@ -417,7 +560,8 @@ function calcularFatura() {
 
         if (grupoFatura) {
 
-            grupoFatura.style.display = "none";
+            grupoFatura.style.display =
+                "none";
 
         }
 
@@ -463,15 +607,21 @@ function calcularFatura() {
 
 
     const anoCompra =
-        parseInt(partesData[0]);
+        parseInt(
+            partesData[0]
+        );
 
 
     const mesCompra =
-        parseInt(partesData[1]) - 1;
+        parseInt(
+            partesData[1]
+        ) - 1;
 
 
     const diaCompra =
-        parseInt(partesData[2]);
+        parseInt(
+            partesData[2]
+        );
 
 
     const dataCompra =
@@ -490,15 +640,20 @@ function calcularFatura() {
 
 
     const quantidadeParcelas =
-        parseInt(parcelas.value);
+        parseInt(
+            parcelas.value
+        );
 
 
     const valorTotal =
-        converterValor(valor.value);
+        converterValor(
+            valor.value
+        );
 
 
     const valorDaParcela =
-        valorTotal / quantidadeParcelas;
+        valorTotal /
+        quantidadeParcelas;
 
 
     // =====================================================
@@ -571,7 +726,9 @@ function calcularFatura() {
                 </span>
 
                 <strong>
-                    ${formatarMoeda(valorDaParcela)}
+                    ${formatarMoeda(
+                        valorDaParcela
+                    )}
                 </strong>
 
             </div>
@@ -580,12 +737,15 @@ function calcularFatura() {
     }
 
 
-    html += "</div>";
+    html +=
+        "</div>";
 
 
-    resumoFatura.innerHTML = html;
+    resumoFatura.innerHTML =
+        html;
 
-    grupoFatura.style.display = "block";
+    grupoFatura.style.display =
+        "block";
 
 }
 
@@ -625,7 +785,9 @@ data.addEventListener(
 function salvarCompra() {
 
     const valorNumerico =
-        converterValor(valor.value);
+        converterValor(
+            valor.value
+        );
 
 
     const opcaoCartao =
@@ -636,7 +798,8 @@ function salvarCompra() {
 
     const compra = {
 
-        id: Date.now(),
+        id:
+            Date.now(),
 
         descricao:
             descricao.value.trim(),
@@ -668,7 +831,9 @@ function salvarCompra() {
 
         parcelas:
             modo.value === "credito"
-                ? parseInt(parcelas.value)
+                ? parseInt(
+                    parcelas.value
+                )
                 : 1
 
     };
@@ -706,7 +871,9 @@ function salvarCompra() {
     // ADICIONAR COMPRA
     // =====================================================
 
-    comprasSalvas.push(compra);
+    comprasSalvas.push(
+        compra
+    );
 
 
     // =====================================================
@@ -715,7 +882,9 @@ function salvarCompra() {
 
     localStorage.setItem(
         "compras",
-        JSON.stringify(comprasSalvas)
+        JSON.stringify(
+            comprasSalvas
+        )
     );
 
 }
@@ -769,9 +938,11 @@ function salvarMovimentacaoConta(
 
     const movimentacao = {
 
-        id: Date.now(),
+        id:
+            Date.now(),
 
-        tipo: "saida",
+        tipo:
+            "saida",
 
         descricao:
             descricao.value.trim(),
@@ -788,8 +959,15 @@ function salvarMovimentacaoConta(
         modo:
             modo.value,
 
+        /*
+         * IMPORTANTE:
+         *
+         * Aqui agora fica o ID da conta
+         * cadastrada em Contas e Cartões.
+         */
+
         conta:
-            origem.value,
+            String(origem.value),
 
         origem:
             "saida"
@@ -804,7 +982,9 @@ function salvarMovimentacaoConta(
 
     localStorage.setItem(
         "movimentacoesContas",
-        JSON.stringify(movimentacoes)
+        JSON.stringify(
+            movimentacoes
+        )
     );
 
 }
@@ -822,7 +1002,9 @@ formulario.addEventListener(
 
 
         const valorNumerico =
-            converterValor(valor.value);
+            converterValor(
+                valor.value
+            );
 
 
         // -------------------------------------------------
@@ -917,7 +1099,7 @@ formulario.addEventListener(
         if (!origem.value) {
 
             alert(
-                "Selecione a origem do dinheiro."
+                "Selecione a conta de origem."
             );
 
             origem.focus();
@@ -992,18 +1174,24 @@ formulario.addEventListener(
 
         formulario.reset();
 
-        grupoCartao.style.display = "none";
-        grupoParcelas.style.display = "none";
+
+        grupoCartao.style.display =
+            "none";
+
+        grupoParcelas.style.display =
+            "none";
 
 
         if (grupoFatura) {
 
-            grupoFatura.style.display = "none";
+            grupoFatura.style.display =
+                "none";
 
         }
 
 
         valorParcela.value = "";
+
         resumoFatura.innerHTML = "";
 
 
@@ -1015,8 +1203,11 @@ formulario.addEventListener(
             diaAtual;
 
 
-        // Recarregar categorias após limpar
+        // Recarregar categorias
         carregarCategorias();
+
+        // Recarregar contas
+        carregarContas();
 
     }
 
