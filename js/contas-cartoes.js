@@ -1,495 +1,277 @@
-document.addEventListener("DOMContentLoaded", function () {
 
-// =========================================================
-// CHAVES DO LOCALSTORAGE
-// =========================================================
-
-const CHAVE_CONTAS = "contasFinanceiras";
-const CHAVE_CARTOES = "cartoesFinanceiros";
-const CHAVE_MOVIMENTACOES = "movimentacoesContas";
-
-
-// =========================================================
-// INICIALIZAÇÃO
-// =========================================================
-
-carregarContas();
-carregarCartoes();
-configurarBotoes();
-
-
-// =========================================================
-// FORMATAR MOEDA
-// =========================================================
-
-function formatarMoeda(valor) {
-
-    return Number(valor || 0).toLocaleString(
-        "pt-BR",
-        {
-            style: "currency",
-            currency: "BRL"
-        }
-    );
-
-}
-
-
-// =========================================================
-// CARREGAR CONTAS
-// =========================================================
-
-function carregarContas() {
-
-    const contasGrid =
-        document.querySelector(".contas-grid");
-
-    if (!contasGrid) {
-        return;
-    }
-
-
-    let contas = [];
-
+function carregarContasDoStorage() {
     try {
-
-        contas =
-            JSON.parse(
-                localStorage.getItem(
-                    CHAVE_CONTAS
-                )
-            ) || [];
-
+        return JSON.parse(localStorage.getItem(CHAVE_CONTAS)) || [];
     } catch (erro) {
-
-        console.error(
-            "Erro ao carregar contas:",
-            erro
-        );
-
-        contas = [];
-
+        console.error("Erro ao carregar contas:", erro);
+        return [];
     }
-
-
-    // Limpar contas que estejam na tela
-    contasGrid.innerHTML = "";
-
-
-    // Criar cada conta
-    contas.forEach(function (conta) {
-
-        adicionarContaNaTela(
-            conta
-        );
-
-    });
-
 }
 
 
-// =========================================================
-// CALCULAR SALDO DA CONTA
-// =========================================================
+function carregarCartoesDoStorage() {
+    try {
+        return JSON.parse(localStorage.getItem(CHAVE_CARTOES)) || [];
+    } catch (erro) {
+        console.error("Erro ao carregar cartões:", erro);
+        return [];
+    }
+}
+
+
+function carregarMovimentacoesDoStorage() {
+    try {
+        return JSON.parse(localStorage.getItem(CHAVE_MOVIMENTACOES)) || [];
+    } catch (erro) {
+        console.error("Erro ao carregar movimentações:", erro);
+        return [];
+    }
+}
+
+
+// ============================================================
+// CALCULAR SALDO ATUAL DA CONTA
+// ============================================================
 
 function calcularSaldoConta(conta) {
 
-    const saldoInicial =
-        Number(
-            conta.saldoInicial
-        ) || 0;
+    const saldoInicial = Number(conta.saldoInicial) || 0;
 
+    const movimentacoes = carregarMovimentacoesDoStorage();
 
-    let movimentacoes = [];
+    let entradas = 0;
+    let saidas = 0;
 
-    try {
+    movimentacoes.forEach(function (movimentacao) {
 
-        movimentacoes =
-            JSON.parse(
-                localStorage.getItem(
-                    CHAVE_MOVIMENTACOES
-                )
-            ) || [];
-
-    } catch (erro) {
-
-        console.error(
-            "Erro ao carregar movimentações:",
-            erro
-        );
-
-        movimentacoes = [];
-
-    }
-
-
-    let saldo =
-        saldoInicial;
-
-
-    /*
-     * IMPORTANTE:
-     *
-     * A conta da movimentação é comparada
-     * com o ID da conta cadastrada.
-     *
-     * Isso evita confundir, por exemplo,
-     * uma movimentação antiga do Nubank
-     * com o Bradesco.
-     */
-
-    const idConta =
-        String(conta.id);
-
-
-    movimentacoes.forEach(
-        function (movimentacao) {
-
-            if (!movimentacao) {
-                return;
-            }
-
-
-            if (
-                String(
-                    movimentacao.conta
-                ) !== idConta
-            ) {
-
-                return;
-
-            }
-
-
-            const valor =
-                Number(
-                    movimentacao.valor
-                ) || 0;
-
-
-            if (
-                movimentacao.tipo ===
-                "entrada"
-            ) {
-
-                saldo += valor;
-
-            }
-
-
-            if (
-                movimentacao.tipo ===
-                "saida"
-            ) {
-
-                saldo -= valor;
-
-            }
-
+        if (
+            String(movimentacao.conta) !==
+            String(conta.id)
+        ) {
+            return;
         }
-    );
 
+        const valor = Number(movimentacao.valor) || 0;
 
-    return saldo;
+        if (movimentacao.tipo === "entrada") {
+            entradas += valor;
+        }
 
+        if (movimentacao.tipo === "saida") {
+            saidas += valor;
+        }
+    });
+
+    return saldoInicial + entradas - saidas;
 }
 
 
-// =========================================================
+// ============================================================
+// CARREGAR CONTAS
+// ============================================================
+
+function carregarContas() {
+
+    const contasGrid = document.querySelector(".contas-grid");
+
+    if (!contasGrid) {
+        console.error("Elemento .contas-grid não encontrado.");
+        return;
+    }
+
+    contasGrid.innerHTML = "";
+
+    const contas = carregarContasDoStorage();
+
+    if (contas.length === 0) {
+
+        contasGrid.innerHTML = `
+            <div class="mensagem-vazia">
+                <p>Nenhuma conta cadastrada.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    contas.forEach(function (conta) {
+        adicionarContaNaTela(conta);
+    });
+}
+
+
+// ============================================================
 // ADICIONAR CONTA NA TELA
-// =========================================================
+// ============================================================
 
 function adicionarContaNaTela(conta) {
 
-    const contasGrid =
-        document.querySelector(".contas-grid");
+    const contasGrid = document.querySelector(".contas-grid");
 
     if (!contasGrid) {
         return;
     }
 
+    const saldoAtual = calcularSaldoConta(conta);
 
-    const saldoAtual =
-        calcularSaldoConta(
-            conta
-        );
+    const statusAtivo =
+        String(conta.status || "").toLowerCase() === "ativa";
 
+    const card = document.createElement("div");
 
-    // Atualizar o saldo salvo
-    // para manter a informação sincronizada.
-    conta.saldoAtual =
-        saldoAtual;
+    card.className = "conta-card";
 
+    card.innerHTML = `
+        <div class="conta-topo">
 
-    const card =
-        document.createElement("div");
+            <div class="conta-icone">
+                💰
+            </div>
 
-    card.className =
-        "conta-card";
+            <span class="status ${statusAtivo ? "ativo" : "inativo"}">
+                ${conta.status || "Ativa"}
+            </span>
 
+        </div>
 
-    // =====================================================
-    // ÍCONE
-    // =====================================================
+        <div class="conta-info">
 
-    const icone =
-        document.createElement("div");
+            <h3>${conta.nome || "Conta"}</h3>
 
-    icone.className =
-        "conta-icone";
+            <p>
+                ${conta.instituicao || ""}
+            </p>
 
+            <p>
+                ${conta.tipo || ""}
+            </p>
 
-    const primeiraLetra =
-        conta.nome
-            ? conta.nome
-                .charAt(0)
-                .toUpperCase()
-            : "?";
+        </div>
 
+        <div class="conta-saldo">
 
-    icone.textContent =
-        primeiraLetra;
+            <span>Saldo atual</span>
 
+            <strong>
+                ${formatarMoeda(saldoAtual)}
+            </strong>
 
-    // =====================================================
-    // CONTEÚDO
-    // =====================================================
+        </div>
 
-    const conteudo =
-        document.createElement("div");
+        <div class="conta-botoes">
 
-    conteudo.className =
-        "conta-conteudo";
+            <button
+                type="button"
+                class="btn-secundario btn-ver-conta"
+            >
+                Ver conta
+            </button>
 
+            <button
+                type="button"
+                class="btn-perigo btn-excluir-conta"
+            >
+                Excluir conta
+            </button>
 
-    const status =
-        document.createElement("span");
+        </div>
+    `;
 
-    status.className =
-        "conta-status";
 
-    status.textContent =
-        conta.status ||
-        "Ativa";
+    // ========================================================
+    // BOTÃO VER CONTA
+    // ========================================================
 
+    const btnVer = card.querySelector(".btn-ver-conta");
 
-    const nome =
-        document.createElement("h3");
+    if (btnVer) {
 
-    nome.textContent =
-        conta.nome ||
-        "Conta sem nome";
+        btnVer.addEventListener("click", function () {
 
+            abrirDetalhesConta(conta.id);
 
-    const tipo =
-        document.createElement("p");
-
-    tipo.textContent =
-        conta.tipo ||
-        "Tipo não informado";
-
-
-    const saldo =
-        document.createElement("strong");
-
-    saldo.className =
-        "conta-saldo";
-
-    saldo.textContent =
-        formatarMoeda(
-            saldoAtual
-        );
-
-
-    // =====================================================
-    // BOTÕES
-    // =====================================================
-
-    const botoes =
-        document.createElement("div");
-
-    botoes.className =
-        "conta-botoes";
-
-
-    const btnVer =
-        document.createElement("button");
-
-    btnVer.type =
-        "button";
-
-    btnVer.className =
-        "btn-ver-conta";
-
-    btnVer.textContent =
-        "Ver conta";
-
-
-    btnVer.addEventListener(
-        "click",
-        function () {
-
-            abrirDetalhesConta(
-                conta.id
-            );
-
-        }
-    );
-
-
-    const btnExcluir =
-        document.createElement("button");
-
-    btnExcluir.type =
-        "button";
-
-    btnExcluir.className =
-        "btn-excluir-conta";
-
-    btnExcluir.textContent =
-        "Excluir conta";
-
-
-    btnExcluir.addEventListener(
-        "click",
-        function () {
-
-            excluirConta(
-                conta.id
-            );
-
-        }
-    );
-
-
-    botoes.appendChild(
-        btnVer
-    );
-
-    botoes.appendChild(
-        btnExcluir
-    );
-
-
-    // =====================================================
-    // MONTAR CARD
-    // =====================================================
-
-    conteudo.appendChild(
-        status
-    );
-
-    conteudo.appendChild(
-        nome
-    );
-
-    conteudo.appendChild(
-        tipo
-    );
-
-    conteudo.appendChild(
-        saldo
-    );
-
-    conteudo.appendChild(
-        botoes
-    );
-
-
-    card.appendChild(
-        icone
-    );
-
-    card.appendChild(
-        conteudo
-    );
-
-
-    contasGrid.appendChild(
-        card
-    );
-
-}
-
-
-// =========================================================
-// ABRIR DETALHES DA CONTA
-// =========================================================
-
-function abrirDetalhesConta(id) {
-
-    let contas = [];
-
-    try {
-
-        contas =
-            JSON.parse(
-                localStorage.getItem(
-                    CHAVE_CONTAS
-                )
-            ) || [];
-
-    } catch (erro) {
-
-        console.error(
-            "Erro ao carregar conta:",
-            erro
-        );
-
-        return;
-
+        });
     }
 
 
-    const conta =
-        contas.find(
-            function (item) {
+    // ========================================================
+    // BOTÃO EXCLUIR CONTA
+    // ========================================================
 
-                return String(item.id) ===
-                    String(id);
+    const btnExcluir = card.querySelector(".btn-excluir-conta");
 
-            }
-        );
+    if (btnExcluir) {
+
+        btnExcluir.addEventListener("click", function () {
+
+            excluirConta(conta.id);
+
+        });
+    }
+
+
+    contasGrid.appendChild(card);
+}
+
+
+// ============================================================
+// ABRIR DETALHES DA CONTA
+// ============================================================
+
+function abrirDetalhesConta(id) {
+
+    const contas = carregarContasDoStorage();
+
+    const conta = contas.find(function (item) {
+
+        return String(item.id) === String(id);
+
+    });
 
 
     if (!conta) {
 
-        alert(
-            "Conta não encontrada."
-        );
+        alert("Conta não encontrada.");
 
         return;
-
     }
 
 
-    const saldoAtual =
-        calcularSaldoConta(
-            conta
-        );
+    const saldoAtual = calcularSaldoConta(conta);
 
 
-    const modal =
-        document.createElement("div");
+    const modal = document.createElement("div");
 
-    modal.className =
-        "modal-overlay";
+    modal.className = "modal-fundo";
 
 
     modal.innerHTML = `
 
-        <div class="modal-conteudo">
+        <div class="modal">
 
-            <button
-                type="button"
-                class="modal-fechar"
-            >
-                ×
-            </button>
+            <div class="modal-cabecalho">
 
-            <h2>
-                ${conta.nome || "Conta"}
-            </h2>
+                <div>
+
+                    <h2>
+                        ${conta.nome || "Conta"}
+                    </h2>
+
+                    <p>
+                        Detalhes da conta
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="modal-fechar"
+                >
+                    ×
+                </button>
+
+            </div>
+
 
             <div class="detalhes-conta">
 
@@ -505,16 +287,12 @@ function abrirDetalhesConta(id) {
 
                 <p>
                     <strong>Saldo inicial:</strong>
-                    ${formatarMoeda(
-                        conta.saldoInicial
-                    )}
+                    ${formatarMoeda(conta.saldoInicial)}
                 </p>
 
                 <p>
                     <strong>Saldo atual:</strong>
-                    ${formatarMoeda(
-                        saldoAtual
-                    )}
+                    ${formatarMoeda(saldoAtual)}
                 </p>
 
                 <p>
@@ -534,169 +312,218 @@ function abrirDetalhesConta(id) {
     `;
 
 
-    document.body.appendChild(
-        modal
-    );
+    document.body.appendChild(modal);
 
+
+    // Fechar pelo X
 
     const btnFechar =
-        modal.querySelector(
-            ".modal-fechar"
-        );
+        modal.querySelector(".modal-fechar");
+
+    if (btnFechar) {
+
+        btnFechar.addEventListener("click", function () {
+
+            modal.remove();
+
+        });
+    }
 
 
-    btnFechar.addEventListener(
-        "click",
-        function () {
+    // Fechar clicando fora do modal
+
+    modal.addEventListener("click", function (event) {
+
+        if (event.target === modal) {
 
             modal.remove();
 
         }
-    );
 
-
-    modal.addEventListener(
-        "click",
-        function (evento) {
-
-            if (
-                evento.target === modal
-            ) {
-
-                modal.remove();
-
-            }
-
-        }
-    );
-
+    });
 }
 
 
-// =========================================================
+// ============================================================
 // ABRIR MODAL NOVA CONTA
-// =========================================================
+// ============================================================
 
 function abrirModalConta() {
 
-    const modal =
-        document.createElement("div");
+    const modal = document.createElement("div");
 
-    modal.className =
-        "modal-overlay";
+    modal.className = "modal-fundo";
 
 
     modal.innerHTML = `
 
-        <div class="modal-conteudo">
+        <div class="modal">
 
-            <button
-                type="button"
-                class="modal-fechar"
-            >
-                ×
-            </button>
+            <div class="modal-cabecalho">
 
-            <h2>
-                Nova conta
-            </h2>
+                <div>
+
+                    <h2>
+                        Nova conta
+                    </h2>
+
+                    <p>
+                        Cadastre uma nova conta financeira
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="modal-fechar"
+                >
+                    ×
+                </button>
+
+            </div>
+
 
             <form id="formNovaConta">
 
-                <label>
-                    Nome da conta
-                </label>
+                <div class="campo">
 
-                <input
-                    type="text"
-                    id="nomeConta"
-                    required
-                >
+                    <label for="nomeConta">
+                        Nome da conta
+                    </label>
 
-                <label>
-                    Instituição
-                </label>
+                    <input
+                        type="text"
+                        id="nomeConta"
+                        required
+                        placeholder="Ex.: Conta principal"
+                    >
 
-                <input
-                    type="text"
-                    id="instituicaoConta"
-                    required
-                >
+                </div>
 
-                <label>
-                    Tipo de conta
-                </label>
 
-                <select
-                    id="tipoConta"
-                    required
-                >
+                <div class="campo">
 
-                    <option value="">
-                        Selecione
-                    </option>
+                    <label for="instituicaoConta">
+                        Instituição
+                    </label>
 
-                    <option value="Conta corrente">
-                        Conta corrente
-                    </option>
+                    <input
+                        type="text"
+                        id="instituicaoConta"
+                        required
+                        placeholder="Ex.: Bradesco"
+                    >
 
-                    <option value="Conta poupança">
-                        Conta poupança
-                    </option>
+                </div>
 
-                    <option value="Conta de pagamento">
-                        Conta de pagamento
-                    </option>
 
-                    <option value="Carteira">
-                        Carteira
-                    </option>
+                <div class="campo">
 
-                </select>
+                    <label for="tipoConta">
+                        Tipo da conta
+                    </label>
 
-                <label>
-                    Saldo inicial
-                </label>
+                    <select
+                        id="tipoConta"
+                        required
+                    >
 
-                <input
-                    type="number"
-                    id="saldoInicial"
-                    step="0.01"
-                    value="0"
-                    required
-                >
+                        <option value="">
+                            Selecione
+                        </option>
 
-                <label>
-                    Status
-                </label>
+                        <option value="Conta corrente">
+                            Conta corrente
+                        </option>
 
-                <select
-                    id="statusConta"
-                >
+                        <option value="Conta poupança">
+                            Conta poupança
+                        </option>
 
-                    <option value="Ativa">
-                        Ativa
-                    </option>
+                        <option value="Conta digital">
+                            Conta digital
+                        </option>
 
-                    <option value="Inativa">
-                        Inativa
-                    </option>
+                        <option value="Carteira">
+                            Carteira
+                        </option>
 
-                </select>
+                    </select>
 
-                <label>
-                    Observação
-                </label>
+                </div>
 
-                <textarea
-                    id="observacaoConta"
-                ></textarea>
 
-                <button
-                    type="submit"
-                >
-                    Salvar conta
-                </button>
+                <div class="campo">
+
+                    <label for="saldoInicial">
+                        Saldo inicial
+                    </label>
+
+                    <input
+                        type="number"
+                        id="saldoInicial"
+                        step="0.01"
+                        min="0"
+                        value="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="statusConta">
+                        Status
+                    </label>
+
+                    <select id="statusConta">
+
+                        <option value="Ativa">
+                            Ativa
+                        </option>
+
+                        <option value="Inativa">
+                            Inativa
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="observacaoConta">
+                        Observação
+                    </label>
+
+                    <textarea
+                        id="observacaoConta"
+                        rows="3"
+                        placeholder="Observação opcional"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="modal-acoes">
+
+                    <button
+                        type="button"
+                        class="btn-secundario btn-cancelar-modal"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-principal"
+                    >
+                        Salvar conta
+                    </button>
+
+                </div>
 
             </form>
 
@@ -705,265 +532,282 @@ function abrirModalConta() {
     `;
 
 
-    document.body.appendChild(
-        modal
-    );
+    document.body.appendChild(modal);
 
+
+    // Fechar modal
 
     const btnFechar =
-        modal.querySelector(
-            ".modal-fechar"
-        );
+        modal.querySelector(".modal-fechar");
 
+    if (btnFechar) {
 
-    btnFechar.addEventListener(
-        "click",
-        function () {
+        btnFechar.addEventListener("click", function () {
 
             modal.remove();
 
-        }
-    );
+        });
+    }
 
+
+    const btnCancelar =
+        modal.querySelector(".btn-cancelar-modal");
+
+    if (btnCancelar) {
+
+        btnCancelar.addEventListener("click", function () {
+
+            modal.remove();
+
+        });
+    }
+
+
+    // ========================================================
+    // SALVAR CONTA
+    // ========================================================
 
     const formulario =
-        modal.querySelector(
-            "#formNovaConta"
+        modal.querySelector("#formNovaConta");
+
+
+    formulario.addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+
+        const nome =
+            modal.querySelector("#nomeConta").value.trim();
+
+        const instituicao =
+            modal.querySelector("#instituicaoConta").value.trim();
+
+        const tipo =
+            modal.querySelector("#tipoConta").value;
+
+        const saldoInicial =
+            Number(
+                modal.querySelector("#saldoInicial").value
+            ) || 0;
+
+        const status =
+            modal.querySelector("#statusConta").value;
+
+        const observacao =
+            modal.querySelector("#observacaoConta").value.trim();
+
+
+        if (!nome || !instituicao || !tipo) {
+
+            alert("Preencha os campos obrigatórios.");
+
+            return;
+        }
+
+
+        const contas = carregarContasDoStorage();
+
+
+        const novaConta = {
+
+            id:
+                String(Date.now()) +
+                String(Math.floor(Math.random() * 1000)),
+
+            nome: nome,
+
+            instituicao: instituicao,
+
+            tipo: tipo,
+
+            saldoInicial: saldoInicial,
+
+            status: status,
+
+            observacao: observacao
+        };
+
+
+        contas.push(novaConta);
+
+
+        localStorage.setItem(
+            CHAVE_CONTAS,
+            JSON.stringify(contas)
         );
 
 
-    formulario.addEventListener(
-        "submit",
-        function (evento) {
+        modal.remove();
 
-            evento.preventDefault();
+        carregarContas();
 
 
-            const novaConta = {
+        alert("Conta cadastrada com sucesso.");
 
-                id:
-                    Date.now(),
-
-                nome:
-                    document.querySelector(
-                        "#nomeConta"
-                    ).value.trim(),
-
-                instituicao:
-                    document.querySelector(
-                        "#instituicaoConta"
-                    ).value.trim(),
-
-                tipo:
-                    document.querySelector(
-                        "#tipoConta"
-                    ).value,
-
-                saldoInicial:
-                    Number(
-                        document.querySelector(
-                            "#saldoInicial"
-                        ).value
-                    ) || 0,
-
-                saldoAtual:
-                    Number(
-                        document.querySelector(
-                            "#saldoInicial"
-                        ).value
-                    ) || 0,
-
-                status:
-                    document.querySelector(
-                        "#statusConta"
-                    ).value,
-
-                observacao:
-                    document.querySelector(
-                        "#observacaoConta"
-                    ).value.trim()
-
-            };
+    });
 
 
-            let contas = [];
+    // Fechar clicando fora
 
-            try {
+    modal.addEventListener("click", function (event) {
 
-                contas =
-                    JSON.parse(
-                        localStorage.getItem(
-                            CHAVE_CONTAS
-                        )
-                    ) || [];
-
-            } catch (erro) {
-
-                contas = [];
-
-            }
-
-
-            contas.push(
-                novaConta
-            );
-
-
-            localStorage.setItem(
-                CHAVE_CONTAS,
-                JSON.stringify(
-                    contas
-                )
-            );
-
+        if (event.target === modal) {
 
             modal.remove();
 
-            carregarContas();
-
         }
-    );
 
+    });
 }
 
 
-// =========================================================
+// ============================================================
 // ABRIR MODAL NOVO CARTÃO
-// =========================================================
+// ============================================================
 
 function abrirModalCartao() {
 
-    const modal =
-        document.createElement("div");
+    const modal = document.createElement("div");
 
-    modal.className =
-        "modal-overlay";
+    modal.className = "modal-fundo";
 
 
     modal.innerHTML = `
 
-        <div class="modal-conteudo">
+        <div class="modal">
 
-            <button
-                type="button"
-                class="modal-fechar"
-            >
-                ×
-            </button>
+            <div class="modal-cabecalho">
 
-            <h2>
-                Novo cartão
-            </h2>
+                <div>
+
+                    <h2>
+                        Novo cartão
+                    </h2>
+
+                    <p>
+                        Cadastre um novo cartão de crédito
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="modal-fechar"
+                >
+                    ×
+                </button>
+
+            </div>
+
 
             <form id="formNovoCartao">
 
-                <label>
-                    Nome do cartão
-                </label>
+                <div class="campo">
 
-                <input
-                    type="text"
-                    id="nomeCartao"
-                    required
-                >
+                    <label for="nomeCartao">
+                        Nome do cartão
+                    </label>
 
-                <label>
-                    Instituição
-                </label>
+                    <input
+                        type="text"
+                        id="nomeCartao"
+                        required
+                        placeholder="Ex.: Cartão principal"
+                    >
 
-                <input
-                    type="text"
-                    id="instituicaoCartao"
-                    required
-                >
+                </div>
 
-                <label>
-                    Conta vinculada
-                </label>
 
-                <select
-                    id="contaVinculada"
-                    required
-                >
-                </select>
+                <div class="campo">
 
-                <label>
-                    Final do cartão
-                </label>
+                    <label for="instituicaoCartao">
+                        Instituição
+                    </label>
 
-                <input
-                    type="text"
-                    id="finalCartao"
-                    maxlength="4"
-                    required
-                >
+                    <input
+                        type="text"
+                        id="instituicaoCartao"
+                        required
+                        placeholder="Ex.: Bradesco"
+                    >
 
-                <label>
-                    Limite
-                </label>
+                </div>
 
-                <input
-                    type="number"
-                    id="limiteCartao"
-                    step="0.01"
-                    required
-                >
 
-                <label>
-                    Dia de fechamento
-                </label>
+                <div class="campo">
 
-                <input
-                    type="number"
-                    id="fechamentoCartao"
-                    min="1"
-                    max="31"
-                    required
-                >
+                    <label for="finalCartao">
+                        Final do cartão
+                    </label>
 
-                <label>
-                    Dia de vencimento
-                </label>
+                    <input
+                        type="text"
+                        id="finalCartao"
+                        maxlength="4"
+                        inputmode="numeric"
+                        required
+                        placeholder="Ex.: 1425"
+                    >
 
-                <input
-                    type="number"
-                    id="vencimentoCartao"
-                    min="1"
-                    max="31"
-                    required
-                >
+                </div>
 
-                <label>
-                    Status
-                </label>
 
-                <select
-                    id="statusCartao"
-                >
+                <div class="campo">
 
-                    <option value="Ativo">
-                        Ativo
-                    </option>
+                    <label for="limiteCartao">
+                        Limite
+                    </label>
 
-                    <option value="Inativo">
-                        Inativo
-                    </option>
+                    <input
+                        type="number"
+                        id="limiteCartao"
+                        step="0.01"
+                        min="0"
+                        value="0"
+                        required
+                    >
 
-                </select>
+                </div>
 
-                <label>
-                    Observação
-                </label>
 
-                <textarea
-                    id="observacaoCartao"
-                ></textarea>
+                <div class="campo">
 
-                <button
-                    type="submit"
-                >
-                    Salvar cartão
-                </button>
+                    <label for="statusCartao">
+                        Status
+                    </label>
+
+                    <select id="statusCartao">
+
+                        <option value="Ativo">
+                            Ativo
+                        </option>
+
+                        <option value="Inativo">
+                            Inativo
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="modal-acoes">
+
+                    <button
+                        type="button"
+                        class="btn-secundario btn-cancelar-modal"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn-principal"
+                    >
+                        Salvar cartão
+                    </button>
+
+                </div>
 
             </form>
 
@@ -972,285 +816,201 @@ function abrirModalCartao() {
     `;
 
 
-    document.body.appendChild(
-        modal
-    );
+    document.body.appendChild(modal);
 
 
-    carregarContasNoSelect(
-        modal
-    );
-
+    // Fechar
 
     const btnFechar =
-        modal.querySelector(
-            ".modal-fechar"
-        );
+        modal.querySelector(".modal-fechar");
 
+    if (btnFechar) {
 
-    btnFechar.addEventListener(
-        "click",
-        function () {
+        btnFechar.addEventListener("click", function () {
 
             modal.remove();
 
-        }
-    );
+        });
+    }
 
+
+    const btnCancelar =
+        modal.querySelector(".btn-cancelar-modal");
+
+    if (btnCancelar) {
+
+        btnCancelar.addEventListener("click", function () {
+
+            modal.remove();
+
+        });
+    }
+
+
+    // ========================================================
+    // SALVAR CARTÃO
+    // ========================================================
 
     const formulario =
-        modal.querySelector(
-            "#formNovoCartao"
+        modal.querySelector("#formNovoCartao");
+
+
+    formulario.addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+
+        const nome =
+            modal.querySelector("#nomeCartao").value.trim();
+
+        const instituicao =
+            modal.querySelector("#instituicaoCartao").value.trim();
+
+        const final =
+            modal.querySelector("#finalCartao").value.trim();
+
+        const limite =
+            Number(
+                modal.querySelector("#limiteCartao").value
+            ) || 0;
+
+        const status =
+            modal.querySelector("#statusCartao").value;
+
+
+        if (!nome || !instituicao || !final) {
+
+            alert("Preencha os campos obrigatórios.");
+
+            return;
+        }
+
+
+        if (!/^\d{4}$/.test(final)) {
+
+            alert("O final do cartão deve ter 4 números.");
+
+            return;
+        }
+
+
+        const cartoes =
+            carregarCartoesDoStorage();
+
+
+        const novoCartao = {
+
+            id:
+                String(Date.now()) +
+                String(Math.floor(Math.random() * 1000)),
+
+            nome: nome,
+
+            instituicao: instituicao,
+
+            final: final,
+
+            limite: limite,
+
+            status: status
+        };
+
+
+        cartoes.push(novoCartao);
+
+
+        localStorage.setItem(
+            CHAVE_CARTOES,
+            JSON.stringify(cartoes)
         );
 
 
-    formulario.addEventListener(
-        "submit",
-        function (evento) {
+        modal.remove();
 
-            evento.preventDefault();
+        carregarCartoes();
 
 
-            const novoCartao = {
+        alert("Cartão cadastrado com sucesso.");
 
-                id:
-                    Date.now(),
-
-                nome:
-                    modal.querySelector(
-                        "#nomeCartao"
-                    ).value.trim(),
-
-                instituicao:
-                    modal.querySelector(
-                        "#instituicaoCartao"
-                    ).value.trim(),
-
-                contaVinculada:
-                    modal.querySelector(
-                        "#contaVinculada"
-                    ).value,
-
-                final:
-                    modal.querySelector(
-                        "#finalCartao"
-                    ).value.trim(),
-
-                limite:
-                    Number(
-                        modal.querySelector(
-                            "#limiteCartao"
-                        ).value
-                    ) || 0,
-
-                fechamento:
-                    Number(
-                        modal.querySelector(
-                            "#fechamentoCartao"
-                        ).value
-                    ) || 0,
-
-                vencimento:
-                    Number(
-                        modal.querySelector(
-                            "#vencimentoCartao"
-                        ).value
-                    ) || 0,
-
-                status:
-                    modal.querySelector(
-                        "#statusCartao"
-                    ).value,
-
-                observacao:
-                    modal.querySelector(
-                        "#observacaoCartao"
-                    ).value.trim()
-
-            };
+    });
 
 
-            let cartoes = [];
+    // Fechar clicando fora
 
-            try {
+    modal.addEventListener("click", function (event) {
 
-                cartoes =
-                    JSON.parse(
-                        localStorage.getItem(
-                            CHAVE_CARTOES
-                        )
-                    ) || [];
-
-            } catch (erro) {
-
-                cartoes = [];
-
-            }
-
-
-            cartoes.push(
-                novoCartao
-            );
-
-
-            localStorage.setItem(
-                CHAVE_CARTOES,
-                JSON.stringify(
-                    cartoes
-                )
-            );
-
+        if (event.target === modal) {
 
             modal.remove();
 
-            carregarCartoes();
-
         }
-    );
 
+    });
 }
 
 
-// =========================================================
-// CARREGAR CONTAS NO SELECT DO CARTÃO
-// =========================================================
-
-function carregarContasNoSelect(modal) {
-
-    const select =
-        modal.querySelector(
-            "#contaVinculada"
-        );
-
-    if (!select) {
-        return;
-    }
-
-
-    let contas = [];
-
-    try {
-
-        contas =
-            JSON.parse(
-                localStorage.getItem(
-                    CHAVE_CONTAS
-                )
-            ) || [];
-
-    } catch (erro) {
-
-        contas = [];
-
-    }
-
-
-    select.innerHTML = "";
-
-
-    const opcaoInicial =
-        document.createElement("option");
-
-    opcaoInicial.value = "";
-    opcaoInicial.textContent =
-        "Selecione a conta";
-
-    select.appendChild(
-        opcaoInicial
-    );
-
-
-    contas.forEach(
-        function (conta) {
-
-            const opcao =
-                document.createElement(
-                    "option"
-                );
-
-            opcao.value =
-                String(conta.id);
-
-            opcao.textContent =
-                conta.nome +
-                " - " +
-                conta.instituicao;
-
-            select.appendChild(
-                opcao
-            );
-
-        }
-    );
-
-}
-
-
-// =========================================================
+// ============================================================
 // CARREGAR CARTÕES
-// =========================================================
+// ============================================================
 
 function carregarCartoes() {
 
     const cartoesGrid =
-        document.querySelector(
-            ".cartoes-grid"
-        );
+        document.querySelector(".cartoes-grid");
+
 
     if (!cartoesGrid) {
-        return;
-    }
-
-
-    let cartoes = [];
-
-    try {
-
-        cartoes =
-            JSON.parse(
-                localStorage.getItem(
-                    CHAVE_CARTOES
-                )
-            ) || [];
-
-    } catch (erro) {
 
         console.error(
-            "Erro ao carregar cartões:",
-            erro
+            "Elemento .cartoes-grid não encontrado."
         );
 
-        cartoes = [];
-
+        return;
     }
 
 
     cartoesGrid.innerHTML = "";
 
 
-    cartoes.forEach(
-        function (cartao) {
+    const cartoes =
+        carregarCartoesDoStorage();
 
-            adicionarCartaoNaTela(
-                cartao
-            );
 
-        }
-    );
+    if (cartoes.length === 0) {
 
+        cartoesGrid.innerHTML = `
+
+            <div class="mensagem-vazia">
+
+                <p>
+                    Nenhum cartão cadastrado.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    cartoes.forEach(function (cartao) {
+
+        adicionarCartaoNaTela(cartao);
+
+    });
 }
 
 
-// =========================================================
+// ============================================================
 // ADICIONAR CARTÃO NA TELA
-// =========================================================
+// ============================================================
 
 function adicionarCartaoNaTela(cartao) {
 
     const cartoesGrid =
-        document.querySelector(
-            ".cartoes-grid"
-        );
+        document.querySelector(".cartoes-grid");
+
 
     if (!cartoesGrid) {
         return;
@@ -1260,270 +1020,219 @@ function adicionarCartaoNaTela(cartao) {
     const card =
         document.createElement("div");
 
+
     card.className =
         "cartao-card";
 
 
-    const conteudo =
-        document.createElement("div");
-
-    conteudo.className =
-        "cartao-conteudo";
+    const statusAtivo =
+        String(cartao.status || "").toLowerCase() === "ativo";
 
 
-    const status =
-        document.createElement("span");
+    card.innerHTML = `
 
-    status.className =
-        "cartao-status";
+        <div class="cartao-topo">
 
-    status.textContent =
-        cartao.status ||
-        "Ativo";
+            <div class="cartao-icone">
+                💳
+            </div>
 
+            <span class="status ${statusAtivo ? "ativo" : "inativo"}">
+                ${cartao.status || "Ativo"}
+            </span>
 
-    const nome =
-        document.createElement("h3");
-
-    nome.textContent =
-        cartao.nome ||
-        "Cartão";
+        </div>
 
 
-    const instituicao =
-        document.createElement("p");
+        <div class="cartao-info">
 
-    instituicao.textContent =
-        cartao.instituicao ||
-        "-";
+            <h3>
+                ${cartao.nome || "Cartão"}
+            </h3>
 
+            <p>
+                ${cartao.instituicao || ""}
+            </p>
 
-    const final =
-        document.createElement("p");
+            <p>
+                Final ${cartao.final || "----"}
+            </p>
 
-    final.textContent =
-        "Final " +
-        (
-            cartao.final ||
-            "----"
-        );
+        </div>
 
 
-    const limite =
-        document.createElement("p");
+        <div class="cartao-limite">
 
-    limite.textContent =
-        "Limite: " +
-        formatarMoeda(
-            cartao.limite
-        );
+            <span>
+                Limite
+            </span>
+
+            <strong>
+                ${formatarMoeda(cartao.limite)}
+            </strong>
+
+        </div>
 
 
-    const botoes =
-        document.createElement("div");
+        <div class="cartao-botoes">
 
-    botoes.className =
-        "cartao-botoes";
+            <button
+                type="button"
+                class="btn-perigo btn-excluir-cartao"
+            >
+                Excluir cartão
+            </button>
+
+        </div>
+
+    `;
 
 
     const btnExcluir =
-        document.createElement("button");
-
-    btnExcluir.type =
-        "button";
-
-    btnExcluir.textContent =
-        "Excluir cartão";
+        card.querySelector(".btn-excluir-cartao");
 
 
-    btnExcluir.addEventListener(
-        "click",
-        function () {
+    if (btnExcluir) {
 
-            excluirCartao(
-                cartao.id
-            );
+        btnExcluir.addEventListener(
+            "click",
+            function () {
 
-        }
-    );
+                excluirCartao(cartao.id);
 
-
-    botoes.appendChild(
-        btnExcluir
-    );
+            }
+        );
+    }
 
 
-    conteudo.appendChild(
-        status
-    );
-
-    conteudo.appendChild(
-        nome
-    );
-
-    conteudo.appendChild(
-        instituicao
-    );
-
-    conteudo.appendChild(
-        final
-    );
-
-    conteudo.appendChild(
-        limite
-    );
-
-    conteudo.appendChild(
-        botoes
-    );
-
-
-    card.appendChild(
-        conteudo
-    );
-
-
-    cartoesGrid.appendChild(
-        card
-    );
-
+    cartoesGrid.appendChild(card);
 }
 
 
-// =========================================================
+// ============================================================
 // EXCLUIR CONTA
-// =========================================================
+// ============================================================
 
 function excluirConta(id) {
 
-    const confirmar =
-        confirm(
-            "Deseja realmente excluir esta conta?"
-        );
+    const contas =
+        carregarContasDoStorage();
 
 
-    if (!confirmar) {
+    const conta =
+        contas.find(function (item) {
+
+            return String(item.id) === String(id);
+
+        });
+
+
+    if (!conta) {
+
+        alert("Conta não encontrada.");
+
         return;
     }
 
 
-    let contas = [];
+    const confirmou =
+        confirm(
+            `Deseja realmente excluir a conta "${conta.nome}"?`
+        );
 
-    try {
 
-        contas =
-            JSON.parse(
-                localStorage.getItem(
-                    CHAVE_CONTAS
-                )
-            ) || [];
-
-    } catch (erro) {
-
-        contas = [];
-
+    if (!confirmou) {
+        return;
     }
 
 
-    contas =
-        contas.filter(
-            function (conta) {
+    const novasContas =
+        contas.filter(function (item) {
 
-                return String(conta.id) !==
-                    String(id);
+            return String(item.id) !== String(id);
 
-            }
-        );
+        });
 
 
     localStorage.setItem(
         CHAVE_CONTAS,
-        JSON.stringify(
-            contas
-        )
+        JSON.stringify(novasContas)
     );
 
 
     carregarContas();
 
+
+    alert("Conta excluída com sucesso.");
 }
 
 
-// =========================================================
+// ============================================================
 // EXCLUIR CARTÃO
-// =========================================================
+// ============================================================
 
 function excluirCartao(id) {
 
-    const confirmar =
-        confirm(
-            "Deseja realmente excluir este cartão?"
-        );
+    const cartoes =
+        carregarCartoesDoStorage();
 
 
-    if (!confirmar) {
+    const cartao =
+        cartoes.find(function (item) {
+
+            return String(item.id) === String(id);
+
+        });
+
+
+    if (!cartao) {
+
+        alert("Cartão não encontrado.");
+
         return;
     }
 
 
-    let cartoes = [];
+    const confirmou =
+        confirm(
+            `Deseja realmente excluir o cartão "${cartao.nome}"?`
+        );
 
-    try {
 
-        cartoes =
-            JSON.parse(
-                localStorage.getItem(
-                    CHAVE_CARTOES
-                )
-            ) || [];
-
-    } catch (erro) {
-
-        cartoes = [];
-
+    if (!confirmou) {
+        return;
     }
 
 
-    cartoes =
-        cartoes.filter(
-            function (cartao) {
+    const novosCartoes =
+        cartoes.filter(function (item) {
 
-                return String(cartao.id) !==
-                    String(id);
+            return String(item.id) !== String(id);
 
-            }
-        );
+        });
 
 
     localStorage.setItem(
         CHAVE_CARTOES,
-        JSON.stringify(
-            cartoes
-        )
+        JSON.stringify(novosCartoes)
     );
 
 
     carregarCartoes();
 
+
+    alert("Cartão excluído com sucesso.");
 }
 
 
-// =========================================================
-// CONFIGURAR BOTÕES
-// =========================================================
+// ============================================================
+// CONFIGURAR BOTÕES DA PÁGINA
+// ============================================================
 
 function configurarBotoes() {
 
     const btnNovaConta =
-        document.querySelector(
-            "#btnNovaConta"
-        );
-
-
-    const btnNovoCartao =
-        document.querySelector(
-            "#btnNovoCartao"
-        );
+        document.getElementById("btnNovaConta");
 
 
     if (btnNovaConta) {
@@ -1537,7 +1246,16 @@ function configurarBotoes() {
             }
         );
 
+    } else {
+
+        console.warn(
+            "Botão #btnNovaConta não encontrado."
+        );
     }
+
+
+    const btnNovoCartao =
+        document.getElementById("btnNovoCartao");
 
 
     if (btnNovoCartao) {
@@ -1551,8 +1269,21 @@ function configurarBotoes() {
             }
         );
 
-    }
+    } else {
 
+        console.warn(
+            "Botão #btnNovoCartao não encontrado."
+        );
+    }
 }
 
-});
+
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
+
+carregarContas();
+
+carregarCartoes();
+
+configurarBotoes();

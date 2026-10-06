@@ -1,187 +1,145 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Contas e cartões - Meu Financeiro</title>
+<title>Contas e Cartões - Meu Financeiro</title>
 
-    <link rel="stylesheet" href="css/contas-cartoes.css">
+<link rel="stylesheet" href="css/contas-cartoes.css">
 
 </head>
 
-
 <body>
 
+<!-- ============================================================
+     BARRA LATERAL
+============================================================= -->
 
-    <!-- =====================================================
-         MENU LATERAL
-         ===================================================== -->
+<aside class="sidebar">
 
-    <aside class="sidebar">
+    <div class="logo">
 
-        <div class="logo-area">
+        <h1>💰 Meu Financeiro</h1>
 
-            <div class="logo-icon">
-                MF
-            </div>
-
-            <div class="logo-text">
-                <strong>Meu</strong>
-                Financeiro
-            </div>
-
-        </div>
+    </div>
 
 
-        <nav class="menu">
+    <nav class="menu">
 
-            <a href="index.html">
-                <span>▦</span>
-                Dashboard
-            </a>
+        <a href="index.html">
+            🏠 Dashboard
+        </a>
 
-            <a href="nova-entrada.html">
-                <span>＋</span>
-                Entradas
-            </a>
+        <a href="nova-entrada.html">
+            ➕ Nova Entrada
+        </a>
 
-            <a href="#">
-                <span>−</span>
-                Gastos
-            </a>
+        <a href="nova-saida.html">
+            ➖ Nova Saída
+        </a>
 
-            <a href="#">
-                <span>◆</span>
-                Dividendos
-            </a>
+        <a href="contas-cartoes.html" class="ativo">
+            💳 Contas e Cartões
+        </a>
 
-            <a href="#">
-                <span>▤</span>
-                Categorias
-            </a>
+        <a href="faturas.html">
+            📄 Faturas
+        </a>
 
-            <a href="#">
-                <span>▥</span>
-                Relatórios
-            </a>
+    </nav>
 
-            <a href="contas-cartoes.html" class="menu-ativo">
-                <span>▣</span>
-                Contas e cartões
-            </a>
-
-            <a href="#">
-                <span>⚙</span>
-                Configurações
-            </a>
-
-        </nav>
+</aside>
 
 
-        <div class="sidebar-rodape">
 
-            <span>Meu Financeiro</span>
+<!-- ============================================================
+     ÁREA PRINCIPAL
+============================================================= -->
 
-            <small>Controle suas finanças</small>
+<main class="main">
+
+
+    <!-- ========================================================
+         TOPO
+    ========================================================= -->
+
+    <header class="topbar">
+
+        <div>
+
+            <h2>
+                Contas e Cartões
+            </h2>
+
+            <p>
+                Gerencie suas contas e cartões
+            </p>
 
         </div>
 
-    </aside>
+    </header>
 
 
 
-    <!-- =====================================================
-         ÁREA PRINCIPAL
-         ===================================================== -->
+    <!-- ========================================================
+         CONTEÚDO
+    ========================================================= -->
 
-    <main class="main">
-
-
-        <!-- =================================================
-             CABEÇALHO
-             ================================================= -->
-
-        <header class="topbar">
-
-            <div>
-
-                <h1>Contas e cartões</h1>
-
-                <p>
-                    Gerencie suas contas e cartões de pagamento
-                </p>
-
-            </div>
+    <div class="conteudo">
 
 
-            <div class="usuario">
+        <!-- ====================================================
+             CONTAS
+        ===================================================== -->
 
-                <div class="usuario-avatar">
-                    EB
-                </div>
+        <section class="secao">
 
-                <div>
-
-                    <strong>Ednardo</strong>
-
-                    <span>Usuário</span>
-
-                </div>
-
-            </div>
-
-        </header>
-
-
-
-        <!-- =================================================
-             CONTEÚDO
-             ================================================= -->
-
-        <section class="conteudo">
-
-
-            <!-- =============================================
-                 CONTAS
-                 ============================================= -->
 
             <div class="secao-cabecalho">
 
                 <div>
 
-                    <h2>🏦 Contas</h2>
+                    <h2>
+                        Contas
+                    </h2>
 
                     <p>
-                        Contas de onde o dinheiro pode sair
+                        Suas contas bancárias e carteiras
                     </p>
 
                 </div>
 
 
-                <button class="btn-principal" type="button">
-
+                <button
+                    id="btnNovaConta"
+                    class="btn-principal"
+                    type="button"
+                >
                     + Nova conta
-
                 </button>
 
             </div>
+
 
 
             <div class="contas-grid">
 
 
-                <!-- CONTA NUBANK -->
+                <!-- =================================================
+                     CONTA NUBANK
+                ================================================== -->
 
-                <article class="conta-card">
+                <div class="conta-card">
 
                     <div class="conta-topo">
 
                         <div class="conta-icone">
-                            N
+                            💳
                         </div>
 
                         <span class="status ativo">
@@ -193,38 +151,66 @@
 
                     <div class="conta-info">
 
-                        <h3>Nubank</h3>
+                        <h3>
+                            Nubank
+                        </h3>
 
-                        <p>Conta corrente</p>
+                        <p>
+                            Nubank
+                        </p>
+
+                        <p>
+                            Conta corrente
+                        </p>
 
                     </div>
 
 
                     <div class="conta-saldo">
 
-                        <span>Saldo disponível</span>
+                        <span>
+                            Saldo atual
+                        </span>
 
-                        <strong>R$ 2.450,00</strong>
+                        <strong>
+                            R$ 2.450,00
+                        </strong>
 
                     </div>
 
 
-                    <button class="btn-secundario" type="button">
-                        Ver conta
-                    </button>
+                    <div class="conta-botoes">
 
-                </article>
+                        <button
+                            type="button"
+                            class="btn-secundario"
+                        >
+                            Ver conta
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-perigo"
+                        >
+                            Excluir conta
+                        </button>
+
+                    </div>
+
+                </div>
 
 
 
-                <!-- CONTA MERCADO PAGO -->
+                <!-- =================================================
+                     CONTA MERCADO PAGO
+                ================================================== -->
 
-                <article class="conta-card">
+                <div class="conta-card">
 
                     <div class="conta-topo">
 
                         <div class="conta-icone">
-                            M
+                            💳
                         </div>
 
                         <span class="status ativo">
@@ -236,38 +222,66 @@
 
                     <div class="conta-info">
 
-                        <h3>Mercado Pago</h3>
+                        <h3>
+                            Mercado Pago
+                        </h3>
 
-                        <p>Conta de pagamento</p>
+                        <p>
+                            Mercado Pago
+                        </p>
+
+                        <p>
+                            Conta digital
+                        </p>
 
                     </div>
 
 
                     <div class="conta-saldo">
 
-                        <span>Saldo disponível</span>
+                        <span>
+                            Saldo atual
+                        </span>
 
-                        <strong>R$ 850,00</strong>
+                        <strong>
+                            R$ 850,00
+                        </strong>
 
                     </div>
 
 
-                    <button class="btn-secundario" type="button">
-                        Ver conta
-                    </button>
+                    <div class="conta-botoes">
 
-                </article>
+                        <button
+                            type="button"
+                            class="btn-secundario"
+                        >
+                            Ver conta
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-perigo"
+                        >
+                            Excluir conta
+                        </button>
+
+                    </div>
+
+                </div>
 
 
 
-                <!-- CONTA CAIXA -->
+                <!-- =================================================
+                     CONTA CAIXA
+                ================================================== -->
 
-                <article class="conta-card">
+                <div class="conta-card">
 
                     <div class="conta-topo">
 
                         <div class="conta-icone">
-                            C
+                            🏦
                         </div>
 
                         <span class="status ativo">
@@ -279,80 +293,112 @@
 
                     <div class="conta-info">
 
-                        <h3>Caixa</h3>
+                        <h3>
+                            Caixa
+                        </h3>
 
-                        <p>Conta corrente</p>
+                        <p>
+                            Caixa Econômica Federal
+                        </p>
+
+                        <p>
+                            Conta corrente
+                        </p>
 
                     </div>
 
 
                     <div class="conta-saldo">
 
-                        <span>Saldo disponível</span>
+                        <span>
+                            Saldo atual
+                        </span>
 
-                        <strong>R$ 1.320,00</strong>
+                        <strong>
+                            R$ 1.320,00
+                        </strong>
 
                     </div>
 
 
-                    <button class="btn-secundario" type="button">
-                        Ver conta
-                    </button>
+                    <div class="conta-botoes">
 
-                </article>
+                        <button
+                            type="button"
+                            class="btn-secundario"
+                        >
+                            Ver conta
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-perigo"
+                        >
+                            Excluir conta
+                        </button>
+
+                    </div>
+
+                </div>
 
 
             </div>
 
+        </section>
 
 
-            <!-- =============================================
-                 CARTÕES
-                 ============================================= -->
+
+        <!-- ====================================================
+             CARTÕES
+        ===================================================== -->
+
+        <section class="secao">
+
 
             <div class="secao-cabecalho cartoes-cabecalho">
 
                 <div>
 
-                    <h2>💳 Cartões</h2>
+                    <h2>
+                        Cartões
+                    </h2>
 
                     <p>
-                        Gerencie seus cartões de crédito
+                        Seus cartões de crédito
                     </p>
 
                 </div>
 
 
-                <button class="btn-principal" type="button">
-
+                <button
+                    id="btnNovoCartao"
+                    class="btn-principal"
+                    type="button"
+                >
                     + Novo cartão
-
                 </button>
 
             </div>
 
 
+
             <div class="cartoes-grid">
 
 
-                <!-- CARTÃO NUBANK -->
+                <!-- =================================================
+                     CARTÃO NUBANK
+                ================================================== -->
 
-                <article class="cartao-card">
+                <div class="cartao-card">
 
                     <div class="cartao-topo">
 
-                        <div>
-
-                            <span class="cartao-tipo">
-                                CRÉDITO
-                            </span>
-
-                            <h3>Nubank</h3>
-
+                        <div class="cartao-icone">
+                            💳
                         </div>
 
-                        <span class="cartao-chip">
-                            ▣
+                        <span class="status ativo">
+                            Ativo
                         </span>
 
                     </div>
@@ -360,7 +406,13 @@
 
                     <div class="cartao-numero">
 
-                        •••• •••• •••• 1234
+                        <span>
+                            Nubank
+                        </span>
+
+                        <strong>
+                            •••• 1234
+                        </strong>
 
                     </div>
 
@@ -369,18 +421,26 @@
 
                         <div>
 
-                            <span>Limite</span>
+                            <span>
+                                Instituição
+                            </span>
 
-                            <strong>R$ 5.000,00</strong>
+                            <strong>
+                                Nubank
+                            </strong>
 
                         </div>
 
 
                         <div>
 
-                            <span>Disponível</span>
+                            <span>
+                                Limite
+                            </span>
 
-                            <strong>R$ 3.750,00</strong>
+                            <strong>
+                                R$ 1.500,00
+                            </strong>
 
                         </div>
 
@@ -390,37 +450,36 @@
                     <div class="cartao-rodape">
 
                         <span>
-                            Fecha dia 02
+                            Cartão de crédito
                         </span>
 
-                        <span>
-                            Vence dia 10
-                        </span>
+                        <button
+                            type="button"
+                            class="btn-perigo"
+                        >
+                            Excluir cartão
+                        </button>
 
                     </div>
 
-                </article>
+                </div>
 
 
 
-                <!-- CARTÃO MERCADO PAGO -->
+                <!-- =================================================
+                     CARTÃO MERCADO PAGO
+                ================================================== -->
 
-                <article class="cartao-card">
+                <div class="cartao-card">
 
                     <div class="cartao-topo">
 
-                        <div>
-
-                            <span class="cartao-tipo">
-                                CRÉDITO
-                            </span>
-
-                            <h3>Mercado Pago</h3>
-
+                        <div class="cartao-icone">
+                            💳
                         </div>
 
-                        <span class="cartao-chip">
-                            ▣
+                        <span class="status ativo">
+                            Ativo
                         </span>
 
                     </div>
@@ -428,7 +487,13 @@
 
                     <div class="cartao-numero">
 
-                        •••• •••• •••• 5678
+                        <span>
+                            Mercado Pago
+                        </span>
+
+                        <strong>
+                            •••• 5678
+                        </strong>
 
                     </div>
 
@@ -437,18 +502,26 @@
 
                         <div>
 
-                            <span>Limite</span>
+                            <span>
+                                Instituição
+                            </span>
 
-                            <strong>R$ 3.000,00</strong>
+                            <strong>
+                                Mercado Pago
+                            </strong>
 
                         </div>
 
 
                         <div>
 
-                            <span>Disponível</span>
+                            <span>
+                                Limite
+                            </span>
 
-                            <strong>R$ 2.100,00</strong>
+                            <strong>
+                                R$ 1.500,00
+                            </strong>
 
                         </div>
 
@@ -458,37 +531,36 @@
                     <div class="cartao-rodape">
 
                         <span>
-                            Fecha dia 05
+                            Cartão de crédito
                         </span>
 
-                        <span>
-                            Vence dia 12
-                        </span>
+                        <button
+                            type="button"
+                            class="btn-perigo"
+                        >
+                            Excluir cartão
+                        </button>
 
                     </div>
 
-                </article>
+                </div>
 
 
 
-                <!-- CARTÃO CAIXA -->
+                <!-- =================================================
+                     CARTÃO CAIXA
+                ================================================== -->
 
-                <article class="cartao-card">
+                <div class="cartao-card">
 
                     <div class="cartao-topo">
 
-                        <div>
-
-                            <span class="cartao-tipo">
-                                CRÉDITO
-                            </span>
-
-                            <h3>Caixa</h3>
-
+                        <div class="cartao-icone">
+                            💳
                         </div>
 
-                        <span class="cartao-chip">
-                            ▣
+                        <span class="status ativo">
+                            Ativo
                         </span>
 
                     </div>
@@ -496,7 +568,13 @@
 
                     <div class="cartao-numero">
 
-                        •••• •••• •••• 9012
+                        <span>
+                            Caixa
+                        </span>
+
+                        <strong>
+                            •••• 9012
+                        </strong>
 
                     </div>
 
@@ -505,18 +583,26 @@
 
                         <div>
 
-                            <span>Limite</span>
+                            <span>
+                                Instituição
+                            </span>
 
-                            <strong>R$ 2.500,00</strong>
+                            <strong>
+                                Caixa
+                            </strong>
 
                         </div>
 
 
                         <div>
 
-                            <span>Disponível</span>
+                            <span>
+                                Limite
+                            </span>
 
-                            <strong>R$ 1.850,00</strong>
+                            <strong>
+                                R$ 1.500,00
+                            </strong>
 
                         </div>
 
@@ -526,31 +612,37 @@
                     <div class="cartao-rodape">
 
                         <span>
-                            Fecha dia 08
+                            Cartão de crédito
                         </span>
 
-                        <span>
-                            Vence dia 15
-                        </span>
+                        <button
+                            type="button"
+                            class="btn-perigo"
+                        >
+                            Excluir cartão
+                        </button>
 
                     </div>
 
-                </article>
+                </div>
 
 
             </div>
 
-
         </section>
 
-    </main>
+
+    </div>
+
+</main>
 
 
-    <!-- =====================================================
-         JAVASCRIPT DA TELA
-         ===================================================== -->
 
-    <script src="js/contas-cartoes.js"></script>
+<!-- ============================================================
+     JAVASCRIPT
+============================================================= -->
+
+<script src="js/contas-cartoes.js"></script>
 
 </body>
 
