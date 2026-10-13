@@ -1,374 +1,144 @@
-<!DOCTYPE html> <html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Faturas - Meu Financeiro</title>
-
-<link rel="stylesheet" href="css/faturas.css">
-</head> <body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faturas - Meu Financeiro</title>
+    <link rel="stylesheet" href="css/faturas.css">
+</head>
+<body>
 <div class="app">
+<aside class="sidebar">
+    <div class="logo">
+        <span class="logo-icone">R$</span>
+        <span class="logo-texto">Meu Financeiro</span>
+    </div>
 
-    <!-- ==============================
-         MENU LATERAL
-    =============================== -->
+    <nav class="menu">
+        <a href="index.html">Dashboard</a>
+        <a href="nova-entrada.html">Entradas</a>
+        <a href="nova-saida.html">Gastos</a>
+        <a href="#">Dividendos</a>
+        <a href="#">Categorias</a>
+        <a href="#">Relatórios</a>
+        <a href="contas-cartoes.html">Contas e cartões</a>
+        <a href="faturas.html" class="ativo">Faturas</a>
+        <a href="#">Configurações</a>
+    </nav>
+</aside>
 
-    <aside class="sidebar">
+<main class="main">
 
-        <div class="logo">
-            <span class="logo-icone">R$</span>
-            <span class="logo-texto">Meu Financeiro</span>
+    <header class="topbar">
+        <div>
+            <h1>Faturas</h1>
+            <p>Consulte suas faturas e compras no cartão</p>
+        </div>
+        <div class="usuario">Ednardo</div>
+    </header>
+
+    <section class="filtros">
+        <div class="campo">
+            <label for="cartao">Cartão</label>
+            <select id="cartao">
+                <option value="">Carregando cartões...</option>
+            </select>
         </div>
 
-        <nav class="menu">
+        <div class="campo">
+            <label for="mes">Mês da fatura</label>
+            <input type="month" id="mes">
+        </div>
+    </section>
 
-            <a href="index.html">Dashboard</a>
+    <section class="resumo">
+        <div class="cabecalho-fatura">
+            <div>
+                <span class="label">Fatura</span>
+                <h2 id="tituloFatura">Selecione uma fatura</h2>
+                <span id="nomeCartao">Nenhum cartão selecionado</span>
+            </div>
 
-            <a href="nova-entrada.html">Entradas</a>
+            <div class="status aberta" id="statusFatura">Aberta</div>
+        </div>
 
-            <a href="nova-saida.html">Gastos</a>
+        <div class="informacoes-fatura">
+            <div class="info">
+                <span>Fechamento</span>
+                <strong id="fechamento">--</strong>
+            </div>
 
-            <a href="#">Dividendos</a>
+            <div class="info">
+                <span>Vencimento</span>
+                <strong id="vencimento">--</strong>
+            </div>
 
-            <a href="#">Categorias</a>
+            <div class="info">
+                <span>Compras</span>
+                <strong id="quantidadeCompras">0</strong>
+            </div>
 
-            <a href="#">Relatórios</a>
+            <div class="info destaque">
+                <span>Total da fatura</span>
+                <strong id="totalFatura">R$ 0,00</strong>
+            </div>
+        </div>
+    </section>
 
-            <a href="contas-cartoes.html">Contas e cartões</a>
+    <section class="compras">
+        <div class="titulo-secao">
+            <div>
+                <h2>Compras da fatura</h2>
+                <p>Lançamentos incluídos nesta fatura</p>
+            </div>
+        </div>
 
-            <a href="faturas.html" class="ativo">Faturas</a>
+        <div class="tabela-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Descrição</th>
+                        <th>Parcela</th>
+                        <th>Categoria</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody id="listaCompras">
+                    <tr>
+                        <td colspan="5" style="text-align:center;">
+                            Selecione um cartão.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-            <a href="#">Configurações</a>
+    <section class="pagamento">
+        <div>
+            <h2>Pagamento da fatura</h2>
+            <p>O pagamento será realizado utilizando uma das suas contas.</p>
+        </div>
 
-        </nav>
-
-    </aside>
-
-
-    <!-- ==============================
-         ÁREA PRINCIPAL
-    =============================== -->
-
-    <main class="main">
-
-        <!-- TOPO -->
-
-        <header class="topbar">
+        <div class="pagamento-info">
+            <div>
+                <span>Valor a pagar</span>
+                <strong id="valorPagamento">R$ 0,00</strong>
+            </div>
 
             <div>
-                <h1>Faturas</h1>
-
-                <p>
-                    Consulte suas faturas e compras no cartão
-                </p>
-            </div>
-
-            <div class="usuario">
-                Ednardo
-            </div>
-
-        </header>
-
-
-        <!-- ==============================
-             FILTROS
-        =============================== -->
-
-        <section class="filtros">
-
-            <div class="campo">
-
-                <label for="cartao">
-                    Cartão
-                </label>
-
-                <select id="cartao">
-
-                    <option value="nubank">
-                        Nubank •••• 1234
-                    </option>
-
-                    <option value="mercado-pago">
-                        Mercado Pago •••• 5678
-                    </option>
-
-                    <option value="caixa">
-                        Caixa •••• 9012
-                    </option>
-
+                <label for="contaPagamento">Pagar com</label>
+                <select id="contaPagamento">
+                    <option value="">Carregando contas...</option>
                 </select>
-
             </div>
 
-
-            <div class="campo">
-
-                <label for="mes">
-                    Mês da fatura
-                </label>
-
-                <input
-                    type="month"
-                    id="mes"
-                    value="2026-10"
-                >
-
-            </div>
-
-        </section>
-
-
-        <!-- ==============================
-             RESUMO DA FATURA
-        =============================== -->
-
-        <section class="resumo">
-
-            <div class="cabecalho-fatura">
-
-                <div>
-
-                    <span class="label">
-                        Fatura
-                    </span>
-
-                    <h2 id="tituloFatura">
-                        Outubro/2026
-                    </h2>
-
-                    <span id="nomeCartao">
-                        Nubank •••• 1234
-                    </span>
-
-                </div>
-
-                <div class="status aberta" id="statusFatura">
-                    Aberta
-                </div>
-
-            </div>
-
-
-            <div class="informacoes-fatura">
-
-                <div class="info">
-
-                    <span>
-                        Fechamento
-                    </span>
-
-                    <strong id="fechamento">
-                        02/10/2026
-                    </strong>
-
-                </div>
-
-
-                <div class="info">
-
-                    <span>
-                        Vencimento
-                    </span>
-
-                    <strong id="vencimento">
-                        10/10/2026
-                    </strong>
-
-                </div>
-
-
-                <div class="info">
-
-                    <span>
-                        Compras
-                    </span>
-
-                    <strong id="quantidadeCompras">
-                        1
-                    </strong>
-
-                </div>
-
-
-                <div class="info destaque">
-
-                    <span>
-                        Total da fatura
-                    </span>
-
-                    <strong id="totalFatura">
-                        R$ 200,00
-                    </strong>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ==============================
-             COMPRAS DA FATURA
-        =============================== -->
-
-        <section class="compras">
-
-            <div class="titulo-secao">
-
-                <div>
-
-                    <h2>
-                        Compras da fatura
-                    </h2>
-
-                    <p>
-                        Lançamentos incluídos nesta fatura
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="tabela-container">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Data
-                            </th>
-
-                            <th>
-                                Descrição
-                            </th>
-
-                            <th>
-                                Parcela
-                            </th>
-
-                            <th>
-                                Categoria
-                            </th>
-
-                            <th>
-                                Valor
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody id="listaCompras">
-
-                        <tr>
-
-                            <td>
-                                19/09/2026
-                            </td>
-
-                            <td>
-                                Compra de teste
-                            </td>
-
-                            <td>
-                                1/6
-                            </td>
-
-                            <td>
-                                Mercado
-                            </td>
-
-                            <td class="valor">
-                                R$ 200,00
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-
-
-        <!-- ==============================
-             PAGAMENTO
-        =============================== -->
-
-        <section class="pagamento">
-
-            <div>
-
-                <h2>
-                    Pagamento da fatura
-                </h2>
-
-                <p>
-                    O pagamento será realizado utilizando uma das suas contas.
-                </p>
-
-            </div>
-
-
-            <div class="pagamento-info">
-
-                <div>
-
-                    <span>
-                        Valor a pagar
-                    </span>
-
-                    <strong id="valorPagamento">
-                        R$ 200,00
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <label for="contaPagamento">
-                        Pagar com
-                    </label>
-
-                    <select id="contaPagamento">
-
-                        <option value="">
-                            Selecione a conta
-                        </option>
-
-                        <option value="nubank">
-                            Nubank
-                        </option>
-
-                        <option value="mercado-pago">
-                            Mercado Pago
-                        </option>
-
-                        <option value="caixa">
-                            Caixa
-                        </option>
-
-                        <option value="dinheiro">
-                            Dinheiro em espécie
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    id="btnPagar"
-                >
-                    Pagar fatura
-                </button>
-                <div id="dadosPagamento" class="dados-pagamento" style="display: none;">
-
+            <button type="button" id="btnPagar">
+                Pagar fatura
+            </button>
+
+            <div id="dadosPagamento" class="dados-pagamento" style="display:none;">
                 <h3>Pagamento realizado</h3>
 
                 <p>
@@ -385,17 +155,12 @@
                     <strong>Valor pago:</strong>
                     <span id="valorPagamentoInfo">R$ 0,00</span>
                 </p>
-
             </div>
+        </div>
+    </section>
 
-            </div>
-
-        </section>
-
-    </main>
-
+</main>
 </div>
-
-
 <script src="js/faturas.js"></script>
-</body> </html>
+</body>
+</html>
