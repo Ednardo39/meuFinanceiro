@@ -8,33 +8,31 @@ padding: 0;
 box-sizing: border-box;
 }
 
-*{
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
 
---primary: #2563eb;
---primary-dark: #1d4ed8;
+    --background: #f5f7fb;
+    --white: #ffffff;
 
---background: #f5f7fb;
---white: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
 
---text: #1e293b;
---text-light: #64748b;
+    --border: #e2e8f0;
 
---border: #e2e8f0;
+    --green: #16a34a;
+    --green-light: #dcfce7;
 
---green: #16a34a;
---green-light: #dcfce7;
+    --red: #dc2626;
+    --red-light: #fee2e2;
 
---red: #dc2626;
---red-light: #fee2e2;
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
 
---purple: #7c3aed;
---purple-light: #ede9fe;
+    --orange: #ea580c;
+    --orange-light: #ffedd5;
 
---orange: #ea580c;
---orange-light: #ffedd5;
-
---sidebar-width: 250px;
-
+    --sidebar-width: 250px;
 }
 
 body {
@@ -1300,146 +1298,265 @@ RESPONSIVIDADE — CELULAR
 
 @media (max-width: 700px) {
 
-.sidebar {
+    .sidebar {
+        display: none;
+    }
 
-    display: none;
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .topbar {
+        height: 70px;
+        padding: 0 18px;
+    }
+
+    .mobile-menu-button {
+        display: block;
+    }
+
+    .page-title {
+        margin-right: auto;
+        margin-left: 15px;
+    }
+
+    .page-title h1 {
+        font-size: 18px;
+    }
+
+    .page-title p {
+        display: none;
+    }
+
+    .user-info {
+        display: none;
+    }
+
+    .content {
+        padding: 20px 15px;
+    }
+
+    .month-navigation {
+        gap: 10px;
+    }
+
+    .month-navigation h2 {
+        min-width: 150px;
+        font-size: 18px;
+    }
+
+    .cards-resumo {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .card.resumo {
+        padding: 18px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .grafico-barras {
+        gap: 40px;
+    }
+
+    .barra {
+        width: 45px;
+    }
+
+    .form-container {
+        padding: 20px 16px;
+        border-radius: 10px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .page-heading h2 {
+        font-size: 19px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .cancel-button,
+    .save-button {
+        width: 100%;
+        text-align: center;
+        padding: 13px;
+    }
+
+    .categoria-gasto-topo {
+        font-size: 12px;
+    }
+
+    .categoria-cartao-item {
+        font-size: 11px;
+    }
+
+} /* FIM DA RESPONSIVIDADE PARA CELULAR */
+
+
+/* ============================================================
+   MEU FINANCEIRO — TEMA ESCURO
+   Estas regras ficam FORA de qualquer @media.
+   ============================================================ */
+
+html[data-tema="escuro"] {
+    color-scheme: dark;
+
+    --background: #0f172a;
+    --white: #1e293b;
+
+    --text: #e2e8f0;
+    --text-light: #94a3b8;
+
+    --border: #334155;
+
+    --green-light: #14532d;
+    --red-light: #7f1d1d;
+    --purple-light: #4c1d95;
+    --orange-light: #7c2d12;
 }
 
-.main-content {
+/* Fundo e textos gerais */
 
-    margin-left: 0;
-
-    width: 100%;
+html[data-tema="escuro"] body {
+    background: var(--background);
+    color: var(--text);
 }
 
-.topbar {
+/* Menu lateral e cabeçalho */
 
-    height: 70px;
-
-    padding: 0 18px;
+html[data-tema="escuro"] .sidebar,
+html[data-tema="escuro"] .topbar {
+    background: var(--white);
+    border-color: var(--border);
 }
 
-.mobile-menu-button {
-
-    display: block;
+html[data-tema="escuro"] .logo-text,
+html[data-tema="escuro"] .page-title h1,
+html[data-tema="escuro"] .page-heading h2,
+html[data-tema="escuro"] .panel-header h3,
+html[data-tema="escuro"] .transaction-info strong,
+html[data-tema="escuro"] .card-info strong {
+    color: var(--text);
 }
 
-.page-title {
+/* Itens do menu */
 
-    margin-right: auto;
-
-    margin-left: 15px;
+html[data-tema="escuro"] .menu-item {
+    background: transparent;
+    color: var(--text-light);
 }
 
-.page-title h1 {
-
-    font-size: 18px;
+html[data-tema="escuro"] .menu-item.active,
+html[data-tema="escuro"] .menu-item.ativo {
+    background: #263752;
+    color: #93c5fd;
 }
 
-.page-title p {
+/* Cartões, painéis e formulários */
 
-    display: none;
+html[data-tema="escuro"] .card.resumo,
+html[data-tema="escuro"] .panel,
+html[data-tema="escuro"] .form-container,
+html[data-tema="escuro"] .configuracao-card {
+    background: var(--white);
+    color: var(--text);
+    border-color: var(--border);
 }
 
-.user-info {
+/* Cartões de configuração e ícones */
 
-    display: none;
+html[data-tema="escuro"] .configuracao-icon {
+    background: #334155;
 }
 
-.content {
+/* Campos de formulário */
 
-    padding: 20px 15px;
+html[data-tema="escuro"] input,
+html[data-tema="escuro"] select,
+html[data-tema="escuro"] textarea {
+    background-color: #0f172a;
+    color: var(--text);
+    border-color: var(--border);
 }
 
-.month-navigation {
-
-    gap: 10px;
+html[data-tema="escuro"] input::placeholder,
+html[data-tema="escuro"] textarea::placeholder {
+    color: var(--text-light);
 }
 
-.month-navigation h2 {
+/* Campos monetários */
 
-    min-width: 150px;
-
-    font-size: 18px;
+html[data-tema="escuro"] .input-money {
+    background: #0f172a;
+    border-color: var(--border);
 }
 
-.cards-resumo {
-
-    grid-template-columns: 1fr;
-
-    gap: 12px;
+html[data-tema="escuro"] .form-group label {
+    color: var(--text);
 }
 
-.card.resumo {
+/* Navegação do mês e botões secundários */
 
-    padding: 18px;
+html[data-tema="escuro"] .btn-mes {
+    background: #263752;
+    color: #93c5fd;
+    border-color: var(--border);
 }
 
-.dashboard-grid {
-
-    grid-template-columns: 1fr;
-
-    gap: 15px;
+html[data-tema="escuro"] .cancel-button {
+    background: #334155;
+    color: var(--text);
+    border-color: var(--border);
 }
 
-.panel {
+/* Barras e divisórias */
 
-    padding: 18px;
+html[data-tema="escuro"] .barra-categoria {
+    background: #334155;
 }
 
-.grafico-barras {
-
-    gap: 40px;
+html[data-tema="escuro"] .transaction,
+html[data-tema="escuro"] .cartao-dashboard,
+html[data-tema="escuro"] .categorias-cartao {
+    border-color: var(--border);
 }
 
-.barra {
+/* Fundos coloridos dos ícones */
 
-    width: 45px;
+html[data-tema="escuro"] .income-icon {
+    background: #14532d;
 }
 
-.form-container {
-
-    padding: 20px 16px;
-
-    border-radius: 10px;
+html[data-tema="escuro"] .dividend-icon {
+    background: #4c1d95;
 }
 
-.form-row {
-
-    grid-template-columns: 1fr;
-
-    gap: 0;
+html[data-tema="escuro"] .fuel-icon {
+    background: #7c2d12;
 }
 
-.page-heading h2 {
-
-    font-size: 19px;
+html[data-tema="escuro"] .market-icon {
+    background: #713f12;
+    color: #fde68a;
 }
 
-.form-actions {
-
-    flex-direction: column-reverse;
-
-    align-items: stretch;
+html[data-tema="escuro"] .pharmacy-icon {
+    background: #831843;
+    color: #fbcfe8;
 }
-
-.cancel-button,
-.save-button {
-
-    width: 100%;
-
-    text-align: center;
-
-    padding: 13px;
-}
-
-.categoria-gasto-topo {
-
-    font-size: 12px;
-}
-
-.categoria-cartao-item {
-
-    font-size: 11px;
-}
-

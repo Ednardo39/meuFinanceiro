@@ -1,77 +1,188 @@
 /* ============================================================
-MEU FINANCEIRO
-CONFIGURAÇÕES
-============================================================ */
+   MEU FINANCEIRO
+   CONFIGURAÇÕES
+   ============================================================ */
 
-/* ============================================================
-AGUARDA O HTML CARREGAR
-============================================================ */
+(function () {
 
-document.addEventListener("DOMContentLoaded", function () {
+    const CHAVE_CONFIGURACOES = "configuracoes";
 
-const moeda = document.getElementById("moeda");
-const tema = document.getElementById("tema");
-const formatoData = document.getElementById("formatoData");
-const confirmarExclusao = document.getElementById("confirmarExclusao");
-const btnSalvar = document.getElementById("btnSalvar");
+    function obterConfiguracoes() {
+        try {
+            return JSON.parse(
+                localStorage.getItem(CHAVE_CONFIGURACOES)
+            ) || {};
+        } catch (erro) {
+            console.error(
+                "Erro ao carregar configurações:",
+                erro
+            );
 
+            return {};
+        }
+    }
 
-/* ========================================================
-   CARREGAR CONFIGURAÇÕES SALVAS
-   ======================================================== */
+    /* ========================================================
+       APLICAR TEMA GLOBALMENTE
+       ======================================================== */
 
-const configuracoesSalvas =
-    JSON.parse(localStorage.getItem("configuracoes")) || {};
+    function aplicarTema(tema) {
+        const temaEscolhido = tema || "claro";
 
+        if (temaEscolhido === "escuro") {
+            document.documentElement.setAttribute(
+                "data-tema",
+                "escuro"
+            );
 
-if (configuracoesSalvas.moeda) {
-    moeda.value = configuracoesSalvas.moeda;
-}
+        } else if (temaEscolhido === "sistema") {
+            const prefereEscuro = window.matchMedia &&
+                window.matchMedia(
+                    "(prefers-color-scheme: dark)"
+                ).matches;
 
+            document.documentElement.setAttribute(
+                "data-tema",
+                prefereEscuro ? "escuro" : "claro"
+            );
 
-if (configuracoesSalvas.tema) {
-    tema.value = configuracoesSalvas.tema;
-}
+        } else {
+            document.documentElement.setAttribute(
+                "data-tema",
+                "claro"
+            );
+        }
+    }
 
+    /* ========================================================
+       APLICAR TEMA SALVO EM QUALQUER PÁGINA
+       ======================================================== */
 
-if (configuracoesSalvas.formatoData) {
-    formatoData.value = configuracoesSalvas.formatoData;
-}
+    aplicarTema(obterConfiguracoes().tema);
 
+    /* Atualiza automaticamente se o sistema mudar de tema. */
 
-if (configuracoesSalvas.confirmarExclusao !== undefined) {
-    confirmarExclusao.checked =
-        configuracoesSalvas.confirmarExclusao;
-}
+    if (window.matchMedia) {
+        const consultaTema = window.matchMedia(
+            "(prefers-color-scheme: dark)"
+        );
 
+        function atualizarTemaSistema() {
+            const configuracoes = obterConfiguracoes();
 
-/* ========================================================
-   SALVAR CONFIGURAÇÕES
-   ======================================================== */
+            if (configuracoes.tema === "sistema") {
+                aplicarTema("sistema");
+            }
+        }
 
-btnSalvar.addEventListener("click", function () {
+        if (consultaTema.addEventListener) {
+            consultaTema.addEventListener(
+                "change",
+                atualizarTemaSistema
+            );
+        } else if (consultaTema.addListener) {
+            consultaTema.addListener(
+                atualizarTemaSistema
+            );
+        }
+    }
 
-    const configuracoes = {
+    /* ========================================================
+       CONFIGURAÇÕES DA PÁGINA
+       ======================================================== */
 
-        moeda: moeda.value,
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
 
-        tema: tema.value,
+            const moeda =
+                document.getElementById("moeda");
 
-        formatoData: formatoData.value,
+            const tema =
+                document.getElementById("tema");
 
-        confirmarExclusao: confirmarExclusao.checked
+            const formatoData =
+                document.getElementById("formatoData");
 
-    };
+            const confirmarExclusao =
+                document.getElementById("confirmarExclusao");
 
+            const btnSalvar =
+                document.getElementById("btnSalvar");
 
-    localStorage.setItem(
-        "configuracoes",
-        JSON.stringify(configuracoes)
+            /* Se não for a página Configurações,
+               o tema global já foi aplicado. */
+
+            if (
+                !moeda ||
+                !tema ||
+                !formatoData ||
+                !confirmarExclusao ||
+                !btnSalvar
+            ) {
+                return;
+            }
+
+            /* Carregar preferências salvas. */
+
+            const configuracoesSalvas =
+                obterConfiguracoes();
+
+            moeda.value =
+                configuracoesSalvas.moeda || "BRL";
+
+            tema.value =
+                configuracoesSalvas.tema || "claro";
+
+            formatoData.value =
+                configuracoesSalvas.formatoData ||
+                "dd/mm/yyyy";
+
+            confirmarExclusao.checked =
+                configuracoesSalvas.confirmarExclusao !==
+                undefined
+                    ? configuracoesSalvas.confirmarExclusao
+                    : true;
+
+            /* Salvar preferências. */
+
+            btnSalvar.addEventListener(
+                "click",
+                function () {
+
+                    const configuracoes = {
+                        moeda: moeda.value,
+                        tema: tema.value,
+                        formatoData: formatoData.value,
+                        confirmarExclusao:
+                            confirmarExclusao.checked
+                    };
+
+                    try {
+                        localStorage.setItem(
+                            CHAVE_CONFIGURACOES,
+                            JSON.stringify(configuracoes)
+                        );
+
+                        aplicarTema(configuracoes.tema);
+
+                        alert(
+                            "Configurações salvas com sucesso!"
+                        );
+
+                    } catch (erro) {
+                        console.error(
+                            "Erro ao salvar configurações:",
+                            erro
+                        );
+
+                        alert(
+                            "Não foi possível salvar as configurações."
+                        );
+                    }
+                }
+            );
+        }
     );
 
-
-    alert("Configurações salvas com sucesso!");
-
-});
-
-});
+})();
