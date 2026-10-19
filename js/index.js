@@ -31,7 +31,11 @@ const listaComprasCartao =
 // MÊS INICIAL DO DASHBOARD
 // ============================================================
 
-let dataDashboard = new Date(2026, 8, 1);
+let dataDashboard = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    1
+);
 
 
 // ============================================================
