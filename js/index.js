@@ -959,17 +959,26 @@ function atualizarDashboard() {
             }, 0);
 
 
-    // --------------------------------------------------------
+     // --------------------------------------------------------
     // GASTOS
+    // Despesas diretas + parcelas de compras no crédito.
+    // Pagamentos de faturas não entram novamente no total.
     // --------------------------------------------------------
 
-    const gastos =
+    // 1. Somar as saídas diretas do mês,
+    // excluindo pagamentos de faturas.
+
+    const gastosDiretos =
         movimentacoesMes
             .filter(function (movimento) {
 
-                return (
+                const ehSaida =
                     movimento.tipo === "saida" ||
-                    movimento.tipo === "saída"
+                    movimento.tipo === "saída";
+
+                return (
+                    ehSaida &&
+                    movimento.origem !== "fatura"
                 );
 
             })
@@ -979,6 +988,82 @@ function atualizarDashboard() {
                     Number(movimento.valor || 0);
 
             }, 0);
+
+
+    // 2. Carregar as compras registradas.
+
+    let comprasDashboard = [];
+
+    try {
+
+        comprasDashboard =
+            JSON.parse(
+                localStorage.getItem("compras")
+            ) || [];
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao carregar compras para o Dashboard:",
+            erro
+        );
+
+        comprasDashboard = [];
+
+    }
+
+
+    // 3. Somar somente as parcelas de crédito
+    // que pertencem ao mês selecionado.
+
+    let gastosCredito = 0;
+
+    comprasDashboard.forEach(function (compra) {
+
+        if (compra.modo !== "credito") {
+            return;
+        }
+
+        const quantidade =
+            Number(compra.parcelas || 1);
+
+        const valores =
+            calcularParcelas(
+                compra.valor,
+                quantidade
+            );
+
+        valores.forEach(function (
+            valorParcela,
+            indice
+        ) {
+
+            const numeroParcela = indice + 1;
+
+            if (
+                parcelaPertenceAoMes(
+                    compra,
+                    numeroParcela,
+                    mesSelecionado,
+                    anoSelecionado
+                )
+            ) {
+
+                gastosCredito += valorParcela;
+
+            }
+
+        });
+
+    });
+
+
+    // 4. Total de gastos de consumo do mês.
+
+    const gastos =
+        Math.round(
+            (gastosDiretos + gastosCredito) * 100
+        ) / 100;
 
 
     // --------------------------------------------------------
